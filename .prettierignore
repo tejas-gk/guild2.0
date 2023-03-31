@@ -1,0 +1,13 @@
+.next
+node_modules
+README.md
+build/
+dist/
+coverage/
+*.log
+*.json
+/*
+!src/
+.jest.*
+
+

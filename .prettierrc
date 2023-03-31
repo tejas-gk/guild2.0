@@ -1,0 +1,29 @@
+{
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "printWidth": 80,
+    "semi": true,
+    "bracketSpacing": true,
+    "quoteProps": "consistent",
+    "jsxSingleQuote": true,
+    "arrowParens": "always",
+    "overrides": [
+        {
+            "files": "*.md",
+            "options": {
+                "proseWrap": "always"
+            }
+        }
+    ],
+    "endOfLine": "lf",
+    "importOrder": [
+        "^next",
+        "^[a-z]",
+        "^@",
+        "^\\./",
+        "^../",
+        "^/"
+    ],
+    "importSortBy": "none"
+}

@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.icon{
+    @apply h-9 w-6 lg:w-9 rounded-md lg:p-1 lg:hover:bg-gray-200 lg:hover:text-gray-700 lg:hover:shadow-lg
+    ;
+}
+
+

@@ -1,16 +1,16 @@
-import React, { useCallback } from 'react'
+import React, { useCallback } from 'react';
 // import {
 //     XMarkIcon
 // } from '@heroicons/react/outline'
 interface ModalProps {
-    isOpen: boolean
-    onClose: () => void
-    onSend: () => void
-    title: string
-    body: string
-    footer: string
-    actionLabel: string
-    disabled: boolean
+    isOpen: boolean;
+    onClose: () => void;
+    onSend: () => void;
+    title: string;
+    body: string;
+    footer: string;
+    actionLabel: string;
+    disabled: boolean;
 }
 export default function Modal({
     isOpen,
@@ -20,21 +20,22 @@ export default function Modal({
     body,
     footer,
     actionLabel,
-    disabled
+    disabled,
 }: ModalProps) {
     const handleClose = useCallback(() => {
-        if (disabled) return
-        onClose()
-    }, [disabled, onClose])
+        if (disabled) return;
+        onClose();
+    }, [disabled, onClose]);
 
     const handleSend = useCallback(() => {
-        if (disabled) return
-        onSend()
-    }, [disabled, onSend])
+        if (disabled) return;
+        onSend();
+    }, [disabled, onSend]);
 
-    if (!isOpen) return null
+    if (!isOpen) return null;
     return (
-        <div className='
+        <div
+            className='
         flex
         justify-center
         items-center
@@ -47,13 +48,17 @@ export default function Modal({
         bg-neutral-900
         bg-opacity-50
 
-      '>
-            <div className='
+      '
+        >
+            <div
+                className='
             relative
             w-full lg:w-3/6 lg:max-w-3xl h-full lg:h-auto
             my-6 mx-auto
-            '>
-                <div className='
+            '
+            >
+                <div
+                    className='
                 h-full lg:h-auto
                 border-0
                 rounded-lg
@@ -64,25 +69,28 @@ export default function Modal({
                 bg-white
                 outline-none
                 focus:outline-none
-                '>
-                    <div className='
+                '
+                >
+                    <div
+                        className='
                     flex
                     items-center
                     justify-between
                     p-10
                     rounded-t
-                    '>
-                        <h3 className='
+                    '
+                    >
+                        <h3
+                            className='
                         text-3xl
                         font-semibold
                         text-neutral-900
-                        '>
+                        '
+                        >
                             {title}
                         </h3>
-                        <button
-                            title='Close'
-                        >
-                            <div 
+                        <button title='Close'>
+                            <div
                                 className='
                                 h-6 w-6
                                 text-neutral-900
@@ -93,36 +101,39 @@ export default function Modal({
                             >
                                 X
                             </div>
-
                         </button>
-                        
                     </div>
-                    <div className='
+                    <div
+                        className='
                     relative
                     p-10
                     flex-auto
 
-                    '>
-                        <p className='
+                    '
+                    >
+                        <p
+                            className='
                         my-4
                         text-neutral-900
                         text-lg
                         leading-relaxed
-                        '>
+                        '
+                        >
                             {body}
                         </p>
-
                     </div>
                     {/* 
                     TODO: create a separate component for the button
                     */}
-                    <div className='
+                    <div
+                        className='
                     flex
                     flex-col
                     gap-2 
                     p-10
-                    '>
-                        <button 
+                    '
+                    >
+                        <button
                             className='
                             bg-neutral-900
                             text-white
@@ -148,10 +159,9 @@ export default function Modal({
                         >
                             {actionLabel}
                         </button>
-
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }

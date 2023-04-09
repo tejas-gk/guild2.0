@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 
 export default function Dropdown() {
     return (
@@ -19,5 +19,5 @@ export default function Dropdown() {
             <p>Lorem ipsum dolor sit </p>
             <p>Lorem ipsum dolor sit </p>
         </div>
-    )
+    );
 }

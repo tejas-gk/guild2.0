@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef} from 'react'
-import Image from 'next/image'
+import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import {
     BeakerIcon,
     HomeIcon,
@@ -12,29 +12,27 @@ import {
     SparklesIcon,
     GlobeIcon,
     ArrowCircleDownIcon,
-} from '@heroicons/react/outline'
-import {
-    ChevronDownIcon,
-    MenuIcon,
-} from '@heroicons/react/solid'
-import { Inter,Roboto } from 'next/font/google'
-import Dropdown from './Dropdown'
-import Link from 'next/link'
+} from '@heroicons/react/outline';
+import { ChevronDownIcon, MenuIcon } from '@heroicons/react/solid';
+import { Inter, Roboto } from 'next/font/google';
+import Dropdown from './Dropdown';
+import Link from 'next/link';
 
 const InterFont = Inter({
     subsets: ['latin'],
     variable: '--font-inter',
-})
-
-
+});
 
 export default function Navbar() {
     // TODO this needs to be separate
-    const [isOpen, setIsOpen] = useState(false)
-    const dropdownRef = useRef<HTMLDivElement>(null)
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         const handleOutsideClick = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
                 setIsOpen(false);
             }
         };
@@ -44,7 +42,8 @@ export default function Navbar() {
         };
     }, [dropdownRef]);
     return (
-        <div className='
+        <div
+            className='
             flex
             items-center
             bg-white
@@ -52,8 +51,10 @@ export default function Navbar() {
             shadow-md
             sticky top-0
             z-10
-        '>
-            <div className='
+        '
+        >
+            <div
+                className='
                 relative
                 h-10
                 w-20
@@ -61,40 +62,48 @@ export default function Navbar() {
                 cursor-pointer
                 flex
                 items-center
-            '>
+            '
+            >
                 <Link href='/'>
-                    <h1 className={`
+                    <h1
+                        className={`
                         text-3xl
                         font-bold
                         text-red-500
                         cursor-pointer
                         ${InterFont.className}  
-                    `}>
-                    Guild    
+                    `}
+                    >
+                        Guild
                     </h1>
-
                 </Link>
             </div>
 
-            <div className='
+            <div
+                className='
                 flex
                 flex-1
                 items-center
                 flex-row
                 mx-7
                 relative
-            '>
+            '
+            >
                 <HomeIcon
                     className='
                         h-6 w-6
                         cursor-pointer
                     '
                 />
-                <p className='
+                <p
+                    className='
                     hidden md:inline-flex
                     ml-2
                     flex-1
-                '>Home</p>
+                '
+                >
+                    Home
+                </p>
                 <ChevronDownIcon
                     className='
                         h-6 w-6
@@ -102,19 +111,15 @@ export default function Navbar() {
                     '
                     onClick={() => setIsOpen(!isOpen)}
                 />
-                {
-                    isOpen && (
-                        <div ref={dropdownRef}>
-
-                            <Dropdown
-
-                            />
-                        </div>
-                    )
-                }
+                {isOpen && (
+                    <div ref={dropdownRef}>
+                        <Dropdown />
+                    </div>
+                )}
             </div>
 
-            <form className='
+            <form
+                className='
             flex 
             flex-1
             items-center
@@ -123,7 +128,8 @@ export default function Navbar() {
             px-3 py-1
             lg:border lg:border-gray-200
             lg:bg-gray-100
-            '>
+            '
+            >
                 <SearchIcon
                     className='
                         h-6 w-6
@@ -142,35 +148,39 @@ export default function Navbar() {
                         hidden md:inline-flex
                     '
                 />
-
             </form>
 
-            <div className='
+            <div
+                className='
                 mx-5
                 items-center
                 hidden lg:inline-flex
                 space-x-2
-            '>
+            '
+            >
                 <SparklesIcon className='icon' />
                 <GlobeIcon className='icon' />
                 <PlusIcon className='icon' />
-                <div className='
+                <div
+                    className='
                     flex
                     items-center
                     space-x-1
                     bg-gray-100
                     rounded-lg
                     px-2 py-1
-                '>
-
-                    <SpeakerphoneIcon className='icon' />Promote
+                '
+                >
+                    <SpeakerphoneIcon className='icon' />
+                    Promote
                 </div>
                 <VideoCameraIcon className='icon' />
                 <ChatIcon className='icon' />
                 <BellIcon className='icon' />
             </div>
 
-            <div className='
+            <div
+                className='
                 flex lg:hidden
                 items-center
                 '
@@ -178,14 +188,16 @@ export default function Navbar() {
                 <MenuIcon className='icon' />
             </div>
 
-            <div className='
+            <div
+                className='
                 hidden lg:flex
                 items-center
                 space-x-2
                 justify-end
                 border border-gray-200
                 p-2
-            '>
+            '
+            >
                 <ArrowCircleDownIcon
                     className='
                         rounded-full
@@ -197,11 +209,15 @@ export default function Navbar() {
                         h-6 w-6
                     '
                 />
-                <p className='
+                <p
+                    className='
                     text-gray-500
                     font-semibold
-                '>Sign in</p>
+                '
+                >
+                    Sign in
+                </p>
             </div>
         </div>
-    )
+    );
 }

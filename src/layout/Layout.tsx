@@ -1,7 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export default function Layout() {
-  return (
-    <div>Layout</div>
-  )
+    return <div>Layout</div>;
 }

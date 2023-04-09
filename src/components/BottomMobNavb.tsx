@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
     BeakerIcon,
     HomeIcon,
@@ -7,19 +7,19 @@ import {
     ChatIcon,
     PlusIcon,
     UserIcon,
-} from '@heroicons/react/outline'
-import {
-    ChevronDownIcon,
-    MenuIcon,
-} from '@heroicons/react/solid'
+} from '@heroicons/react/outline';
+import { ChevronDownIcon, MenuIcon } from '@heroicons/react/solid';
 export default function BottomMobNavb() {
     return (
-        <div className='
+        <div
+            className='
             fixed
             bottom-0
             left-0
-        '>
-            <div className='
+        '
+        >
+            <div
+                className='
                 bottom-mob-bar-small
                 flex
                 justify-around
@@ -31,7 +31,8 @@ export default function BottomMobNavb() {
                 w-screen
                 border border-gray-200
                 gap-5
-            '>
+            '
+            >
                 <HomeIcon className='icon' />
                 <SearchIcon className='icon' />
                 <PlusIcon className='icon' />
@@ -39,5 +40,5 @@ export default function BottomMobNavb() {
                 <UserIcon className='icon' />
             </div>
         </div>
-    )
+    );
 }

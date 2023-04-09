@@ -5,3 +5,14 @@ package-lock.json
 README.md
 prisma
 dist
+.eslintrc.json
+.gitignore
+.prettierrc
+tsconfig.json
+.env
+.next.config.js
+next-env.d.ts
+postcss.config.js
+tailwind.config.js
+```
+

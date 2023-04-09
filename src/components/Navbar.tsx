@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useRef} from 'react'
 import Image from 'next/image'
 import {
     BeakerIcon,
@@ -17,7 +17,24 @@ import {
     ChevronDownIcon,
     MenuIcon,
 } from '@heroicons/react/solid'
+import { Inter } from 'next/font/google'
+import Dropdown from './Dropdown'
+import Link from 'next/link'
+
 export default function Navbar() {
+    const [isOpen, setIsOpen] = useState(false)
+    const dropdownRef = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        const handleOutsideClick = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+        };
+    }, [dropdownRef]);
     return (
         <div className='
             flex
@@ -37,7 +54,16 @@ export default function Navbar() {
                 flex
                 items-center
             '>
-                Guild
+                <Link href='/'>
+                    <h1 className='
+                        text-3xl
+                        font-bold
+                        text-red-500
+                        cursor-pointer
+                        
+                    '>Guild</h1>
+
+                </Link>
             </div>
 
             <div className='
@@ -46,6 +72,7 @@ export default function Navbar() {
                 items-center
                 flex-row
                 mx-7
+                relative
             '>
                 <HomeIcon
                     className='
@@ -63,7 +90,18 @@ export default function Navbar() {
                         h-6 w-6
                         cursor-pointer
                     '
+                    onClick={() => setIsOpen(!isOpen)}
                 />
+                {
+                    isOpen && (
+                        <div ref={dropdownRef}>
+
+                            <Dropdown
+
+                            />
+                        </div>
+                    )
+                }
             </div>
 
             <form className='
@@ -92,7 +130,7 @@ export default function Navbar() {
                         bg-transparent
                     '
                 />
-                
+
             </form>
 
             <div className='
@@ -101,13 +139,23 @@ export default function Navbar() {
                 hidden lg:inline-flex
                 space-x-2
             '>
-                <SparklesIcon className='icon'/>
-                <GlobeIcon className='icon'/>
-                <PlusIcon className='icon'/>
-                <SpeakerphoneIcon className='icon'/>
-                <VideoCameraIcon className='icon'/>
-                <ChatIcon className='icon'/>
-                <BellIcon className='icon'/>  
+                <SparklesIcon className='icon' />
+                <GlobeIcon className='icon' />
+                <PlusIcon className='icon' />
+                <div className='
+                    flex
+                    items-center
+                    space-x-1
+                    bg-gray-100
+                    rounded-lg
+                    px-2 py-1
+                '>
+
+                    <SpeakerphoneIcon className='icon' />Promote
+                </div>
+                <VideoCameraIcon className='icon' />
+                <ChatIcon className='icon' />
+                <BellIcon className='icon' />
             </div>
 
             <div className='
@@ -117,7 +165,7 @@ export default function Navbar() {
             >
                 <MenuIcon className='icon' />
             </div>
-            
+
             <div className='
                 hidden lg:flex
                 items-center
@@ -127,11 +175,6 @@ export default function Navbar() {
                 p-2
             '>
                 <ArrowCircleDownIcon
-                    // src='https://links.papareact.com/231'
-                    // width={40}
-                    // height={40}
-                    // layout='fixed'
-                    // alt='Profile Picture'
                     className='
                         rounded-full
                         cursor-pointer

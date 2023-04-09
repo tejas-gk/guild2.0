@@ -51,7 +51,7 @@ export default function Navbar() {
             px-4 py-2
             shadow-md
             sticky top-0
-            z-50
+            z-10
         '>
             <div className='
                 relative

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import Input from './Input';
 // import {
 //     XMarkIcon
 // } from '@heroicons/react/outline'
@@ -120,6 +121,11 @@ export default function Modal({
                         '
                         >
                             {body}
+                            <Input
+                                placeholder='Enter your email'
+                                label='Email'
+                                onChange={() => { }}
+                            />
                         </p>
                     </div>
                     {/* 

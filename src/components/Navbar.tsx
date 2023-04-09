@@ -17,11 +17,19 @@ import {
     ChevronDownIcon,
     MenuIcon,
 } from '@heroicons/react/solid'
-import { Inter } from 'next/font/google'
+import { Inter,Roboto } from 'next/font/google'
 import Dropdown from './Dropdown'
 import Link from 'next/link'
 
+const InterFont = Inter({
+    subsets: ['latin'],
+    variable: '--font-inter',
+})
+
+
+
 export default function Navbar() {
+    // TODO this needs to be separate
     const [isOpen, setIsOpen] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
     useEffect(() => {
@@ -55,13 +63,15 @@ export default function Navbar() {
                 items-center
             '>
                 <Link href='/'>
-                    <h1 className='
+                    <h1 className={`
                         text-3xl
                         font-bold
                         text-red-500
                         cursor-pointer
-                        
-                    '>Guild</h1>
+                        ${InterFont.className}  
+                    `}>
+                    Guild    
+                    </h1>
 
                 </Link>
             </div>
@@ -111,14 +121,15 @@ export default function Navbar() {
             space-x-2
             rounded-sm
             px-3 py-1
-            border border-gray-200
-            bg-gray-100
+            lg:border lg:border-gray-200
+            lg:bg-gray-100
             '>
                 <SearchIcon
                     className='
                         h-6 w-6
                         cursor-pointer
                         text-gray-500
+                        hidden lg:inline-flex
                     '
                 />
                 <input
@@ -128,6 +139,7 @@ export default function Navbar() {
                         outline-none
                         flex-1
                         bg-transparent
+                        hidden md:inline-flex
                     '
                 />
 

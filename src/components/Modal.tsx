@@ -112,7 +112,7 @@ export default function Modal({
 
                     '
                     >
-                        <p
+                        <div
                             className='
                         my-4
                         text-neutral-900
@@ -126,7 +126,7 @@ export default function Modal({
                                 label='Email'
                                 onChange={() => { }}
                             />
-                        </p>
+                        </div>
                     </div>
                     {/* 
                     TODO: create a separate component for the button

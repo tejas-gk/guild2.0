@@ -124,7 +124,7 @@ export default function Modal({
                             <Input
                                 placeholder='Enter your email'
                                 label='Email'
-                                onChange={() => { }}
+                                onChange={() => {}}
                             />
                         </div>
                     </div>

@@ -18,11 +18,15 @@ const Input: React.FC<InputProps> = ({
     return (
         <div className='w-full'>
             {label && (
-                <p className='text-xl
+                <p
+                    className='text-xl
                  text-white
                  font-semibold
                  mb-2
-                 '>{label}</p>
+                 '
+                >
+                    {label}
+                </p>
             )}
             <input
                 disabled={disabled}

@@ -8,5 +8,12 @@
     "quoteProps": "consistent",
     "jsxSingleQuote": true,
     "arrowParens": "always",
-    "overrides": [{ "files": "*.md", "options": { "proseWrap": "always" } }]
+    "overrides": [{ "files": "*.md", "options": { "proseWrap": "always" } }],
+    "endOfLine": "lf",
+    "importOrder": [
+        "^react",
+        "^@?\\w",
+        "^[./]",
+        "^\\u0000"
+    ]
 }

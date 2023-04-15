@@ -17,6 +17,7 @@ import { ChevronDownIcon, MenuIcon } from '@heroicons/react/solid';
 import { Inter, Roboto } from 'next/font/google';
 import Dropdown from './Dropdown';
 import Link from 'next/link';
+import { useLoginModal } from '@/hooks/useLoginModal';
 
 const InterFont = Inter({
     subsets: ['latin'],
@@ -27,6 +28,7 @@ export default function Navbar() {
     // TODO this needs to be separate
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const loginModal = useLoginModal();
     useEffect(() => {
         const handleOutsideClick = (event: MouseEvent) => {
             if (
@@ -196,7 +198,9 @@ export default function Navbar() {
                 justify-end
                 border border-gray-200
                 p-2
+                cursor-pointer
             '
+                onClick={() => loginModal.onOpen()}
             >
                 <ArrowCircleDownIcon
                     className='

@@ -20,7 +20,7 @@ const Input: React.FC<InputProps> = ({
             {label && (
                 <p
                     className='text-xl
-                 text-white
+                 text-black
                  font-semibold
                  mb-2
                  '
@@ -42,7 +42,7 @@ const Input: React.FC<InputProps> = ({
           border-2 border-neutral-800 
           rounded-md
           outline-none
-          text-white
+          text-black
           focus:border-sky-500
           focus:border-2
           transition

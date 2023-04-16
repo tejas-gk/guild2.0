@@ -3,9 +3,9 @@ import { useLoginModal } from '@/hooks/useLoginModal';
 import { useRegisterModal } from '@/hooks/useRegisterModal';
 import Modal from '../Modal';
 import Input from '../Input';
-import { Toaster,toast } from 'react-hot-toast';
+import { Toaster, toast } from 'react-hot-toast';
 import axios from 'axios';
-import {signIn} from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 export default function LoginModal() {
     const loginModal = useLoginModal();
     const registerModal = useRegisterModal();
@@ -30,11 +30,10 @@ export default function LoginModal() {
             signIn('credentials', {
                 email,
                 password,
-            }
-            );
+            });
             registerModal.onClose();
         } catch (error) {
-            toast.error('Something went wrong' );
+            toast.error('Something went wrong');
             console.log(error);
         }
         setIsLoading(false);

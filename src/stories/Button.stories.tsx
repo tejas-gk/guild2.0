@@ -10,7 +10,7 @@ export const Button = () => {
     const [isOpen, setIsOpen] = useState(false);
     return (
         <div>
-            <Button/>
+            <Button />
         </div>
     );
 };

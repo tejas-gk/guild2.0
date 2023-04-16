@@ -1,5 +1,8 @@
-import { NextApiResponse,NextApiRequest } from "next";
+import { NextApiResponse, NextApiRequest } from 'next';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    return res.status(200).json({ name: 'John Doe' })
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse
+) {
+    return res.status(200).json({ name: 'John Doe' });
 }

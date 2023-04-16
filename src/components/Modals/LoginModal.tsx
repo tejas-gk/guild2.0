@@ -5,7 +5,7 @@ import Modal from '../Modal';
 import axios from 'axios';
 import Input from '../Input';
 import { toast } from 'react-hot-toast';
-import { signIn } from 'next-auth/react'
+import { signIn } from 'next-auth/react';
 export default function LoginModal() {
     const loginModal = useLoginModal();
     const registerModal = useRegisterModal();
@@ -21,7 +21,7 @@ export default function LoginModal() {
                 password,
             });
             toast.success('Successfully logged in');
-            signIn('credentials', { email, password, callbackUrl: '/' })
+            signIn('credentials', { email, password, callbackUrl: '/' });
             loginModal.onClose();
         } catch (error) {
             toast.error('Something went wrong');

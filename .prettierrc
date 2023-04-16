@@ -1,5 +1,5 @@
 {
-    "singleQuote": true, 
+    "singleQuote": true,
     "trailingComma": "es5",
     "tabWidth": 4,
     "printWidth": 80,
@@ -8,12 +8,22 @@
     "quoteProps": "consistent",
     "jsxSingleQuote": true,
     "arrowParens": "always",
-    "overrides": [{ "files": "*.md", "options": { "proseWrap": "always" } }],
+    "overrides": [
+        {
+            "files": "*.md",
+            "options": {
+                "proseWrap": "always"
+            }
+        }
+    ],
     "endOfLine": "lf",
     "importOrder": [
-        "^react",
-        "^@?\\w",
-        "^[./]",
-        "^\\u0000"
-    ]
+        "^next",
+        "^[a-z]",
+        "^@",
+        "^\\./",
+        "^../",
+        "^/"
+    ],
+    "importSortBy": "none"
 }

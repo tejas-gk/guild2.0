@@ -24,7 +24,7 @@ export default function Home() {
                 <link rel='icon' href='/favicon.ico' />
             </Head>
             <h1 className='text-3xl font-bold underline text-center'>
-                Hello {user?.email}
+                Hello {user?.email} <br />
                 <button
                     title='sign out'
                     className='text-red-500'

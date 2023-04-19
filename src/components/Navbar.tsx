@@ -18,6 +18,7 @@ import { Inter, Roboto } from 'next/font/google';
 import Dropdown from './Dropdown';
 import Link from 'next/link';
 import { useLoginModal } from '@/hooks/useLoginModal';
+import useCurrentUser from '@/hooks/useCurrentUser';
 
 const InterFont = Inter({
     subsets: ['latin'],
@@ -25,6 +26,7 @@ const InterFont = Inter({
 });
 
 export default function Navbar() {
+    const { data: currentUser } = useCurrentUser();
     // TODO this needs to be separate
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -190,8 +192,20 @@ export default function Navbar() {
                 <MenuIcon className='icon' />
             </div>
 
-            <div
-                className='
+            {currentUser ? (
+                <p
+                    className='
+                            text-gray-500
+                            font-semibold
+                            truncate 
+                            max-w-5 w-28
+                        '
+                >
+                    {currentUser.username}
+                </p>
+            ) : (
+                <div
+                    className='
                 hidden lg:flex
                 items-center
                 space-x-2
@@ -200,10 +214,10 @@ export default function Navbar() {
                 p-2
                 cursor-pointer
             '
-                onClick={() => loginModal.onOpen()}
-            >
-                <ArrowCircleDownIcon
-                    className='
+                    onClick={() => loginModal.onOpen()}
+                >
+                    <ArrowCircleDownIcon
+                        className='
                         rounded-full
                         cursor-pointer
                         transition
@@ -212,16 +226,17 @@ export default function Navbar() {
                         hover:scale-110
                         h-6 w-6
                     '
-                />
-                <p
-                    className='
+                    />
+                    <p
+                        className='
                     text-gray-500
                     font-semibold
                 '
-                >
-                    Sign in
-                </p>
-            </div>
+                    >
+                        Sign in
+                    </p>
+                </div>
+            )}
         </div>
     );
 }

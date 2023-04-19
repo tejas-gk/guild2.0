@@ -25,12 +25,13 @@ export default function LoginModal() {
                 username,
                 password,
             });
-            console.log(response);
+
             toast.success('Successfully registered');
             signIn('credentials', {
                 email,
                 password,
             });
+            console.log('Successfully registered');
             registerModal.onClose();
         } catch (error) {
             toast.error('Something went wrong');

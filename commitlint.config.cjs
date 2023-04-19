@@ -14,7 +14,8 @@ module.exports = {
                 'refactor', // A code change that neither fixes a bug nor adds a feature
                 'revert', // A commit used to revert a previous commit
                 'style', // Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
-                'test', // Adding missing tests or correcting existing tests
+                'test', // Adding missing tests or correcting existing tests,
+                'add', // Add a new feature
             ],
         ],
         'type-case': [2, 'always', 'lower-case'],

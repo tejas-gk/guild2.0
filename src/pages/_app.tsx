@@ -8,6 +8,7 @@ import type { AppProps } from 'next/app';
 import { Toaster } from 'react-hot-toast';
 import { SessionProvider } from 'next-auth/react';
 import useCurrentUser from '@/hooks/useCurrentUser';
+import Layout from '@/layout/Layout';
 
 export default function App({ Component, pageProps }: AppProps) {
     const { data: currentUser } = useCurrentUser();
@@ -21,7 +22,9 @@ export default function App({ Component, pageProps }: AppProps) {
                     </>
                 )}
                 <Navbar />
-                <Component {...pageProps} />
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
                 <div
                     className='
                     sm:hidden

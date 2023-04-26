@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+
 import serverAuth from '@/lib/serverAuth';
 import prisma from '@/lib/prismadb';
 
@@ -6,35 +7,61 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    if (req.method != 'GET' && req.method != 'POST')
-        return res.status(405).end();
+    if (req.method !== 'POST' && req.method !== 'GET') {
+        return res.status(405).send('Method not allowed');
+    }
+
     try {
-        if (req.method == 'POST') {
-            const { currentUser } = await serverAuth(req);
-            if (!currentUser) return res.status(401).end();
-            const { post } = req.body;
-            if (!post) return res.status(400).end();
-            const newPost = await prisma.post.create({
+        if (req.method === 'POST') {
+            const { currentUser } = await serverAuth(req, res);
+            const { body } = req.body;
+
+            const post = await prisma.post.create({
                 data: {
-                    post,
+                    body,
                     userId: currentUser.id,
                 },
             });
-            return res.status(200).json(newPost);
-        } else {
-            const { currentUser } = await serverAuth(req);
-            if (!currentUser) return res.status(401).end();
-            const posts = await prisma.post.findMany({
-                where: {
-                    userId: currentUser.id,
-                },
-                orderBy: {
-                    createdAt: 'desc',
-                },
-            });
+
+            return res.status(200).json(post);
+        }
+
+        if (req.method === 'GET') {
+            const { userId } = req.query;
+
+            console.log({ userId });
+
+            let posts;
+
+            if (userId && typeof userId === 'string') {
+                posts = await prisma.post.findMany({
+                    where: {
+                        userId,
+                    },
+                    include: {
+                        user: true,
+                        comments: true,
+                    },
+                    orderBy: {
+                        createdAt: 'desc',
+                    },
+                });
+            } else {
+                posts = await prisma.post.findMany({
+                    include: {
+                        user: true,
+                        comments: true,
+                    },
+                    orderBy: {
+                        createdAt: 'desc',
+                    },
+                });
+            }
+
             return res.status(200).json(posts);
         }
-    } catch (e: any) {
-        res.status(500).json({ message: e.message });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).send('Something went wrong');
     }
 }

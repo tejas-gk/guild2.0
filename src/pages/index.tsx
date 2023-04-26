@@ -5,6 +5,8 @@ import styles from '@/styles/Home.module.css';
 import { signOut } from 'next-auth/react';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import Post from '@/components/Post';
+import PostFeed from '@/components/Post/PostFeed';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
@@ -35,6 +37,7 @@ export default function Home() {
                 </button>
             </h1>
             <Post />
+            <PostFeed />
         </>
     );
 }

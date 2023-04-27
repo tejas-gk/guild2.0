@@ -6,6 +6,7 @@ import { signOut } from 'next-auth/react';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import Post from '@/components/Post';
 import PostFeed from '@/components/Post/PostFeed';
+import Button from '@/components/Button';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,13 +29,12 @@ export default function Home() {
             </Head>
             <h1 className='text-3xl font-bold underline text-center'>
                 Hello {user?.email} <br />
-                <button
-                    title='sign out'
-                    className='text-red-500'
+                <Button
+                    title='Sign Out'
                     onClick={() => signOut()}
-                >
-                    Sign Out
-                </button>
+                    sizing='sm'
+                    colors='danger'
+                />
             </h1>
             <Post />
             <PostFeed />

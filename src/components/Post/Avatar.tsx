@@ -21,7 +21,10 @@ export default function Avatar({ seed, large = false }: AvatarProps) {
         `}
         >
             <Image
-                src={`https://ui-avatars.com/api/?name=${currentUser?.name}&&background=random`}
+                src={
+                    currentUser?.profileImage ||
+                    `https://ui-avatars.com/api/?name=${currentUser?.name}&&background=random`
+                }
                 width={60}
                 height={60}
                 alt='avatar'

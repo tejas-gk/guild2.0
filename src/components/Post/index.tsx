@@ -8,6 +8,7 @@ import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { useLoginModal } from '@/hooks/useLoginModal';
 import usePost from '@/hooks/usePost';
+import Button from '@/components/Button';
 
 interface PostProps {
     postId?: string;
@@ -28,7 +29,6 @@ export default function Index({ postId, isComment = false }: PostProps): any {
     const { mutate: mutatePosts } = usePosts();
     const { mutate: mutatePost } = usePost(postId as string);
 
-    const [post, setPost] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [body, setBody] = useState('');
 
@@ -41,9 +41,10 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                     body,
                 });
                 toast.success('Post created');
-                setPost('');
+                setBody('');
                 mutatePost();
                 mutatePosts();
+                console.log('post created');
             } catch (error) {
                 console.log(error);
                 toast.error('Something went wrong');
@@ -191,21 +192,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                             items-center
                             '
                             >
-                                <button
-                                    className='
-                                    bg-blue-500
-                                    text-white  
-                                    rounded-md
-                                    px-4
-                                    py-2
-                                    font-semibold
-                                    text-sm
-                                    flex-1
-                                    '
-                                    onClick={onSubmit}
-                                >
-                                    Post
-                                </button>
+                                <Button title='Post' onClick={onSubmit} />
                             </div>
                         </div>
                     )}

@@ -1,17 +1,36 @@
+import React from 'react';
+
 interface PostItemProps {
-    userId?: string;
     postId?: string;
-    body?: string;
-    header?: string;
-    footer?: string;
+    body?: React.ReactNode;
+    header?: React.ReactNode;
+    footer?: React.ReactNode;
 }
 
 export default function PostItem({
-    userId,
     postId,
     body,
     header,
     footer,
 }: PostItemProps): any {
-    return <div>PostItem</div>;
+    return (
+        <div
+            className='
+            flex
+            flex-col
+            bg-white
+            text-black
+            rounded-lg
+            shadow-lg
+            overflow-hidden
+            px-4 py-4
+            w-full
+            
+        '
+        >
+            <div className='flex'>{header}</div>
+            <div className='flex flex-col'>{body}</div>
+            <div className='flex'>{footer}</div>
+        </div>
+    );
 }

@@ -1,13 +1,24 @@
 import usePosts from '@/hooks/usePosts';
-import React from 'react';
+import PostItem from './PostItem';
 
-export default function PostFeed() {
+interface PostFeedProps {
+    postId: string;
+}
+
+export default function PostFeed({
+    postId,
+}: PostFeedProps): React.ReactElement<React.ReactNode> {
     const { data: posts = [] } = usePosts();
     return (
         <div>
             {posts?.map((post: Record<string, any>) => (
-                <div key={post._id}>
-                    <h1>{post.body}</h1>
+                <div key={post.id} className='flex gap-4'>
+                    <PostItem
+                        postId={post.id}
+                        body={post.body}
+                        header={post.createdAt}
+                        footer={post.likedIds.length}
+                    />
                 </div>
             ))}
         </div>

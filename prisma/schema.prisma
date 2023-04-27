@@ -41,7 +41,6 @@ model Post {
   image              String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
   comments          Comment[]
 }
 

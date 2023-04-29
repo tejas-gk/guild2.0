@@ -5,12 +5,21 @@ import Head from 'next/head';
 import UserBio from '@/components/User/UserBio';
 import Avatar from '@/components/Post/Avatar';
 import Image from 'next/image';
+import PostFeed from '@/components/Post/PostFeed';
+import usePosts from '@/hooks/usePosts';
 export default function UserId() {
     const router = useRouter();
     const { userId } = router.query;
 
     const { data: user } = useUsers(userId as string);
-    console.log(user);
+    const { data: posts = [] } = usePosts();
+
+    const post = posts.filter(
+        (post: Record<string, any>) => post.userId === userId
+    );
+
+    console.log('from [userId]', post, posts, userId);
+
     return (
         <>
             <Head>
@@ -18,7 +27,7 @@ export default function UserId() {
             </Head>
             <div className='relative'>
                 <div className='bg-red-600'>
-                    <Image
+                    {/* <Image
                         alt='Banner'
                         src={user?.coverImage}
                         onClick={() => {}}
@@ -29,7 +38,7 @@ export default function UserId() {
           w-full
           h-48
           '
-                    />
+                    /> */}
                 </div>
                 <div
                     className='
@@ -42,6 +51,8 @@ export default function UserId() {
                 </div>
                 <UserBio />
             </div>
+
+            <PostFeed data={post} />
         </>
     );
 }

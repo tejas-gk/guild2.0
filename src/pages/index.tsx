@@ -7,12 +7,14 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import Post from '@/components/Post';
 import PostFeed from '@/components/Post/PostFeed';
 import Button from '@/components/Button';
+import usePosts from '@/hooks/usePosts';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
     const { data: user } = useCurrentUser();
     console.log(user);
+    const { data: posts } = usePosts();
     return (
         <>
             <Head>
@@ -37,7 +39,7 @@ export default function Home() {
                 />
             </h1>
             <Post />
-            <PostFeed />
+            <PostFeed data={posts} />
         </>
     );
 }

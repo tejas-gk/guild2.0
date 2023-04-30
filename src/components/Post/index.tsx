@@ -37,14 +37,18 @@ export default function Index({ postId, isComment = false }: PostProps): any {
             e.preventDefault();
             try {
                 setIsLoading(true);
-                await axios.post('/api/posts', {
+                const url = isComment
+                    ? `/api/posts/comments?postId=${postId}`
+                    : '/api/posts';
+                await axios.post(url, {
                     body,
                 });
-                toast.success('Post created');
+                toast.success(
+                    `${isComment ? 'Comment' : 'Post'} created successfully`
+                );
                 setBody('');
                 mutatePost();
                 mutatePosts();
-                console.log('post created');
             } catch (error) {
                 console.log(error);
                 toast.error('Something went wrong');
@@ -52,7 +56,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                 setIsLoading(false);
             }
         },
-        [body, mutatePost, mutatePosts]
+        [body, mutatePost, mutatePosts, postId, isComment]
     );
 
     return (

@@ -7,6 +7,7 @@ import Avatar from '@/components/Post/Avatar';
 import Image from 'next/image';
 import PostFeed from '@/components/Post/PostFeed';
 import usePosts from '@/hooks/usePosts';
+
 export default function UserId() {
     const router = useRouter();
     const { userId } = router.query;
@@ -27,7 +28,7 @@ export default function UserId() {
             </Head>
             <div className='relative'>
                 <div className='bg-red-600'>
-                    {/* <Image
+                    <Image
                         alt='Banner'
                         src={user?.coverImage}
                         onClick={() => {}}
@@ -38,7 +39,7 @@ export default function UserId() {
           w-full
           h-48
           '
-                    /> */}
+                    />
                 </div>
                 <div
                     className='

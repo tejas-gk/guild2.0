@@ -10,6 +10,12 @@ export default function PostView() {
         <div>
             <h1>{fetchedPost?.body}</h1>
             <Post isComment={true} postId={postId as string} />
+            {fetchedPost?.comments?.map((comment: any) => (
+                <div key={comment.id}>
+                    user: {comment.user.name}
+                    <h1>{comment.body}</h1>
+                </div>
+            ))}
         </div>
     );
 }

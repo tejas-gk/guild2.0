@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React, { useCallback } from 'react';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import { useRouter } from 'next/router';
+import useUsers from '@/hooks/useUsers';
 
 interface AvatarProps {
     seed?: string;
@@ -11,6 +12,7 @@ interface AvatarProps {
 export default function Avatar({ seed, large = false }: AvatarProps) {
     const { data: currentUser } = useCurrentUser();
     const router = useRouter();
+    const { data: user } = useUsers(seed);
 
     const onClick = useCallback(
         (event: any) => {
@@ -36,8 +38,8 @@ export default function Avatar({ seed, large = false }: AvatarProps) {
         >
             <Image
                 src={
-                    currentUser?.profileImage ||
-                    `https://ui-avatars.com/api/?name=${currentUser?.name}&&background=random`
+                    user?.profileImage ||
+                    `https://ui-avatars.com/api/?name=${user?.name}&&background=random`
                 }
                 width={60}
                 height={60}

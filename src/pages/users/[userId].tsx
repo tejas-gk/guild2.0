@@ -7,6 +7,7 @@ import Avatar from '@/components/Post/Avatar';
 import Image from 'next/image';
 import PostFeed from '@/components/Post/PostFeed';
 import usePosts from '@/hooks/usePosts';
+
 export default function UserId() {
     const router = useRouter();
     const { userId } = router.query;
@@ -18,15 +19,13 @@ export default function UserId() {
         (post: Record<string, any>) => post.userId === userId
     );
 
-    console.log('from [userId]', post, posts, userId);
-
     return (
         <>
             <Head>
                 <title>{user?.username}</title>
             </Head>
             <div className='relative'>
-                <div className='bg-red-600'>
+                <div className='bg-blue-600 w-120 h-40'>
                     {/* <Image
                         alt='Banner'
                         src={user?.coverImage}
@@ -43,8 +42,9 @@ export default function UserId() {
                 <div
                     className='
           absolute
-          top-40
-          left-5
+          top-28 left-5
+          z-10
+          -mt-0
         '
                 >
                     <Avatar seed={user?.id} />

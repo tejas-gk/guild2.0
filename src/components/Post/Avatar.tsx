@@ -26,21 +26,21 @@ export default function Avatar({ seed, large = false }: AvatarProps) {
     return (
         <div
             className={`
-            relative
-            h-12 w-12
-            rounded-full
-            border-gray-300
-            bg-white
-            ${large && 'h-12 w-12'}
-        `}
+                relative
+                h-20 w-20
+                rounded-full
+                border-4 border-white
+                shadow-md
+                ${large && 'h-16 w-16'}
+            `}
         >
             <Image
                 src={
                     currentUser?.profileImage ||
                     `https://ui-avatars.com/api/?name=${currentUser?.name}&&background=random`
                 }
-                width={60}
-                height={60}
+                width={120}
+                height={120}
                 alt='avatar'
                 className='
                     absolute

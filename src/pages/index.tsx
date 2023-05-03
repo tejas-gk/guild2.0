@@ -29,7 +29,7 @@ export default function Home() {
                 />
                 <link rel='icon' href='/favicon.ico' />
             </Head>
-            <h1 className='text-3xl font-bold underline text-center'>
+            <h1 className='text-3xl font-bold underline text-center p-3'>
                 Hello {user?.email} <br />
                 <Button
                     title='Sign Out'

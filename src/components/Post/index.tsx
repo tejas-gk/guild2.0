@@ -128,7 +128,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                         
                     '
                         >
-                            <Avatar />
+                            <Avatar seed={currentUser?.id} />
                         </div>
                         <input
                             type='text'

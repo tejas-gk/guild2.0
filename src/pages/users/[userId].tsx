@@ -28,7 +28,7 @@ export default function UserId() {
             </Head>
             <div className='relative'>
                 <div className='bg-red-600'>
-                    <Image
+                    {/* <Image
                         alt='Banner'
                         src={user?.coverImage}
                         onClick={() => {}}
@@ -39,7 +39,7 @@ export default function UserId() {
           w-full
           h-48
           '
-                    />
+                    /> */}
                 </div>
                 <div
                     className='

@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import { useRouter } from 'next/router';
 import useUsers from '@/hooks/useUsers';
+import Link from 'next/link';
 
 interface AvatarProps {
     seed?: string;
@@ -36,22 +37,24 @@ export default function Avatar({ seed, large = false }: AvatarProps) {
             ${large && 'h-12 w-12'}
         `}
         >
-            <Image
-                src={
-                    user?.profileImage ||
-                    `https://ui-avatars.com/api/?name=${user?.name}&&background=random`
-                }
-                width={60}
-                height={60}
-                alt='avatar'
-                className='
+            <Link href={`/users/${seed}`}>
+                <Image
+                    src={
+                        user?.profileImage ||
+                        `https://ui-avatars.com/api/?name=${user?.name}&&background=random`
+                    }
+                    width={60}
+                    height={60}
+                    alt='avatar'
+                    className='
                     absolute
                     top-0 left-0
                     object-cover
                     rounded-full
                 '
-                onClick={onClick}
-            />
+                    onClick={onClick}
+                />
+            </Link>
         </div>
     );
 }

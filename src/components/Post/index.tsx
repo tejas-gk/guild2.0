@@ -111,7 +111,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                     shadow-md
                     border-gray-300
                     p-2
-                    mx-2
+                    mx-7
                     '
                     onSubmit={onSubmit}
                 >

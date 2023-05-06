@@ -19,6 +19,9 @@ import Dropdown from './Dropdown';
 import Link from 'next/link';
 import { useLoginModal } from '@/hooks/useLoginModal';
 import useCurrentUser from '@/hooks/useCurrentUser';
+import Avatar from './Post/Avatar';
+import Button from '@/components/Button';
+import { signOut } from 'next-auth/react';
 
 const InterFont = Inter({
     subsets: ['latin'],
@@ -29,22 +32,9 @@ export default function Navbar() {
     const { data: currentUser } = useCurrentUser();
     // TODO this needs to be separate
     const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const loginModal = useLoginModal();
-    useEffect(() => {
-        const handleOutsideClick = (event: MouseEvent) => {
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target as Node)
-            ) {
-                setIsOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleOutsideClick);
-        return () => {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        };
-    }, [dropdownRef]);
+
     return (
         <div
             className='
@@ -116,8 +106,12 @@ export default function Navbar() {
                     onClick={() => setIsOpen(!isOpen)}
                 />
                 {isOpen && (
-                    <div ref={dropdownRef}>
-                        <Dropdown />
+                    <div>
+                        <Dropdown setIsOpen={setIsOpen}>
+                            <ul>
+                                <li>Hello</li>
+                            </ul>
+                        </Dropdown>
                     </div>
                 )}
             </div>
@@ -199,9 +193,44 @@ export default function Navbar() {
                             font-semibold
                             truncate 
                             max-w-5 w-28
+                            flex
+                            items-center
+                            space-x-2
                         '
                 >
-                    {currentUser.username}
+                    <Avatar seed={currentUser?.id} />
+                    <ChevronDownIcon
+                        className='
+                        h-6 w-6
+                        cursor-pointer
+                    '
+                        onClick={() =>
+                            setIsProfileDropdownOpen(!isProfileDropdownOpen)
+                        }
+                    />
+                    {isProfileDropdownOpen && (
+                        <div>
+                            <Dropdown
+                                setIsOpen={setIsProfileDropdownOpen}
+                                className='
+                                w-44
+                                left-auto
+                                right-12
+                                top-12
+                                '
+                            >
+                                <Link href={`/users/${currentUser?.username}`}>
+                                    Profile
+                                </Link>
+                                <Button
+                                    title='Sign Out'
+                                    onClick={() => signOut()}
+                                    sizing='sm'
+                                    colors='none'
+                                />
+                            </Dropdown>
+                        </div>
+                    )}
                 </p>
             ) : (
                 <div

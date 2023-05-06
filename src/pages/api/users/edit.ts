@@ -13,7 +13,8 @@ export default async function handler(
         if (!currentUser)
             return res.status(401).json({ message: 'Not authenticated' });
 
-        const { name, username, bio, profileImage, coverImage } = req.body;
+        const { name, username, bio, profileImage, coverImage, location } =
+            req.body;
 
         if (!name || !username)
             throw new Error('Name and username are required');
@@ -28,6 +29,7 @@ export default async function handler(
                 bio,
                 profileImage,
                 coverImage,
+                location,
             },
         });
 

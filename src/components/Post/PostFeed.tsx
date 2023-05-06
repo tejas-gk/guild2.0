@@ -14,7 +14,7 @@ export default function PostFeed({
     const posts = data;
 
     return (
-        <div className='bg-blue-300'>
+        <div className=''>
             {posts?.map((post: Record<string, any>) => (
                 <div key={post.id} className='gap-4 mx-4 mt-4'>
                     <PostItem data={post} />

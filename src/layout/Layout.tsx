@@ -8,7 +8,7 @@ export default function Layout({ children }: LayoutProps) {
             <div
                 className='
                 h-screen 
-                bg-gray-100
+                
             '
             >
                 <div
@@ -24,12 +24,12 @@ export default function Layout({ children }: LayoutProps) {
                         className='
                         grid grid-cols-4
                         h-full
-                        bg-red-300
+                      
                         '
                     >
                         <div
                             className='
-                        bg-green-300
+                       
                         '
                         >
                             jello
@@ -42,7 +42,7 @@ export default function Layout({ children }: LayoutProps) {
                         >
                             {children}
                         </div>
-                        <div className='bg-yellow-300'>jello</div>
+                        <div className=''>jello</div>
                     </div>
                 </div>
             </div>

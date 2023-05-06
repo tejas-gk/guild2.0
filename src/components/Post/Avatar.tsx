@@ -11,7 +11,6 @@ interface AvatarProps {
 }
 
 export default function Avatar({ seed, large = false }: AvatarProps) {
-    const { data: currentUser } = useCurrentUser();
     const router = useRouter();
     const { data: user } = useUsers(seed);
 
@@ -34,7 +33,7 @@ export default function Avatar({ seed, large = false }: AvatarProps) {
             rounded-full
             border-gray-300
             bg-white
-            ${large && 'h-12 w-12'}
+            ${large && 'h-20 w-20'} 
         `}
         >
             <Link href={`/users/${seed}`}>
@@ -46,12 +45,14 @@ export default function Avatar({ seed, large = false }: AvatarProps) {
                     width={60}
                     height={60}
                     alt='avatar'
-                    className='
+                    className={`
                     absolute
                     top-0 left-0
                     object-cover
                     rounded-full
-                '
+                    h-12 w-12
+                    ${large && 'h-20 w-20'}
+                `}
                     onClick={onClick}
                 />
             </Link>

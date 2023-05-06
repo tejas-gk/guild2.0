@@ -27,10 +27,13 @@ export default function UserId() {
                 <title>{user?.username}</title>
             </Head>
             <div className='relative'>
-                <div className='bg-red-600'>
-                    {/* <Image
+                <div className=' w-full h-40'>
+                    <Image
                         alt='Banner'
-                        src={user?.coverImage}
+                        src={
+                            user?.coverImage ||
+                            'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1173&q=80'
+                        }
                         onClick={() => {}}
                         width={1000}
                         height={300}
@@ -39,16 +42,15 @@ export default function UserId() {
           w-full
           h-48
           '
-                    /> */}
+                    />
                 </div>
                 <div
                     className='
           absolute
-          top-40
-          left-5
+          top-40 left-5
         '
                 >
-                    <Avatar seed={user?.id} />
+                    <Avatar large seed={user?.id} />
                 </div>
                 <UserBio />
             </div>

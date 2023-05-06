@@ -13,7 +13,8 @@ interface ButtonProps {
         | 'warning'
         | 'success'
         | 'info'
-        | 'borderOnly';
+        | 'borderOnly'
+        | 'none';
 }
 interface SubClasses {
     [key: string]: string;
@@ -32,6 +33,7 @@ const colorsClasses: SubClasses = {
     warning: 'bg-yellow-500 text-white hover:bg-yellow-800',
     success: 'bg-green-500 text-white hover:bg-green-800',
     info: 'bg-blue-500 text-white hover:bg-blue-800',
+    none: 'bg-transparent text-black hover:bg-gray-200',
 };
 
 export default function Index({

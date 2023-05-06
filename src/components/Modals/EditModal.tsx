@@ -19,6 +19,7 @@ const EditModal = () => {
     const [bio, setBio] = useState<string>('');
     const [username, setUsername] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [location, setLocation] = useState<string>('');
 
     useEffect(() => {
         setName(currentUser.name);
@@ -26,6 +27,7 @@ const EditModal = () => {
         setCoverImage(currentUser?.coverImage);
         setProfileImage(currentUser?.profileImage);
         setUsername(currentUser?.username);
+        setLocation(currentUser?.location);
     }, [currentUser]);
 
     const editModal = useEditModal();
@@ -91,6 +93,14 @@ const EditModal = () => {
                 onChange={(e) => setBio(e.target.value)}
                 placeholder='Enter your bio'
             />
+            <Input
+                disabled={isLoading}
+                label='Location'
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder='Enter your location'
+            />
+
             <Input
                 disabled={isLoading}
                 label='Username'

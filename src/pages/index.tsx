@@ -31,12 +31,6 @@ export default function Home() {
             </Head>
             <h1 className='text-3xl font-bold underline text-center'>
                 Hello {user?.email} <br />
-                <Button
-                    title='Sign Out'
-                    onClick={() => signOut()}
-                    sizing='sm'
-                    colors='danger'
-                />
             </h1>
             <Post />
             <PostFeed data={posts} />

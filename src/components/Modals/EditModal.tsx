@@ -40,6 +40,7 @@ const EditModal = () => {
                 username,
                 profileImage,
                 coverImage,
+                location,
             });
             mutateFetchUser();
             editModal.onClose();
@@ -54,6 +55,7 @@ const EditModal = () => {
         bio,
         username,
         profileImage,
+        location,
         coverImage,
         mutateFetchUser,
         editModal,

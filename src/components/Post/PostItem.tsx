@@ -1,6 +1,6 @@
 import useCurrentUser from '@/hooks/useCurrentUser';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useCallback } from 'react';
 import Avatar from './Avatar';
 import DeletePost from '@/hooks/deletePost';
 import { HeartIcon, MailIcon } from '@heroicons/react/outline';
@@ -12,7 +12,10 @@ interface PostItemProps {
 }
 
 export default function PostItem({ userId, data = {} }: PostItemProps): any {
-    console.log(data);
+    const router = useRouter();
+    const { data: currentUser } = useCurrentUser();
+
+    const handleLike = useCallback((event: any) => {}, []);
 
     return (
         <div
@@ -112,9 +115,10 @@ export default function PostItem({ userId, data = {} }: PostItemProps): any {
                 transition 
                 hover:text-red-500
             '
+                            onClick={handleLike}
                         >
                             <HeartIcon className='icon' />
-                            <p>{data?.likes?.length}</p>
+                            <p>{data?.likes?.length || 0}</p>
                         </div>
                     </div>
                 </div>

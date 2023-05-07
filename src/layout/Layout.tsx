@@ -1,51 +1,17 @@
 import React from 'react';
+import MainLayout from './MainLayout';
+
 interface LayoutProps {
     children: React.ReactNode;
+    pathname: string;
 }
-export default function Layout({ children }: LayoutProps) {
-    return (
-        <>
-            <div
-                className='
-                h-screen 
-                
-            '
-            >
-                <div
-                    className='
-                    container
-                    h-full max-w-6xl
-                    mx-auto
-                    px-4
-                 
-                '
-                >
-                    <div
-                        className='
-                        grid grid-cols-4
-                        h-full
-                      
-                        '
-                    >
-                        <div
-                            className='
-                       
-                        '
-                        >
-                            jello
-                        </div>
-                        <div
-                            className='
-                            col-span-3 lg:col-span-2
-                            border-x-[1px] border-gray-800
-                            '
-                        >
-                            {children}
-                        </div>
-                        <div className=''>jello</div>
-                    </div>
-                </div>
-            </div>
-        </>
-    );
-}
+
+const Layout = ({ children, pathname }: LayoutProps) => {
+    if (pathname === '/404') {
+        return <div>{children}</div>;
+    }
+
+    return <MainLayout>{children}</MainLayout>;
+};
+
+export default Layout;

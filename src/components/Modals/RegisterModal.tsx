@@ -34,7 +34,7 @@ export default function LoginModal() {
             registerModal.onClose();
         } catch (error) {
             toast.error('Something went wrong');
-            console.log(error);
+            console.log('error', error);
         }
         setIsLoading(false);
     }, [registerModal, email, name, username, password]);

@@ -11,7 +11,7 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import Layout from '@/layout/Layout';
 import EditModal from '@/components/Modals/EditModal';
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps, router }: AppProps) {
     const { data: currentUser } = useCurrentUser();
     return (
         <>
@@ -28,7 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 )}
 
                 <Navbar />
-                <Layout>
+                <Layout pathname={router.pathname}>
                     <Component {...pageProps} />
                 </Layout>
                 <div

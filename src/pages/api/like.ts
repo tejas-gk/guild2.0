@@ -1,8 +1,9 @@
 import { Server } from 'socket.io';
 import prisma from '@/lib/prismadb';
 import serverAuth from '@/lib/serverAuth';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export default function handler(req, res) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'POST' && req.method !== 'DELETE') {
         return res.status(405).end();
     }

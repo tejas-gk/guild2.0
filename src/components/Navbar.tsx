@@ -213,7 +213,7 @@ export default function Navbar() {
                             <Dropdown
                                 setIsOpen={setIsProfileDropdownOpen}
                                 className='
-                                w-[13rem]
+                                w-[12rem]
                                 left-auto
                                 right-12
                                 top-12

@@ -7,7 +7,7 @@ const NotFoundPage = () => {
                 Oops! Page not found.
             </h1>
             <p className='text-gray-600 mb-4'>
-                The page you were looking for doesn't exist.
+                The page you were looking for doesn&apos;t exist.
             </p>
             <Link href='/'>
                 <p className='text-blue-500 hover:underline'>

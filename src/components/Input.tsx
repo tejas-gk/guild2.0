@@ -1,5 +1,6 @@
+import React, { useState } from 'react';
+
 interface InputProps {
-    placeholder?: string;
     value?: string;
     type?: string;
     disabled?: boolean;
@@ -8,33 +9,54 @@ interface InputProps {
 }
 
 const Input: React.FC<InputProps> = ({
-    placeholder,
     value,
     type = 'text',
     onChange,
     disabled,
     label,
 }) => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+
+    const handleBlur = () => {
+        if (!value) {
+            setIsFocused(false);
+        }
+    };
+
     return (
-        <div className='w-full'>
+        <div className='w-full relative'>
             {label && (
-                <p
-                    className='text-xl
-                 text-black
-                 font-semibold
-                 mb-2
-                 '
+                <label
+                    className={`text-xl
+            text-black
+            font-semibold
+            mt-2
+            ml-4
+            absolute
+            transition-all
+            ${isFocused || value ? 'text-sky-500' : 'text-neutral-800'}
+            ${
+                isFocused || value
+                    ? 'transform scale-75 -translate-y-5'
+                    : 'translate-y-2'
+            }
+          `}
                 >
                     {label}
-                </p>
+                </label>
             )}
             <input
+                title={label}
                 disabled={disabled}
                 onChange={onChange}
                 value={value}
-                placeholder={placeholder}
+                placeholder=''
                 type={type}
-                className='
+                className={`
           w-full
           p-4 
           text-lg 
@@ -49,8 +71,15 @@ const Input: React.FC<InputProps> = ({
           disabled:bg-neutral-900
           disabled:opacity-70
           disabled:cursor-not-allowed
-        '
+
+           ${isFocused || value ? 'pt-8 pb-2 border-b-2' : 'pt-4 pb-2'}
+        `}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
             />
+            {isFocused || value ? null : (
+                <div className='absolute w-full h-px bg-neutral-800 bottom-0 left-0'></div>
+            )}
         </div>
     );
 };

@@ -2,7 +2,7 @@
 
 #### Discover new communities
 
-[![wakatime](https://wakatime.com/badge/user/d22eb754-944a-44c7-93f5-80d654735d4f/project/183a6478-9f98-49e4-8026-d5a91cb41e7c.svg)](https://wakatime.com/badge/user/d22eb754-944a-44c7-93f5-80d654735d4f/project/183a6478-9f98-49e4-8026-d5a91cb41e7c)
+[![wakatime](https://wakatime.com/badge/github/tejas-gk/guild2.0.svg)](https://wakatime.com/badge/github/tejas-gk/guild2.0)
 
 Some notable dependencies include:
 
@@ -20,4 +20,9 @@ eslint: A tool for linting JavaScript code
 
 prettier: A tool for formatting code
 
-storybook: A tool for developing UI components in isolation.
+
+## Contributors 🤝 
+  
+ <a href="https://github.com/tejas-gk/guild2.0/graphs/contributors"> 
+   <img src="https://contrib.rocks/image?repo=tejas-gk/guild2.0" /> 
+ </a>

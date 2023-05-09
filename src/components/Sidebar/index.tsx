@@ -5,7 +5,7 @@ import React from 'react';
 interface Props {
     children?: React.ReactNode;
 }
-export default function Index() {
+export default function Index({ children }: Props) {
     const { data: currentUser } = useCurrentUser();
     return (
         <div className='h-full bg-green-400'>
@@ -15,15 +15,9 @@ export default function Index() {
             bg-red-300
           '
             >
-                <ul>
-                    <li>hello</li>
-                </ul>
+                {children}
 
-                <div
-                    className='
-                
-              '
-                >
+                <div>
                     <Avatar seed={currentUser?.id} />
                 </div>
             </main>

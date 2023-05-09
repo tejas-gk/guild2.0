@@ -173,7 +173,9 @@ export default function Navbar() {
                     Promote
                 </div>
                 <VideoCameraIcon className='icon' />
-                <ChatIcon className='icon' />
+                <Link href='/chats'>
+                    <ChatIcon className='icon' />
+                </Link>
                 <BellIcon className='icon' />
             </div>
 

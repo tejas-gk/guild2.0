@@ -8,10 +8,11 @@ interface Props {
 export default function Index() {
     const { data: currentUser } = useCurrentUser();
     return (
-        <div className='h-full'>
+        <div className='h-full bg-green-400'>
             <main
                 className='
             lg:pl-20 h-full
+            bg-red-300
           '
             >
                 <ul>

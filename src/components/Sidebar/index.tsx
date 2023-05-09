@@ -16,10 +16,6 @@ export default function Index({ children }: Props) {
           '
             >
                 {children}
-
-                <div>
-                    <Avatar seed={currentUser?.id} />
-                </div>
             </main>
         </div>
     );

@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import prisma from '@/lib/prismadb';
+import useCurrentUser from '@/hooks/useCurrentUser';
 
-export default async function handler(
+export default async function Handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {

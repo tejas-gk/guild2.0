@@ -10,10 +10,10 @@ export default function index() {
         >
             <h1
                 className='
-                text-4xl
+                lg:text-4xl text-xs
                 text-center
                 font-bold
-                py-4
+                lg:py-4
                 '
             >
                 Contributors

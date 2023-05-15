@@ -20,7 +20,7 @@ const item = [
 export default function Index({ children }: Props) {
     const { data: currentUser } = useCurrentUser();
     return (
-        <div className='h-full bg-green-400'>
+        <div className='h-full '>
             <div
                 className='
                  lg:fixed
@@ -51,7 +51,7 @@ export default function Index({ children }: Props) {
             <main
                 className='
                 lg:pl-20 h-full
-                bg-red-300
+
                 '
             >
                 {children}

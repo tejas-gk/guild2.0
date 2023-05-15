@@ -1,10 +1,10 @@
 import useCurrentUser from '@/hooks/useCurrentUser';
 import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Avatar from './Avatar';
-import DeletePost from '@/hooks/deletePost';
 import { HeartIcon, MailIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
+import { pusherClient, pusherServer } from '@/lib/pusher';
 
 interface PostItemProps {
     userId?: string;
@@ -15,7 +15,45 @@ export default function PostItem({ userId, data = {} }: PostItemProps): any {
     const router = useRouter();
     const { data: currentUser } = useCurrentUser();
 
-    const handleLike = useCallback((event: any) => {}, []);
+    const [likesCount, setLikesCount] = useState(data?.likes?.length || 0);
+
+    useEffect(() => {
+        const channel = pusherClient.subscribe('posts');
+        channel.bind('like', ({ postId }: { postId: string }) => {
+            if (postId === data?.id) {
+                setLikesCount((prevCount) => prevCount + 1);
+            }
+        });
+
+        return () => {
+            channel.unbind('like');
+            pusherClient.unsubscribe('posts');
+        };
+    }, [data?.id]);
+
+    const handleLike = async () => {
+        console.log(data?.id, currentUser?.id);
+        console.log(currentUser);
+        try {
+            const response = await fetch('/api/like', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    postId: data?.id,
+                    userId: currentUser?.id,
+                }),
+            });
+
+            if (response.ok) {
+                setLikesCount((prevCount) => prevCount + 1);
+                pusherClient.trigger('posts', 'like', { postId: data?.id });
+            }
+        } catch (error) {
+            console.error('Error adding like:', error);
+        }
+    };
 
     return (
         <div
@@ -119,6 +157,7 @@ export default function PostItem({ userId, data = {} }: PostItemProps): any {
                         >
                             <HeartIcon className='icon' />
                             <p>{data?.likes?.length || 0}</p>
+                            <p>{likesCount}</p>
                         </div>
                     </div>
                 </div>

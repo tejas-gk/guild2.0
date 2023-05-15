@@ -9,10 +9,12 @@ export default async function handler(
 ) {
     const currentUser = await getServerSession(authOptions);
 
-    // const { currentUser } = await serverAuth(req, res)
-
+    if (!currentUser?.user?.email) return [];
     try {
         const users = await prisma.user.findMany({
+            orderBy: {
+                createdAt: 'desc',
+            },
             where: {
                 NOT: {
                     email: currentUser?.user?.email,

@@ -16,6 +16,6 @@ export const pusherClient = new PusherClient(
             endpoint: '/api/pusher/auth',
             transport: 'ajax',
         },
-        cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+        cluster: 'ap2',
     }
 );

@@ -5,53 +5,45 @@ import Avatar from './Avatar';
 import { HeartIcon, MailIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { pusherClient, pusherServer } from '@/lib/pusher';
+import axios from 'axios';
 
 interface PostItemProps {
     userId?: string;
     data?: Record<string, any>;
 }
 
-export default function PostItem({ userId, data = {} }: PostItemProps): any {
+export default function PostItem({ data = {} }: PostItemProps): any {
     const router = useRouter();
     const { data: currentUser } = useCurrentUser();
 
     const [likesCount, setLikesCount] = useState(data?.likes?.length || 0);
 
     useEffect(() => {
+        // Subscribe to the 'like' channel in Pusher
         const channel = pusherClient.subscribe('posts');
-        channel.bind('like', ({ postId }: { postId: string }) => {
-            if (postId === data?.id) {
-                setLikesCount((prevCount) => prevCount + 1);
-            }
-        });
+        // Listen to the 'like' event
+        channel.bind('like', handleLikeEvent);
 
+        // Clean up the subscription when the component unmounts
         return () => {
-            channel.unbind('like');
+            channel.unbind('like', handleLikeEvent);
             pusherClient.unsubscribe('posts');
         };
-    }, [data?.id]);
+    }, []);
+
+    const handleLikeEvent = (data: any) => {
+        // Update the likes count when a 'like' event is received
+        setLikesCount(data.likedIds.length);
+    };
 
     const handleLike = async () => {
-        console.log(data?.id, currentUser?.id);
-        console.log(currentUser);
         try {
-            const response = await fetch('/api/like', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    postId: data?.id,
-                    userId: currentUser?.id,
-                }),
+            const response = await axios.post('/api/like', {
+                postId: data.id,
             });
-
-            if (response.ok) {
-                setLikesCount((prevCount) => prevCount + 1);
-                pusherClient.trigger('posts', 'like', { postId: data?.id });
-            }
+            // The likes count will be updated through the 'like' event
         } catch (error) {
-            console.error('Error adding like:', error);
+            console.log(error);
         }
     };
 

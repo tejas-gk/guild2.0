@@ -108,6 +108,9 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                     </div>
                     <div>
                         <Link href={`/posts/${data?.id}`}>
+                            {data?.image && (
+                                <img src={data?.image} alt='image' />
+                            )}
                             <p
                                 className='
                     text-gray-700

@@ -1,6 +1,7 @@
 import React from 'react';
 import MainLayout from './MainLayout';
 import ChatLayout from './ChatLayout';
+import SidebarLayout from './sidebarLayout';
 interface LayoutProps {
     children: React.ReactNode;
     pathname: string;
@@ -13,6 +14,12 @@ const Layout = ({ children, pathname }: LayoutProps) => {
         return (
             <>
                 <ChatLayout>{children}</ChatLayout>
+            </>
+        );
+    } else if (pathname === '/settings') {
+        return (
+            <>
+                <SidebarLayout>{children}</SidebarLayout>
             </>
         );
     }

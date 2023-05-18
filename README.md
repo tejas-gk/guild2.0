@@ -2,6 +2,8 @@
 
 #### Discover new communities
 
+This is a social media app where users can create profiles, connect with friends, share posts, photos, and videos, and engage with other users through likes, comments, and direct messaging. The app is built using Next js and features a responsive design, real-time updates, and secure user authentication.
+
 [![wakatime](https://wakatime.com/badge/github/tejas-gk/guild2.0.svg)](https://wakatime.com/badge/github/tejas-gk/guild2.0)
 
 Some notable dependencies include:

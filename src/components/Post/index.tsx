@@ -18,19 +18,6 @@ interface PostProps {
 export default function Index({ postId, isComment = false }: PostProps): any {
     const [isTyping, setIsTyping] = useState<boolean>(false);
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (files && files.length > 0) {
-            const file = files[0];
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const base64 = event.target.result;
-                setImage(base64);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
 
@@ -66,10 +53,26 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                 toast.error('Something went wrong');
             } finally {
                 setIsLoading(false);
+                setIsTyping(false);
             }
         },
         [body, mutatePost, mutatePosts, postId, isComment, image]
     );
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const base64 = event?.target?.result;
+                setImage(base64 as unknown as string);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        setIsTyping(true);
+    };
 
     return (
         <>
@@ -160,6 +163,15 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                                 }
                             }}
                         />
+                        {image && (
+                            <div className='flex justify-center'>
+                                <img
+                                    src={image}
+                                    alt='post'
+                                    className='w-1/2 h-1/2'
+                                />
+                            </div>
+                        )}
 
                         <div className='relative cursor-pointer'>
                             <input
@@ -168,12 +180,15 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                                 className='opacity-0 absolute inset-0 '
                                 onChange={handleFileChange}
                             />
-                            <ImageUpload
+                            {/* 
+                                todo: fix image upload
+                                */}
+                            {/* <ImageUpload  
                                 label='image'
                                 disabled={isLoading}
                                 onChange={handleFileChange}
                                 value={image}
-                            />
+                            /> */}
 
                             <label
                                 htmlFor='file-upload'

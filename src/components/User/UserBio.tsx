@@ -4,9 +4,11 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import Button from '@/components/Button';
 import { CalendarIcon } from '@heroicons/react/outline';
 import { useEditModal } from '@/hooks/useEditModal';
+import { useRouter } from 'next/router';
 export default function UserBio() {
     const { data: currentUser } = useCurrentUser();
-    const { data: user } = useUsers(currentUser?.id as string);
+    const router = useRouter();
+    const { data: user } = useUsers(router.query?.id as string);
 
     const editModal = useEditModal();
     return (

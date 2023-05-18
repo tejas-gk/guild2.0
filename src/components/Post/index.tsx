@@ -138,40 +138,39 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                     justify-between
                     '
                     >
-                        <div
-                            className='
-                        
-                    '
-                        >
+                        <div>
                             <Avatar seed={currentUser?.id} />
                         </div>
-                        <input
-                            type='text'
-                            placeholder='Post something...'
-                            name='body'
-                            className='
-                    w-full h-12
-                    px-4 pl-5
-                    outline-none
-                  '
-                            onChange={(e) => {
-                                setBody(e.target.value);
-                                if (e.target.value === '') {
-                                    setIsTyping(false);
-                                } else {
-                                    setIsTyping(true);
-                                }
-                            }}
-                        />
-                        {image && (
-                            <div className='flex justify-center'>
-                                <img
-                                    src={image}
-                                    alt='post'
-                                    className='w-1/2 h-1/2'
-                                />
-                            </div>
-                        )}
+                        <div>
+                            {image && (
+                                <div className='flex justify-center'>
+                                    <img
+                                        src={image}
+                                        alt='post'
+                                        className='w-1/2 h-1/2'
+                                    />
+                                </div>
+                            )}
+
+                            <input
+                                type='text'
+                                placeholder='Post something...'
+                                name='body'
+                                className='
+                                w-full h-12
+                                px-4 pl-5
+                                outline-none
+                                '
+                                onChange={(e) => {
+                                    setBody(e.target.value);
+                                    if (e.target.value === '') {
+                                        setIsTyping(false);
+                                    } else {
+                                        setIsTyping(true);
+                                    }
+                                }}
+                            />
+                        </div>
 
                         <div className='relative cursor-pointer'>
                             <input

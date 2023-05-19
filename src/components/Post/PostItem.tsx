@@ -6,6 +6,7 @@ import { HeartIcon, MailIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { pusherClient, pusherServer } from '@/lib/pusher';
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 interface PostItemProps {
     userId?: string;
@@ -18,30 +19,12 @@ export default function PostItem({ data = {} }: PostItemProps): any {
 
     const [likesCount, setLikesCount] = useState(data?.likes?.length || 0);
 
-    useEffect(() => {
-        // Subscribe to the 'like' channel in Pusher
-        const channel = pusherClient.subscribe('posts');
-        // Listen to the 'like' event
-        channel.bind('like', handleLikeEvent);
-
-        // Clean up the subscription when the component unmounts
-        return () => {
-            channel.unbind('like', handleLikeEvent);
-            pusherClient.unsubscribe('posts');
-        };
-    }, []);
-
-    const handleLikeEvent = (data: any) => {
-        // Update the likes count when a 'like' event is received
-        setLikesCount(data.likedIds.length);
-    };
-
     const handleLike = async () => {
         try {
-            const response = await axios.post('/api/like', {
+            await axios.post('/api/like', {
                 postId: data.id,
             });
-            // The likes count will be updated through the 'like' event
+            toast.success('Liked');
         } catch (error) {
             console.log(error);
         }
@@ -151,8 +134,7 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                             onClick={handleLike}
                         >
                             <HeartIcon className='icon' />
-                            <p>{data?.likes?.length || 0}</p>
-                            <p>{likesCount}</p>
+                            <p>{data?.likedIds?.length || 0}</p>
                         </div>
                     </div>
                 </div>

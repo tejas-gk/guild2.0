@@ -8,9 +8,8 @@ import type { AppProps } from 'next/app';
 import { Toaster } from 'react-hot-toast';
 import { SessionProvider } from 'next-auth/react';
 import useCurrentUser from '@/hooks/useCurrentUser';
-import Layout from '@/layout/Layout';
+import Layout from '@/layout/settingsLayout';
 import EditModal from '@/components/Modals/EditModal';
-import Settings from '../pages/settings';
 
 export default function App({ Component, pageProps, router }: AppProps) {
     const { data: currentUser } = useCurrentUser();

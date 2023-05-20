@@ -32,6 +32,7 @@ export default function Navbar() {
     const { data: currentUser } = useCurrentUser();
     // TODO this needs to be separate
     const [isOpen, setIsOpen] = useState(false);
+    const [notified, setNotified] = useState(currentUser?.hasNotification);
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const loginModal = useLoginModal();
 
@@ -176,7 +177,29 @@ export default function Navbar() {
                 <Link href='/chats'>
                     <ChatIcon className='icon' />
                 </Link>
-                <BellIcon className='icon' />
+
+                <div
+                    className='
+                relative
+                '
+                >
+                    <Link href='/notifications'>
+                        <BellIcon className='icon' />
+                    </Link>
+                    {notified && (
+                        <div
+                            className='
+                            bg-blue-600
+                            h-3 w-3
+                            rounded-full
+                            absolute
+                            top-1
+                            right-1
+                            
+                            '
+                        />
+                    )}
+                </div>
             </div>
 
             <div

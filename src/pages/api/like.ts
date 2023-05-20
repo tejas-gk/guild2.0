@@ -30,6 +30,47 @@ export default async function handler(
 
         if (req.method === 'POST') {
             updatedLikedIds.push(currentUser.id);
+
+            try {
+                if (post?.userId) {
+                    const userWhoLiked = await prisma.user.findUnique({
+                        where: {
+                            id: currentUser.id,
+                        },
+                    });
+
+                    await prisma.notification.create({
+                        data: {
+                            body: `${
+                                userWhoLiked?.name || userWhoLiked?.username
+                            } liked your tweet!`,
+                            userId: post.userId,
+                        },
+                    });
+
+                    await prisma.user.update({
+                        where: {
+                            id: post.userId,
+                        },
+                        data: {
+                            hasNotification: true,
+                        },
+                    });
+
+                    // Trigger a Pusher event to notify the user in real-time
+                    pusherServer.trigger(
+                        `user-${post.userId}`,
+                        'notification',
+                        {
+                            body: `${
+                                userWhoLiked?.name || userWhoLiked?.username
+                            } liked your tweet!`,
+                        }
+                    );
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
 
         if (req.method === 'DELETE') {

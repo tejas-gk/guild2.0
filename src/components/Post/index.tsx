@@ -10,6 +10,7 @@ import { useLoginModal } from '@/hooks/useLoginModal';
 import usePost from '@/hooks/usePost';
 import Button from '@/components/Button';
 import ImageUpload from '../Input/ImageUpload';
+import Image from 'next/image';
 
 interface PostProps {
     postId?: string;
@@ -144,7 +145,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                         <div>
                             {image && (
                                 <div className='flex justify-center'>
-                                    <img
+                                    <Image
                                         src={image}
                                         alt='post'
                                         className='w-1/2 h-1/2'

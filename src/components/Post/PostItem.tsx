@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { pusherClient } from '@/lib/pusher';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import Image from 'next/image';
 
 interface PostItemProps {
     userId?: string;
@@ -105,7 +106,12 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                     <div>
                         <Link href={`/posts/${data?.id}`}>
                             {data?.image && (
-                                <img src={data?.image} alt='image' />
+                                <Image
+                                    src={data?.image}
+                                    alt='image'
+                                    width={500}
+                                    height={500}
+                                />
                             )}
                             <p
                                 className='

@@ -147,7 +147,6 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                             onClick={handleLike}
                         >
                             <HeartIcon className='icon' />
-                            <p>{data?.likedIds?.length || 0}</p>
                             <p>{likeCount}</p>
                         </div>
                     </div>

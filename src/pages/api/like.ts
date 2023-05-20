@@ -29,9 +29,6 @@ export default async function handler(
         let updatedLikedIds = [...(post.likedIds || [])];
 
         if (req.method === 'POST') {
-            console.log('------------------------------------');
-            console.log('likecount', pusherServer);
-            console.log('------------------------------------');
             updatedLikedIds.push(currentUser.id);
         }
 
@@ -43,9 +40,6 @@ export default async function handler(
 
         if (req.method === 'GET') {
             const likeCount = updatedLikedIds.length;
-            console.log('------------------------------------');
-            console.log('likecount', likeCount);
-            console.log('------------------------------------');
             return res.status(200).json({ likes: likeCount });
         }
 

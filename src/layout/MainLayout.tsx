@@ -17,7 +17,6 @@ export default function MainLayout({ children }: LayoutProps) {
                     h-full max-w-6xl
                     mx-auto
                     px-4
-                 
                 '
                 >
                     <div

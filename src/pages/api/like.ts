@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-
 import prisma from '@/lib/prismadb';
 import serverAuth from '@/lib/serverAuth';
 import { pusherServer } from '@/lib/pusher';
@@ -8,10 +7,6 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    if (req.method !== 'POST' && req.method !== 'DELETE') {
-        return res.status(405).end();
-    }
-
     try {
         const { postId } = req.body;
 
@@ -34,43 +29,24 @@ export default async function handler(
         let updatedLikedIds = [...(post.likedIds || [])];
 
         if (req.method === 'POST') {
+            console.log('------------------------------------');
+            console.log('likecount', pusherServer);
+            console.log('------------------------------------');
             updatedLikedIds.push(currentUser.id);
-
-            // NOTIFICATION PART START
-            try {
-                const post = await prisma.post.findUnique({
-                    where: {
-                        id: postId,
-                    },
-                });
-
-                if (post?.userId) {
-                    await prisma.notification.create({
-                        data: {
-                            body: 'Someone liked your tweet!',
-                            userId: post.userId,
-                        },
-                    });
-
-                    await prisma.user.update({
-                        where: {
-                            id: post.userId,
-                        },
-                        data: {
-                            hasNotification: true,
-                        },
-                    });
-                }
-            } catch (error) {
-                console.log(error);
-            }
-            // NOTIFICATION PART END
         }
 
         if (req.method === 'DELETE') {
             updatedLikedIds = updatedLikedIds.filter(
                 (likedId) => likedId !== currentUser?.id
             );
+        }
+
+        if (req.method === 'GET') {
+            const likeCount = updatedLikedIds.length;
+            console.log('------------------------------------');
+            console.log('likecount', likeCount);
+            console.log('------------------------------------');
+            return res.status(200).json({ likes: likeCount });
         }
 
         const updatedPost = await prisma.post.update({
@@ -82,12 +58,8 @@ export default async function handler(
             },
         });
 
-        // pusherServer.trigger('posts', 'like', {
-        //     postId,
-        //     userId: currentUser.id,
-        //     likedIds: updatedLikedIds
-
-        // });
+        // Trigger a Pusher event to notify clients about the updated post
+        pusherServer.trigger(`post-${postId}`, 'post-updated', updatedPost);
 
         return res.status(200).json(updatedPost);
     } catch (error) {

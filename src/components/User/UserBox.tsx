@@ -38,7 +38,7 @@ export default function UserBox({ data }: any) {
                 hover:bg-gray-100
                 rounded-xl
                 transition duration-200 ease-in-out
-
+                
             '
         >
             <Avatar seed={data.id} />
@@ -46,7 +46,6 @@ export default function UserBox({ data }: any) {
                 className='
             flex 
             flex-col
-            bg-debug-red
             '
             >
                 <div className='focus:outline-none'>

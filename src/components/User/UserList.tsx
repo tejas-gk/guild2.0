@@ -12,7 +12,6 @@ export default function UserList({ users }: UserListProps) {
             fixed
             inset-y-0
             pb-20 lg:pb-0
-            lg:left-20 left-0
             lg:block
             overflow-y-auto
             border-r
@@ -21,7 +20,7 @@ export default function UserList({ users }: UserListProps) {
             m-12
         '
             >
-                <div className='px-5'>
+                <div className='p'>
                     <div className='flex-col'>
                         <div
                             className='

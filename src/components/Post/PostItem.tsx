@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Avatar from './Avatar';
 import { HeartIcon, MailIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
-import { pusherClient, pusherServer } from '@/lib/pusher';
+import { pusherClient } from '@/lib/pusher';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
@@ -15,9 +15,21 @@ interface PostItemProps {
 
 export default function PostItem({ data = {} }: PostItemProps): any {
     const router = useRouter();
-    const { data: currentUser } = useCurrentUser();
+    const [likeCount, setLikeCount] = useState<number>(
+        data.likedIds?.length || 0
+    );
 
-    const [likesCount, setLikesCount] = useState(data?.likes?.length || 0);
+    useEffect(() => {
+        const channel = pusherClient.subscribe(`post-${data.id}`);
+
+        channel.bind('post-updated', (updatedPost: any) => {
+            setLikeCount(updatedPost.likedIds?.length || 0);
+        });
+
+        return () => {
+            pusherClient.unsubscribe(`post-${data.id}`);
+        };
+    }, [data.id]);
 
     const handleLike = async () => {
         try {
@@ -27,6 +39,7 @@ export default function PostItem({ data = {} }: PostItemProps): any {
             toast.success('Liked');
         } catch (error) {
             console.log(error);
+            toast.error('fuck');
         }
     };
 
@@ -135,6 +148,7 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                         >
                             <HeartIcon className='icon' />
                             <p>{data?.likedIds?.length || 0}</p>
+                            <p>{likeCount}</p>
                         </div>
                     </div>
                 </div>

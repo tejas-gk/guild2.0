@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-
 import serverAuth from '@/lib/serverAuth';
 import prisma from '@/lib/prismadb';
+import { pusherServer } from '@/lib/pusher';
 
 export default async function handler(
     req: NextApiRequest,
@@ -58,11 +58,23 @@ export default async function handler(
                             hasNotification: true,
                         },
                     });
+
+                    pusherServer.trigger(
+                        `user-${post.userId}`,
+                        'notification',
+                        {
+                            body: `${userWhoReplied.name} replied to your tweet!`,
+                        }
+                    );
                 }
             }
         } catch (error) {
             console.log(error);
         }
+
+        // Trigger a Pusher event to notify clients about the new comment
+        pusherServer.trigger(`post-${postId}`, 'comment-created', comment);
+
         return res.status(200).json(comment);
     } catch (error) {
         console.log(error);

@@ -22,6 +22,7 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import Avatar from './Post/Avatar';
 import Button from '@/components/Button';
 import { signOut } from 'next-auth/react';
+import { pusherClient } from '@/lib/pusher';
 
 const InterFont = Inter({
     subsets: ['latin'],
@@ -32,8 +33,29 @@ export default function Navbar() {
     const { data: currentUser } = useCurrentUser();
     // TODO this needs to be separate
     const [isOpen, setIsOpen] = useState(false);
+    const [notified, setNotified] = useState(currentUser?.hasNotification);
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const loginModal = useLoginModal();
+
+    useEffect(() => {
+        if (currentUser?.hasNotification) {
+            setNotified(true);
+        }
+    }, [currentUser?.hasNotification]);
+
+    useEffect(() => {
+        const pusherChannel = pusherClient.subscribe(
+            `notifications-${currentUser?.id}`
+        );
+        pusherChannel.bind('read', () => {
+            setNotified(false);
+        });
+
+        return () => {
+            pusherChannel.unbind('read');
+            pusherClient.unsubscribe(`notifications-${currentUser?.id}`);
+        };
+    }, [currentUser?.id]);
 
     return (
         <div
@@ -173,8 +195,32 @@ export default function Navbar() {
                     Promote
                 </div>
                 <VideoCameraIcon className='icon' />
-                <ChatIcon className='icon' />
-                <BellIcon className='icon' />
+                <Link href='/chats'>
+                    <ChatIcon className='icon' />
+                </Link>
+
+                <div
+                    className='
+                relative
+                '
+                >
+                    <Link href='/notifications'>
+                        <BellIcon className='icon' />
+                    </Link>
+                    {notified && (
+                        <div
+                            className='
+                            bg-blue-600
+                            h-3 w-3
+                            rounded-full
+                            absolute
+                            top-1
+                            right-1
+                            
+                            '
+                        />
+                    )}
+                </div>
             </div>
 
             <div
@@ -213,7 +259,7 @@ export default function Navbar() {
                             <Dropdown
                                 setIsOpen={setIsProfileDropdownOpen}
                                 className='
-                                w-[12rem]
+                                w-[13rem]
                                 left-auto
                                 right-12
                                 top-12

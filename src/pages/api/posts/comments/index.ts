@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-
 import serverAuth from '@/lib/serverAuth';
 import prisma from '@/lib/prismadb';
+import { pusherServer } from '@/lib/pusher';
 
 export default async function handler(
     req: NextApiRequest,
@@ -28,7 +28,6 @@ export default async function handler(
             },
         });
 
-        // NOTIFICATION PART START
         try {
             const post = await prisma.post.findUnique({
                 where: {
@@ -37,26 +36,44 @@ export default async function handler(
             });
 
             if (post?.userId) {
-                await prisma.notification.create({
-                    data: {
-                        body: 'Someone replied on your tweet!',
-                        userId: post.userId,
-                    },
-                });
-
-                await prisma.user.update({
+                const userWhoReplied = await prisma.user.findUnique({
                     where: {
                         id: post.userId,
                     },
-                    data: {
-                        hasNotification: true,
-                    },
                 });
+
+                if (userWhoReplied) {
+                    await prisma.notification.create({
+                        data: {
+                            body: `${userWhoReplied.name} replied to your tweet!`,
+                            userId: post.userId,
+                        },
+                    });
+
+                    await prisma.user.update({
+                        where: {
+                            id: post.userId,
+                        },
+                        data: {
+                            hasNotification: true,
+                        },
+                    });
+
+                    pusherServer.trigger(
+                        `user-${post.userId}`,
+                        'notification',
+                        {
+                            body: `${userWhoReplied.name} replied to your tweet!`,
+                        }
+                    );
+                }
             }
         } catch (error) {
             console.log(error);
         }
-        // NOTIFICATION PART END
+
+        // Trigger a Pusher event to notify clients about the new comment
+        pusherServer.trigger(`post-${postId}`, 'comment-created', comment);
 
         return res.status(200).json(comment);
     } catch (error) {

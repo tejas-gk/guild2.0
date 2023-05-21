@@ -8,6 +8,8 @@ import Post from '@/components/Post';
 import PostFeed from '@/components/Post/PostFeed';
 import Button from '@/components/Button';
 import usePosts from '@/hooks/usePosts';
+import { getSession } from 'next-auth/react';
+import { useEffect } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,6 +17,16 @@ export default function Home() {
     const { data: user } = useCurrentUser();
     console.log(user);
     const { data: posts } = usePosts();
+
+    useEffect(() => {
+        const fetchSession = async () => {
+            const session = await getSession();
+            console.log('Session:', session);
+        };
+
+        fetchSession();
+    }, []);
+
     return (
         <>
             <Head>

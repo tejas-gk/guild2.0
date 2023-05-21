@@ -70,7 +70,11 @@ const EditModal = () => {
                     onChange={(base64) =>
                         setProfileImage(base64 as unknown as File)
                     }
-                    value={profileImage}
+                    value={
+                        profileImage
+                            ? URL.createObjectURL(profileImage)
+                            : undefined
+                    }
                 />
                 <ImageUpload
                     label='Cover image'
@@ -78,7 +82,9 @@ const EditModal = () => {
                     onChange={(base64) =>
                         setCoverImage(base64 as unknown as File)
                     }
-                    value={coverImage}
+                    value={
+                        coverImage ? URL.createObjectURL(coverImage) : undefined
+                    }
                 />
             </div>
             <Input

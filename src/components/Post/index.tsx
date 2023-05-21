@@ -9,6 +9,8 @@ import axios from 'axios';
 import { useLoginModal } from '@/hooks/useLoginModal';
 import usePost from '@/hooks/usePost';
 import Button from '@/components/Button';
+import ImageUpload from '../Input/ImageUpload';
+import Image from 'next/image';
 
 interface PostProps {
     postId?: string;
@@ -16,11 +18,6 @@ interface PostProps {
 }
 export default function Index({ postId, isComment = false }: PostProps): any {
     const [isTyping, setIsTyping] = useState<boolean>(false);
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.files);
-        // todo other stuff ill think later
-    };
 
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
@@ -31,6 +28,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
 
     const [isLoading, setIsLoading] = useState(false);
     const [body, setBody] = useState('');
+    const [image, setImage] = useState('');
 
     const onSubmit = useCallback(
         async (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,10 +40,12 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                     : '/api/posts';
                 await axios.post(url, {
                     body,
+                    image,
                 });
                 toast.success(
                     `${isComment ? 'Comment' : 'Post'} created successfully`
                 );
+                setImage('');
                 setBody('');
                 mutatePost();
                 mutatePosts();
@@ -54,10 +54,26 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                 toast.error('Something went wrong');
             } finally {
                 setIsLoading(false);
+                setIsTyping(false);
             }
         },
-        [body, mutatePost, mutatePosts, postId, isComment]
+        [body, mutatePost, mutatePosts, postId, isComment, image]
     );
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const base64 = event?.target?.result;
+                setImage(base64 as unknown as string);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        setIsTyping(true);
+    };
 
     return (
         <>
@@ -123,31 +139,39 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                     justify-between
                     '
                     >
-                        <div
-                            className='
-                        
-                    '
-                        >
+                        <div>
                             <Avatar seed={currentUser?.id} />
                         </div>
-                        <input
-                            type='text'
-                            placeholder='Post something...'
-                            name='body'
-                            className='
-                    w-full h-12
-                    px-4 pl-5
-                    outline-none
-                  '
-                            onChange={(e) => {
-                                setBody(e.target.value);
-                                if (e.target.value === '') {
-                                    setIsTyping(false);
-                                } else {
-                                    setIsTyping(true);
-                                }
-                            }}
-                        />
+                        <div>
+                            {image && (
+                                <div className='flex justify-center'>
+                                    <Image
+                                        src={image}
+                                        alt='post'
+                                        className='w-1/2 h-1/2'
+                                    />
+                                </div>
+                            )}
+
+                            <input
+                                type='text'
+                                placeholder='Post something...'
+                                name='body'
+                                className='
+                                w-full h-12
+                                px-4 pl-5
+                                outline-none
+                                '
+                                onChange={(e) => {
+                                    setBody(e.target.value);
+                                    if (e.target.value === '') {
+                                        setIsTyping(false);
+                                    } else {
+                                        setIsTyping(true);
+                                    }
+                                }}
+                            />
+                        </div>
 
                         <div className='relative cursor-pointer'>
                             <input
@@ -156,6 +180,16 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                                 className='opacity-0 absolute inset-0 '
                                 onChange={handleFileChange}
                             />
+                            {/* 
+                                todo: fix image upload
+                                */}
+                            {/* <ImageUpload  
+                                label='image'
+                                disabled={isLoading}
+                                onChange={handleFileChange}
+                                value={image}
+                            /> */}
+
                             <label
                                 htmlFor='file-upload'
                                 className='flex items-center justify-center w-12 h-12 rounded-full cursor-pointer border border-gray-300'

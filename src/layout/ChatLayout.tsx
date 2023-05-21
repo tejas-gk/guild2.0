@@ -2,12 +2,19 @@ interface Props {
     children: React.ReactNode;
 }
 import Sidebar from '@/components/Sidebar';
-export default function index({ children }: Props) {
+import useUsers from '@/hooks/useUsers';
+import UserList from '@/components/User/UserList';
+export default function Index({ children }: Props) {
+    const users = useUsers();
+    console.log(users);
     return (
         <>
-            <Sidebar />
-            <div className='h-full'>{children}</div>
+            <Sidebar>
+                <div className='h-full'>
+                    <UserList users={users} />
+                    {children}
+                </div>
+            </Sidebar>
         </>
-        // {/* </Sidebar> */}
     );
 }

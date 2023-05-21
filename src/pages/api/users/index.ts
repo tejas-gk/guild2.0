@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import prisma from '@/lib/prismadb';
 
-export default async function handler(
+export default async function Handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {

@@ -2,7 +2,7 @@ interface ButtonProps {
     title: string;
     type?: 'button' | 'submit' | 'reset';
     className?: string;
-    onClick?: () => void;
+    onClick?: () => void | Promise<void>;
     disabled?: boolean;
     icon?: string;
     sizing?: 'sm' | 'md' | 'lg';

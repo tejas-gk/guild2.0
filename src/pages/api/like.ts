@@ -1,122 +1,102 @@
-import { Server } from 'socket.io';
+import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prismadb';
 import serverAuth from '@/lib/serverAuth';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { pusherServer } from '@/lib/pusher';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method !== 'POST' && req.method !== 'DELETE') {
-        return res.status(405).end();
-    }
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse
+) {
+    try {
+        const { postId } = req.body;
 
-    const io = new Server();
+        const { currentUser } = await serverAuth(req, res);
 
-    io.on('connection', async (socket) => {
-        socket.on('likePost', async ({ postId }) => {
+        if (!postId || typeof postId !== 'string') {
+            throw new Error('Invalid ID');
+        }
+
+        const post = await prisma.post.findUnique({
+            where: {
+                id: postId,
+            },
+        });
+
+        if (!post) {
+            throw new Error('Invalid ID');
+        }
+
+        let updatedLikedIds = [...(post.likedIds || [])];
+
+        if (req.method === 'POST') {
+            updatedLikedIds.push(currentUser.id);
+
             try {
-                const { currentUser } = await serverAuth(req, res);
-
-                if (!postId || typeof postId !== 'string') {
-                    throw new Error('Invalid ID');
-                }
-
-                const post = await prisma.post.findUnique({
-                    where: {
-                        id: postId,
-                    },
-                });
-
-                if (!post) {
-                    throw new Error('Invalid ID');
-                }
-
-                let updatedLikedIds = [...(post.likedIds || [])];
-
-                updatedLikedIds.push(currentUser.id);
-
-                // NOTIFICATION PART START
-                try {
-                    const post = await prisma.post.findUnique({
+                if (post?.userId) {
+                    const userWhoLiked = await prisma.user.findUnique({
                         where: {
-                            id: postId,
+                            id: currentUser.id,
                         },
                     });
 
-                    if (post?.userId) {
-                        await prisma.notification.create({
-                            data: {
-                                body: 'Someone liked your tweet!',
-                                userId: post.userId,
-                            },
-                        });
+                    await prisma.notification.create({
+                        data: {
+                            body: `${
+                                userWhoLiked?.name || userWhoLiked?.username
+                            } liked your tweet!`,
+                            userId: post.userId,
+                        },
+                    });
 
-                        await prisma.user.update({
-                            where: {
-                                id: post.userId,
-                            },
-                            data: {
-                                hasNotification: true,
-                            },
-                        });
-                    }
-                } catch (error) {
-                    console.log(error);
+                    await prisma.user.update({
+                        where: {
+                            id: post.userId,
+                        },
+                        data: {
+                            hasNotification: true,
+                        },
+                    });
+                    pusherServer.trigger(
+                        `user-${post.userId}`,
+                        'notification',
+                        {
+                            body: `${
+                                userWhoLiked?.name || userWhoLiked?.username
+                            } liked your tweet!`,
+                        }
+                    );
                 }
-                // NOTIFICATION PART END
-
-                const updatedPost = await prisma.post.update({
-                    where: {
-                        id: postId,
-                    },
-                    data: {
-                        likedIds: updatedLikedIds,
-                    },
-                });
-
-                io.emit('likePost', updatedPost);
             } catch (error) {
                 console.log(error);
-                return res.status(400).end();
             }
+        }
+
+        if (req.method === 'DELETE') {
+            updatedLikedIds = updatedLikedIds.filter(
+                (likedId) => likedId !== currentUser?.id
+            );
+        }
+
+        if (req.method === 'GET') {
+            const likeCount = updatedLikedIds.length;
+            return res.status(200).json({ likes: likeCount });
+        }
+
+        const updatedPost = await prisma.post.update({
+            where: {
+                id: postId,
+            },
+            data: {
+                likedIds: updatedLikedIds,
+            },
         });
 
-        socket.on('unlikePost', async ({ postId }) => {
-            try {
-                const { currentUser } = await serverAuth(req, res);
+        // Trigger a Pusher event to notify clients about the updated post
+        pusherServer.trigger(`post-${postId}`, 'post-updated', updatedPost);
 
-                if (!postId || typeof postId !== 'string') {
-                    throw new Error('Invalid ID');
-                }
-
-                const post = await prisma.post.findUnique({
-                    where: {
-                        id: postId,
-                    },
-                });
-
-                if (!post) {
-                    throw new Error('Invalid ID');
-                }
-
-                let updatedLikedIds = [...(post.likedIds || [])];
-
-                updatedLikedIds = updatedLikedIds.filter(
-                    (likedId) => likedId !== currentUser?.id
-                );
-
-                const updatedPost = await prisma.post.update({
-                    where: {
-                        id: postId,
-                    },
-                    data: {
-                        likedIds: updatedLikedIds,
-                    },
-                });
-
-                io.emit('unlikePost', updatedPost);
-            } catch (error) {
-                console.log(error);
-                return res.status(400).end();
-            }
-        });
-    });
+        return res.status(200).json(updatedPost);
+    } catch (error) {
+        console.log(error);
+        return res.status(400).end();
+    }
 }

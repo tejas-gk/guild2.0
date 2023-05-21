@@ -1,21 +1,48 @@
 import useCurrentUser from '@/hooks/useCurrentUser';
 import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Avatar from './Avatar';
-import DeletePost from '@/hooks/deletePost';
 import { HeartIcon, MailIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
+import { pusherClient } from '@/lib/pusher';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import Image from 'next/image';
 
 interface PostItemProps {
     userId?: string;
     data?: Record<string, any>;
 }
 
-export default function PostItem({ userId, data = {} }: PostItemProps): any {
+export default function PostItem({ data = {} }: PostItemProps): any {
     const router = useRouter();
-    const { data: currentUser } = useCurrentUser();
+    const [likeCount, setLikeCount] = useState<number>(
+        data.likedIds?.length || 0
+    );
 
-    const handleLike = useCallback((event: any) => {}, []);
+    useEffect(() => {
+        const channel = pusherClient.subscribe(`post-${data.id}`);
+
+        channel.bind('post-updated', (updatedPost: any) => {
+            setLikeCount(updatedPost.likedIds?.length || 0);
+        });
+
+        return () => {
+            pusherClient.unsubscribe(`post-${data.id}`);
+        };
+    }, [data.id]);
+
+    const handleLike = async () => {
+        try {
+            await axios.post('/api/like', {
+                postId: data.id,
+            });
+            toast.success('Liked');
+        } catch (error) {
+            console.log(error);
+            toast.error('fuck');
+        }
+    };
 
     return (
         <div
@@ -78,6 +105,14 @@ export default function PostItem({ userId, data = {} }: PostItemProps): any {
                     </div>
                     <div>
                         <Link href={`/posts/${data?.id}`}>
+                            {data?.image && (
+                                <Image
+                                    src={data?.image}
+                                    alt='image'
+                                    width={500}
+                                    height={500}
+                                />
+                            )}
                             <p
                                 className='
                     text-gray-700
@@ -118,7 +153,7 @@ export default function PostItem({ userId, data = {} }: PostItemProps): any {
                             onClick={handleLike}
                         >
                             <HeartIcon className='icon' />
-                            <p>{data?.likes?.length || 0}</p>
+                            <p>{likeCount}</p>
                         </div>
                     </div>
                 </div>

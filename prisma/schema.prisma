@@ -55,6 +55,7 @@ model Post {
   comments Comment[]
 }
 
+
 model Comment {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   body      String
@@ -105,3 +106,4 @@ model Message {
   senderId String @db.ObjectId
   sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
+

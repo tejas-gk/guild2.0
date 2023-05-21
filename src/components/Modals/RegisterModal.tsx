@@ -6,6 +6,15 @@ import Input from '../Input';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
+import { validationRules } from '@/utils/registerRules';
+
+interface FormValues {
+    email: string;
+    password: string;
+    name: string;
+    username: string;
+}
+
 export default function LoginModal() {
     const loginModal = useLoginModal();
     const registerModal = useRegisterModal();
@@ -16,10 +25,29 @@ export default function LoginModal() {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    const [errors, setErrors] = useState<Partial<FormValues>>({});
+
+    const validateForm = (): Partial<FormValues> => {
+        const errors: Partial<FormValues> = {};
+        if (!validationRules.required().validator(name)) {
+            errors.name = validationRules.required().message;
+        }
+        if (!validationRules.required().validator(username)) {
+            errors.username = validationRules.required().message;
+        }
+        if (!validationRules.email().validator(email)) {
+            errors.email = validationRules.email().message;
+        }
+        if (!validationRules.required().validator(password)) {
+            errors.password = validationRules.required().message;
+        }
+        return errors;
+    };
+
     const onSubmit = useCallback(async () => {
         setIsLoading(true);
         try {
-            const response = await axios.post('/api/register', {
+            await axios.post('/api/register', {
                 email,
                 name,
                 username,
@@ -48,7 +76,6 @@ export default function LoginModal() {
         '
         >
             <Input
-                placeholder='Name'
                 type='text'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setName(e.target.value)
@@ -58,7 +85,6 @@ export default function LoginModal() {
                 label='Name'
             />
             <Input
-                placeholder='Username'
                 type='text'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setUsername(e.target.value)
@@ -68,7 +94,6 @@ export default function LoginModal() {
                 label='Username'
             />
             <Input
-                placeholder='Email'
                 type='email'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setEmail(e.target.value)
@@ -78,7 +103,6 @@ export default function LoginModal() {
                 label='Email'
             />
             <Input
-                placeholder='Password'
                 type='password'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setPassword(e.target.value)
@@ -91,28 +115,34 @@ export default function LoginModal() {
     );
 
     const footerContent = (
-        <div
-            className='
-        text-neutral-500
-        text-center
-        mt-4
-        '
-        >
-            Already have an account?{' '}
-            <span
+        <>
+            {errors.password && <span>{errors.password}</span>}
+            {errors.name && <span>{errors.name}</span>}
+            {errors.username && <span>{errors.username}</span>}
+            {errors.email && <span>{errors.email}</span>}{' '}
+            <div
                 className='
+            text-neutral-500
+            text-center
+            mt-4
+            '
+            >
+                Already have an account?{' '}
+                <span
+                    className='
                 text-primary-500
                 cursor-pointer
                 '
-                onClick={() => {
-                    // todo make a separate function for this
-                    registerModal.onClose();
-                    loginModal.onOpen();
-                }}
-            >
-                Login
-            </span>
-        </div>
+                    onClick={() => {
+                        // todo make a separate function for this
+                        registerModal.onClose();
+                        loginModal.onOpen();
+                    }}
+                >
+                    Login
+                </span>
+            </div>
+        </>
     );
 
     return (

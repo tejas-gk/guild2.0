@@ -22,6 +22,7 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import Avatar from './Post/Avatar';
 import Button from '@/components/Button';
 import { signOut } from 'next-auth/react';
+import { pusherClient } from '@/lib/pusher';
 
 const InterFont = Inter({
     subsets: ['latin'],
@@ -35,6 +36,26 @@ export default function Navbar() {
     const [notified, setNotified] = useState(currentUser?.hasNotification);
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const loginModal = useLoginModal();
+
+    useEffect(() => {
+        if (currentUser?.hasNotification) {
+            setNotified(true);
+        }
+    }, [currentUser?.hasNotification]);
+
+    useEffect(() => {
+        const pusherChannel = pusherClient.subscribe(
+            `notifications-${currentUser?.id}`
+        );
+        pusherChannel.bind('read', () => {
+            setNotified(false);
+        });
+
+        return () => {
+            pusherChannel.unbind('read');
+            pusherClient.unsubscribe(`notifications-${currentUser?.id}`);
+        };
+    }, [currentUser?.id]);
 
     return (
         <div

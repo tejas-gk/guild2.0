@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import prisma from '@/lib/prismadb';
+import { pusherClient, pusherServer } from '@/lib/pusher';
 
 export default async function handler(
     req: NextApiRequest,
@@ -33,6 +34,10 @@ export default async function handler(
             data: {
                 hasNotification: false,
             },
+        });
+
+        pusherServer.trigger(`notifications-${userId}`, 'read', {
+            userId,
         });
 
         return res.status(200).json(notifications);

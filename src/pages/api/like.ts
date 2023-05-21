@@ -56,8 +56,6 @@ export default async function handler(
                             hasNotification: true,
                         },
                     });
-
-                    // Trigger a Pusher event to notify the user in real-time
                     pusherServer.trigger(
                         `user-${post.userId}`,
                         'notification',

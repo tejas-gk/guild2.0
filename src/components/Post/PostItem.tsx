@@ -53,9 +53,7 @@ export default function PostItem({ data = {} }: PostItemProps): any {
         >
             <div>
                 <div
-                    className='
-           
-        
+                    className='  
              border-b-[1px] 
         border-neutral-800 
         p-5 
@@ -68,12 +66,9 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                 flex
                 flex-row
                 items-start
-                
-            
                 p-2
                 rounded-md
                 mb-2
-            
                 '
                     >
                         <Avatar seed={data?.user?.id} />

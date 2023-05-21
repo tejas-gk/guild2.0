@@ -56,6 +56,7 @@ export default async function handler(
                             hasNotification: true,
                         },
                     });
+
                     pusherServer.trigger(
                         `user-${post.userId}`,
                         'notification',

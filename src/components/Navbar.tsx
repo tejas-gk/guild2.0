@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import {
-    BeakerIcon,
     HomeIcon,
     SearchIcon,
     BellIcon,
@@ -33,7 +32,9 @@ export default function Navbar() {
     const { data: currentUser } = useCurrentUser();
     // TODO this needs to be separate
     const [isOpen, setIsOpen] = useState(false);
-    const [notified, setNotified] = useState(currentUser?.hasNotification);
+    const [notified, setNotified] = useState<boolean | undefined>(
+        currentUser?.hasNotification
+    );
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const loginModal = useLoginModal();
 

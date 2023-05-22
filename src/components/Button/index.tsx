@@ -1,8 +1,10 @@
-interface ButtonProps {
+import { ButtonHTMLAttributes } from 'react';
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     title: string;
     type?: 'button' | 'submit' | 'reset';
     className?: string;
-    onClick?: () => void | Promise<void>;
+    onClick?: () => void | any;
     disabled?: boolean;
     icon?: string;
     sizing?: 'sm' | 'md' | 'lg';

@@ -1,8 +1,4 @@
 import React, { useCallback, useRef, useEffect } from 'react';
-import Input from './Input';
-// import {
-//     XMarkIcon
-// } from '@heroicons/react/outline'
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;

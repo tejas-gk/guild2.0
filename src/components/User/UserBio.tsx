@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 export default function UserBio() {
     const { data: currentUser } = useCurrentUser();
     const router = useRouter();
-    const { data: user } = useUsers(router.query?.id as string);
+    const { data: user } = useUsers(router.query?.userId as string);
     const editModal = useEditModal();
     return (
         <div className=''>

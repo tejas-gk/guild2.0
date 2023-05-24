@@ -9,7 +9,6 @@ export default function UserBio() {
     const { data: currentUser } = useCurrentUser();
     const router = useRouter();
     const { data: user } = useUsers(router.query?.id as string);
-
     const editModal = useEditModal();
     return (
         <div className=''>
@@ -22,14 +21,13 @@ export default function UserBio() {
              relative
              '
             >
-                {currentUser?.id === user?.id ? (
+                {currentUser?.id === router.query?.userId ? (
                     <div>
                         <Button
                             title='Edit Profile'
                             colors='secondary'
                             onClick={() => editModal.onOpen()}
                         />
-                        <p>{currentUser?.id}</p>
                     </div>
                 ) : (
                     <div>

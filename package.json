@@ -69,5 +69,10 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "npm run commitmsg"
+    }
   }
 }

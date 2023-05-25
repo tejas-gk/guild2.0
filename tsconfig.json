@@ -18,6 +18,6 @@
             "@/*": ["./src/*"]
         }
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.ts", "src/__tests__/unit/navbar.test.tsx", "src/__tests__/unit/auth.test.js", "jest.setup.js","e2e"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.ts", "src/__tests__/unit/navbar.test.tsx", "src/__tests__/unit/auth.test.js", "jest.setup.js"],
     "exclude": ["node_modules"]
 }

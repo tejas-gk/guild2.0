@@ -41,7 +41,6 @@ export default function LoginModal() {
         '
         >
             <Input
-                placeholder='Email'
                 type='email'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setEmail(e.target.value)
@@ -51,7 +50,6 @@ export default function LoginModal() {
                 label='Email'
             />
             <Input
-                placeholder='Password'
                 type='password'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setPassword(e.target.value)

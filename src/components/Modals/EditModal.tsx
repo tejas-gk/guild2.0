@@ -70,11 +70,7 @@ const EditModal = () => {
                     onChange={(base64) =>
                         setProfileImage(base64 as unknown as File)
                     }
-                    value={
-                        profileImage
-                            ? URL.createObjectURL(profileImage)
-                            : undefined
-                    }
+                    value={profileImage}
                 />
                 <ImageUpload
                     label='Cover image'
@@ -82,9 +78,7 @@ const EditModal = () => {
                     onChange={(base64) =>
                         setCoverImage(base64 as unknown as File)
                     }
-                    value={
-                        coverImage ? URL.createObjectURL(coverImage) : undefined
-                    }
+                    value={coverImage}
                 />
             </div>
             <Input
@@ -92,21 +86,18 @@ const EditModal = () => {
                 label='Name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder='Enter your name'
             />
             <Input
                 disabled={isLoading}
                 label='Bio'
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                placeholder='Enter your bio'
             />
             <Input
                 disabled={isLoading}
                 label='Location'
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder='Enter your location'
             />
 
             <Input
@@ -114,7 +105,6 @@ const EditModal = () => {
                 label='Username'
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder='Enter your username'
             />
         </div>
     );

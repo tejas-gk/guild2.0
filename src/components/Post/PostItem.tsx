@@ -2,7 +2,7 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import Avatar from './Avatar';
-import { HeartIcon, MailIcon } from '@heroicons/react/outline';
+import { HeartIcon, MailIcon, ShareIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { pusherClient } from '@/lib/pusher';
 import axios from 'axios';
@@ -43,6 +43,24 @@ export default function PostItem({ data = {} }: PostItemProps): any {
             toast.error('fuck');
         }
     };
+
+    const footerItems = [
+        {
+            icon: MailIcon,
+            count: data?.comments?.length,
+            color: 'sky-500',
+        },
+        {
+            icon: HeartIcon,
+            count: likeCount,
+            color: 'red-500',
+            onClick: handleLike,
+        },
+        {
+            icon: ShareIcon,
+            color: 'red-500',
+        },
+    ];
 
     return (
         <div
@@ -118,7 +136,14 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                         </Link>
                     </div>
 
-                    <div className='flex flex-row items-center mt-3 gap-10'>
+                    <div
+                        className='flex 
+                    flex-row
+                     items-center
+                      mt-3
+                      gap-10 
+                      justify-between'
+                    >
                         <div
                             className='
                 flex 
@@ -149,6 +174,20 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                         >
                             <HeartIcon className='icon' />
                             <p>{likeCount}</p>
+                        </div>
+                        <div
+                            className='
+                flex 
+                flex-row 
+                items-center 
+                text-neutral-500 
+                gap-2 
+                cursor-pointer 
+                transition 
+                hover:text-red-500
+            '
+                        >
+                            <ShareIcon className='icon' />
                         </div>
                     </div>
                 </div>

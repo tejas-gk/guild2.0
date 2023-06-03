@@ -3,13 +3,15 @@ import useUsers from '@/hooks/useUsers';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import Button from '@/components/Button';
 import { CalendarIcon } from '@heroicons/react/outline';
-import { useEditModal } from '@/hooks/useEditModal';
+// import { useEditModal } from '@/hooks/useEditModal';
 import { useRouter } from 'next/router';
+import { useEditModal } from '@/hooks/useModal';
 export default function UserBio() {
     const { data: currentUser } = useCurrentUser();
     const router = useRouter();
     const { data: user } = useUsers(router.query?.userId as string);
     const editModal = useEditModal();
+    // const editModal = useModal('edit');
     return (
         <div className=''>
             <div
@@ -26,7 +28,7 @@ export default function UserBio() {
                         <Button
                             title='Edit Profile'
                             colors='secondary'
-                            onClick={() => editModal.onOpen()}
+                            onClick={editModal.onOpen}
                         />
                     </div>
                 ) : (

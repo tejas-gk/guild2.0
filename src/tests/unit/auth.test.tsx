@@ -1,3 +1,4 @@
+import Tets from '@/pages/tets';
 import Navbar from '@/components/Navbar';
 import { render, screen } from '@testing-library/react';
 
@@ -9,5 +10,11 @@ describe('auth works', () => {
     it('renders without crashing', () => {
         render(<div>Test</div>);
         expect(screen.getByText('Test')).toBeInTheDocument();
+    });
+
+    test('renders the Sign in button when not logged in', () => {
+        render(<Navbar />);
+        const signInButtonElement = screen.getByText('Sign in');
+        expect(signInButtonElement).toBeInTheDocument();
     });
 });

@@ -1,17 +1,19 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
-interface ModalStore<T> {
+interface ModalStore {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
-    data: T; // additional data property specific to the modal
 }
 
-export function useModalStore<T>(initialData: T): ModalStore<T> {
-    return create<ModalStore<T>>((set) => ({
+const createModalHook = (): (() => ModalStore) => {
+    return create<ModalStore>((set) => ({
         isOpen: false,
         onOpen: () => set({ isOpen: true }),
         onClose: () => set({ isOpen: false }),
-        data: initialData,
     }));
-}
+};
+
+export const useEditModal = createModalHook();
+export const useRegisterModal = createModalHook();
+export const useLoginModal = createModalHook();

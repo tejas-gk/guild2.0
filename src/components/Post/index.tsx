@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Avatar from './Avatar';
 import { PhotographIcon, XIcon } from '@heroicons/react/outline';
-import { useRegisterModal } from '@/hooks/useRegisterModal';
+import { useRegisterModal } from '@/hooks/useModal';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import usePosts from '@/hooks/usePosts';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
-import { useLoginModal } from '@/hooks/useLoginModal';
+import { useLoginModal } from '@/hooks/useModal';
 import usePost from '@/hooks/usePost';
 import Button from '@/components/Button';
 import ImageUpload from '../Input/ImageUpload';

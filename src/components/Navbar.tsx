@@ -16,7 +16,7 @@ import { ChevronDownIcon, MenuIcon } from '@heroicons/react/solid';
 import { Inter, Roboto } from 'next/font/google';
 import Dropdown from './Dropdown';
 import Link from 'next/link';
-import { useLoginModal } from '@/hooks/useLoginModal';
+import { useLoginModal } from '@/hooks/useModal';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import Avatar from './Post/Avatar';
 import Button from '@/components/Button';

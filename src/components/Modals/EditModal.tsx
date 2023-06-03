@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 
 import useCurrentUser from '@/hooks/useCurrentUser';
 import useUsers from '@/hooks/useUsers';
-import { useEditModal } from '@/hooks/useEditModal';
+import { useEditModal } from '@/hooks/useModal';
 import Modal from '../Modal';
 import Input from '../Input';
 import ImageUpload from '../Input/ImageUpload';
@@ -31,6 +31,7 @@ const EditModal = () => {
     }, [currentUser]);
 
     const editModal = useEditModal();
+
     const onSubmit = useCallback(async () => {
         try {
             setIsLoading(true);

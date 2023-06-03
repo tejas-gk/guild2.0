@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { useLoginModal } from '@/hooks/useLoginModal';
-import { useRegisterModal } from '@/hooks/useRegisterModal';
+import { useLoginModal } from '@/hooks/useModal';
+import { useRegisterModal } from '@/hooks/useModal';
 import Modal from '../Modal';
 import Input from '../Input';
 import { toast } from 'react-hot-toast';

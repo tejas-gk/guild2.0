@@ -13,7 +13,8 @@ describe('auth works', () => {
     });
 
     test('renders the Sign in button when not logged in', () => {
-        render(<Navbar />);
+        render(<Tets />);
+        // render(<Navbar />);
         const signInButtonElement = screen.getByText('Sign in');
         expect(signInButtonElement).toBeInTheDocument();
     });

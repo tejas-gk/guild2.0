@@ -28,58 +28,49 @@ const Input: React.FC<InputProps> = ({
     };
 
     return (
-        <div className='w-full relative'>
-            {label && (
-                <label
-                    className={`text-xl
-            text-black
-            font-semibold
-            mt-2
-            ml-4
-            absolute
-            transition-all
-            ${isFocused || value ? 'text-sky-500' : 'text-neutral-800'}
-            ${
-                isFocused || value
-                    ? 'transform scale-75 -translate-y-5'
-                    : 'translate-y-2'
-            }
-          `}
+        <div>
+            <label
+                title={label}
+                className={`
+                text-sm
+                relative
+                '
+                `}
+            >
+                <input
+                    type={type}
+                    value={value}
+                    onChange={onChange}
+                    className='
+                    h-20 w-full
+                    text-4xl
+                    bg-white
+                    border-2
+                    rounded-lg
+                    border-gray-300/50
+                    focus:outline-blue-500 outline-none
+                    transition 
+                    duration-200
+                    ease-in-out
+                    px-4 py-2
+
+                    '
+                />
+                <span
+                    className='input-text
+                    px-6
+                    text-4xl
+                    text-gray-400/80
+                    absolute
+                    -top-4 left-0
+                    transition
+                    duration-200
+                    ease-in-out
+                '
                 >
                     {label}
-                </label>
-            )}
-            <input
-                title={label}
-                disabled={disabled}
-                onChange={onChange}
-                value={value}
-                placeholder=''
-                type={type}
-                className={`
-          w-full
-          p-4 
-          text-lg 
-          bg-white
-          border-2 border-neutral-800 
-          rounded-md
-          outline-none
-          text-black
-          focus:border-sky-500
-          focus:border-2
-          transition
-          disabled:bg-neutral-900
-          disabled:opacity-70
-          disabled:cursor-not-allowed
-
-           ${isFocused || value ? 'pt-8 pb-2 border-b-2' : 'pt-4 pb-2'}
-        `}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-            />
-            {isFocused || value ? null : (
-                <div className='absolute w-full h-px bg-neutral-800 bottom-0 left-0'></div>
-            )}
+                </span>
+            </label>
         </div>
     );
 };

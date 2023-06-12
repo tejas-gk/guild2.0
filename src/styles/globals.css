@@ -5,3 +5,7 @@
 .icon {
     @apply h-9 w-6 lg:w-9 rounded-md lg:p-1 lg:hover:bg-gray-200 lg:hover:text-gray-700 lg:hover:shadow-lg;
 }
+
+input[type='text']:focus ~ .input-text {
+    @apply transform -translate-y-9 -translate-x-4 scale-75;
+}

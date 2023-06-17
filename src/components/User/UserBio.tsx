@@ -39,7 +39,9 @@ export default function UserBio() {
                             title='Follow'
                             colors='secondary'
                             onClick={() => {}}
-                        />
+                        >
+                            Follow
+                        </Button>
                     </div>
                 )}
             </div>

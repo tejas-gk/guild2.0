@@ -260,7 +260,7 @@ export default function Navbar() {
                             <Dropdown
                                 setIsOpen={setIsProfileDropdownOpen}
                                 className='
-                                w-[13rem]
+                                w-[12rem]
                                 left-auto
                                 right-12
                                 top-12
@@ -274,7 +274,9 @@ export default function Navbar() {
                                     onClick={() => signOut()}
                                     sizing='sm'
                                     colors='none'
-                                />
+                                >
+                                    Sign Out
+                                </Button>
                             </Dropdown>
                         </div>
                     )}

@@ -28,7 +28,6 @@ const Input: React.FC<InputProps> = ({
                 <input
                     value={value}
                     type={type}
-                    disabled={disabled}
                     placeholder={label}
                     onChange={onChange}
                     className={`
@@ -46,6 +45,7 @@ const Input: React.FC<InputProps> = ({
                     disabled:bg-gray-100
                     ${variants}
                     `}
+                    {...props}
                 />
                 {variants === 'signIn' && (
                     <span

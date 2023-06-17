@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, forwardRef, ForwardedRef } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    title: string;
+    title?: string;
     type?: 'button' | 'submit' | 'reset';
     className?: string;
     onClick?: (...args: any[]) => any;
@@ -31,7 +31,7 @@ const sizingClasses: SubClasses = {
 };
 
 const colorsClasses: SubClasses = {
-    primary: 'bg-gray-900 text-white hover:bg-gray-800',
+    primary: 'bg-black text-white hover:bg-gray-800',
     secondary: 'bg-blue-500 text-white hover:bg-blue-800',
     borderOnly: 'border border-black text-black hover:bg-gray-200',
     danger: 'bg-red-500 text-white hover:bg-red-800',
@@ -82,6 +82,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
     );
 });
 
-Button.displayName = 'Button';
+// Button.displayName = 'Button';
 
 export default Button;

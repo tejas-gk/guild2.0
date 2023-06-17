@@ -7,17 +7,17 @@ export default function MainLayout({ children }: LayoutProps) {
         <>
             <div
                 className='
-                    container
-                    h-full max-w-6x
-                    mx-auto
-                    px-4
-                    
+                    container 
+                    max-w-7xl
+                     mx-auto
+                      h-full
+                       pt-12
+                       min-h-screen
                 '
             >
                 <div
                     className='
                         grid grid-cols-4
-                        h-full
                         '
                 >
                     <div

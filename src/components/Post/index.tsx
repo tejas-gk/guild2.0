@@ -268,7 +268,9 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                                  pr-5
                                   items-center'
                                 >
-                                    <Button title='Post' onClick={onSubmit} />
+                                    <Button title='Post' onClick={onSubmit}>
+                                        Sav
+                                    </Button>
                                 </div>
                             </div>
                         )}

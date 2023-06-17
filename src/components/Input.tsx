@@ -3,73 +3,64 @@ import React, { useState } from 'react';
 interface InputProps {
     value?: string;
     type?: string;
+    variants?: string;
     disabled?: boolean;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     label?: string;
 }
 
+const variants = {
+    signIn: '',
+};
+
 const Input: React.FC<InputProps> = ({
     value,
     type = 'text',
+    variants,
     onChange,
     disabled,
     label,
+    ...props
 }) => {
-    const [isFocused, setIsFocused] = useState(false);
-
-    const handleFocus = () => {
-        setIsFocused(true);
-    };
-
-    const handleBlur = () => {
-        if (!value) {
-            setIsFocused(false);
-        }
-    };
-
     return (
         <div>
-            <label
-                title={label}
-                className={`
-                text-sm
-                relative
-                '
-                `}
-            >
+            <label className='relative'>
                 <input
-                    type={type}
                     value={value}
+                    type={type}
+                    disabled={disabled}
+                    placeholder={label}
                     onChange={onChange}
-                    className='
-                    h-20 w-full
-                    text-4xl
-                    bg-white
+                    className={`
+                    w-full
+                    p-4
                     border-2
                     rounded-lg
-                    border-gray-300/50
-                    focus:outline-blue-500 outline-none
-                    transition 
-                    duration-200
-                    ease-in-out
-                    px-4 py-2
-
-                    '
-                />
-                <span
-                    className='input-text
-                    px-6
-                    text-4xl
-                    text-gray-400/80
-                    absolute
-                    -top-4 left-0
+                    outline-none
+                    focus:outline-none
+                    focus:border-blue-500
                     transition
                     duration-200
-                    ease-in-out
-                '
-                >
-                    {label}
-                </span>
+                    disabled:opacity-50
+                    disabled:cursor-not-allowed
+                    disabled:bg-gray-100
+                    ${variants}
+                    `}
+                />
+                {variants === 'signIn' && (
+                    <span
+                        className='text-up
+                        absolute
+                        top-1/2 left-4
+                        transform -translate-y-1/2
+                        focus-within:text-blue-500
+                        transition
+                        duration-200
+                        text-gray-400'
+                    >
+                        {label}
+                    </span>
+                )}
             </label>
         </div>
     );

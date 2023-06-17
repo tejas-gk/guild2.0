@@ -1,4 +1,6 @@
 import React, { useCallback, useRef, useEffect } from 'react';
+import Button from './Button';
+import { XIcon } from '@heroicons/react/outline';
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -73,7 +75,7 @@ export default function Modal({
                 {/*content*/}
                 <div
                     className='
-            w-full h-full lg:h-auto  
+            w-full h-full lg:h-auto 
             border-0 
             rounded-lg 
             shadow-lg 
@@ -114,7 +116,7 @@ export default function Modal({
                 '
                             onClick={handleClose}
                         >
-                            X
+                            <XIcon className='h-6 w-6' />
                         </button>
                     </div>
                     {/*body*/}
@@ -161,6 +163,13 @@ export default function Modal({
                         >
                             {actionLabel}
                         </button>
+                        <Button
+                            title='Cancel'
+                            colors='primary'
+                            onClick={handleClose}
+                        >
+                            Cancel
+                        </Button>
 
                         {footer}
                     </div>

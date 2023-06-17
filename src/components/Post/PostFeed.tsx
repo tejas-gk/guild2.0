@@ -16,7 +16,7 @@ export default function PostFeed({
 
     return (
         <div className=''>
-            <PostCard
+            {/* <PostCard
                 post={{
                     id: 1,
                     image: 'https://iili.io/HCURIHu.jpg',
@@ -36,7 +36,7 @@ export default function PostFeed({
                         Add to cart
                     </PostCard.Footer>
                 }
-            />
+            /> */}
             {posts?.map((post: Record<string, any>) => (
                 <div key={post.id} className='gap-4 mx-4 mt-4'>
                     <PostItem data={post} />

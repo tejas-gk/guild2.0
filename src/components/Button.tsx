@@ -7,6 +7,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     onClick?: (...args: any[]) => any;
     disabled?: boolean;
     icon?: string;
+    children?: React.ReactNode;
     sizing?: 'sm' | 'md' | 'lg';
     colors?:
         | 'primary'
@@ -52,6 +53,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
         sizing,
         colors,
         icon,
+        children,
         ...props
     },
     ref
@@ -75,8 +77,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
             disabled={disabled}
             {...props}
         >
-            {icon}
-            {title}
+            {children}
         </button>
     );
 });

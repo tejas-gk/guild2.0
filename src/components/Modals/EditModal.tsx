@@ -87,6 +87,7 @@ const EditModal = () => {
                 label='Name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                variants='signIn'
             />
             <Input
                 disabled={isLoading}

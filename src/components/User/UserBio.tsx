@@ -29,7 +29,9 @@ export default function UserBio() {
                             title='Edit Profile'
                             colors='secondary'
                             onClick={editModal.onOpen}
-                        />
+                        >
+                            Edit Profile
+                        </Button>
                     </div>
                 ) : (
                     <div>

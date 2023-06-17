@@ -2,7 +2,7 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import Avatar from './Avatar';
-import { HeartIcon, MailIcon, ShareIcon } from '@heroicons/react/outline';
+import { HeartIcon, MailIcon, TrashIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { pusherClient } from '@/lib/pusher';
 import axios from 'axios';
@@ -44,23 +44,33 @@ export default function PostItem({ data = {} }: PostItemProps): any {
         }
     };
 
-    const footerItems = [
-        {
-            icon: MailIcon,
-            count: data?.comments?.length,
-            color: 'sky-500',
-        },
-        {
-            icon: HeartIcon,
-            count: likeCount,
-            color: 'red-500',
-            onClick: handleLike,
-        },
-        {
-            icon: ShareIcon,
-            color: 'red-500',
-        },
-    ];
+    // const footerItems = [
+    //     {
+    //         icon: MailIcon,
+    //         count: data?.comments?.length,
+    //         color: 'sky-500',
+    //     },
+    //     {
+    //         icon: HeartIcon,
+    //         count: likeCount,
+    //         color: 'red-500',
+    //         onClick: handleLike,
+    //     },
+    //     {
+    //         icon: ShareIcon,
+    //         color: 'red-500',
+    //     },
+    // ];
+
+    const deletePost = async (postId: string) => {
+        try {
+            const url = `/api/posts/${postId}`;
+            await axios.delete(url);
+            toast.success('Deleted');
+        } catch (error: any) {
+            toast.error(error.message);
+        }
+    };
 
     return (
         <div
@@ -186,8 +196,9 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                 transition 
                 hover:text-red-500
             '
+                            onClick={() => deletePost(data?.id)}
                         >
-                            <ShareIcon className='icon' />
+                            <TrashIcon className='icon' />
                         </div>
                     </div>
                 </div>

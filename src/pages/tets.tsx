@@ -6,6 +6,13 @@ export default function Tets() {
         <div>
             <button>Sign in</button>
             <Button title='Post' onClick={() => {}} />
+
+            <input
+                type='text'
+                className='
+                border-0
+                '
+            />
         </div>
     );
 }

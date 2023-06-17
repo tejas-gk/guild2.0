@@ -68,8 +68,6 @@ export default function Index() {
             hover:shadow-md
           '
                 >
-                    <p>{i}</p>
-
                     <Avatar seed={notification?.userId} />
                     <p
                         className='

@@ -1,4 +1,3 @@
-import Contributors from '@/components/Contributors';
 import ToFollow from '@/components/ToFollow';
 interface LayoutProps {
     children: React.ReactNode;
@@ -8,35 +7,28 @@ export default function MainLayout({ children }: LayoutProps) {
         <>
             <div
                 className='
-                h-screen   
-            '
+                    container
+                    h-full max-w-6x
+                    mx-auto
+                    px-4
+                    
+                '
             >
                 <div
                     className='
-                    container
-                    h-full max-w-6xl
-                    mx-auto
-                    px-4
-                '
+                        grid grid-cols-4
+                        h-full
+                        '
                 >
                     <div
                         className='
-                        grid grid-cols-4
-                        h-full
-                      
-                        '
-                    >
-                        <Contributors />
-                        <div
-                            className='
-                            col-span-3 lg:col-span-2
+                            col-span-3 lg:col-span-3
                             border-x-[1px] border-gray-800
                             '
-                        >
-                            {children}
-                        </div>
-                        <ToFollow />
+                    >
+                        {children}
                     </div>
+                    <ToFollow />
                 </div>
             </div>
         </>

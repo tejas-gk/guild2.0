@@ -7,10 +7,6 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    // if (req.method !== 'POST' && req.method !== 'GET') {
-    //     return res.status(405).send('Method not allowed');
-    // }
-
     try {
         if (req.method === 'POST') {
             const { currentUser } = await serverAuth(req, res);

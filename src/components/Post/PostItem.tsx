@@ -8,6 +8,8 @@ import { pusherClient } from '@/lib/pusher';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
+import usePosts from '@/hooks/usePosts';
+import usePost from '@/hooks/usePost';
 
 interface PostItemProps {
     userId?: string;
@@ -15,7 +17,11 @@ interface PostItemProps {
 }
 
 export default function PostItem({ data = {} }: PostItemProps): any {
+    const currentUser = useCurrentUser();
     const router = useRouter();
+    const { mutate: mutatePosts } = usePosts();
+    const { mutate: mutatePost } = usePost(router.query.id as string);
+
     const [likeCount, setLikeCount] = useState<number>(
         data.likedIds?.length || 0
     );
@@ -44,28 +50,14 @@ export default function PostItem({ data = {} }: PostItemProps): any {
         }
     };
 
-    // const footerItems = [
-    //     {
-    //         icon: MailIcon,
-    //         count: data?.comments?.length,
-    //         color: 'sky-500',
-    //     },
-    //     {
-    //         icon: HeartIcon,
-    //         count: likeCount,
-    //         color: 'red-500',
-    //         onClick: handleLike,
-    //     },
-    //     {
-    //         icon: ShareIcon,
-    //         color: 'red-500',
-    //     },
-    // ];
-
     const deletePost = async (postId: string) => {
         try {
-            const url = `/api/posts/${postId}`;
-            await axios.delete(url);
+            const url = `/api/posts`;
+            await axios.delete(url, {
+                data: { postId },
+            });
+            mutatePost();
+            mutatePosts();
             toast.success('Deleted');
         } catch (error: any) {
             toast.error(error.message);
@@ -82,7 +74,7 @@ export default function PostItem({ data = {} }: PostItemProps): any {
             <div>
                 <div
                     className='  
-             border-b-[1px] 
+        border-b-[1px] 
         border-neutral-800 
         p-5 
         cursor-pointer 
@@ -185,8 +177,9 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                             <HeartIcon className='icon' />
                             <p>{likeCount}</p>
                         </div>
-                        <div
-                            className='
+                        {currentUser?.data?.id === data?.user?.id && (
+                            <div
+                                className='
                 flex 
                 flex-row 
                 items-center 
@@ -196,10 +189,11 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                 transition 
                 hover:text-red-500
             '
-                            onClick={() => deletePost(data?.id)}
-                        >
-                            <TrashIcon className='icon' />
-                        </div>
+                                onClick={() => deletePost(data?.id)}
+                            >
+                                <TrashIcon className='icon' />
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

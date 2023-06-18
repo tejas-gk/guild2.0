@@ -269,7 +269,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                                   items-center'
                                 >
                                     <Button title='Post' onClick={onSubmit}>
-                                        Sav
+                                        Post
                                     </Button>
                                 </div>
                             </div>

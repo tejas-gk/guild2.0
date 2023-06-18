@@ -5,12 +5,10 @@ import PostCard from './PostCard';
 
 interface PostFeedProps {
     data?: Record<string, any>;
-    userId?: string;
 }
 
 export default function PostFeed({
     data,
-    userId,
 }: PostFeedProps): React.ReactElement<React.ReactNode> {
     const posts = data;
 

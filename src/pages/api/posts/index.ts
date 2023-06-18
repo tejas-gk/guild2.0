@@ -17,6 +17,7 @@ export default async function handler(
                     body,
                     image,
                     userId: currentUser.id,
+                    guildId: currentUser.id, //TODO: this is a optional field
                 },
             });
 

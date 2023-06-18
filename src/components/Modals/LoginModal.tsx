@@ -65,14 +65,14 @@ export default function LoginModal() {
         flex
         justify-center
         gap-4
+        text-neutral-500
         '
         >
             <p>Don&apos;t have an account? </p>
             <button
                 className='
             text-primary-500
-            hover:text-primary-600
-            transition
+            
             '
                 onClick={() => {
                     loginModal.onClose();

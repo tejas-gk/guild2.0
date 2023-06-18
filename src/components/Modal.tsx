@@ -109,6 +109,9 @@ export default function Modal({
                             border-0
                           text-black
                             hover:opacity-70 
+                            hover:bg-gray-200
+                            rounded-full
+                            hover:p-1
                             transition'
                             onClick={handleClose}
                         >

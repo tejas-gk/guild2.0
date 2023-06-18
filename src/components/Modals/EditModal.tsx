@@ -28,6 +28,7 @@ const EditModal = () => {
         setProfileImage(currentUser?.profileImage);
         setUsername(currentUser?.username);
         setLocation(currentUser?.location);
+        console.log(currentUser?.profileImage);
     }, [currentUser]);
 
     const editModal = useEditModal();
@@ -66,20 +67,21 @@ const EditModal = () => {
         <div className='flex flex-col space-y-4'>
             <div className='flex flex-col space-y-2'>
                 <ImageUpload
-                    label='Profile image'
-                    disabled={isLoading}
-                    onChange={(base64) =>
-                        setProfileImage(base64 as unknown as File)
-                    }
-                    value={profileImage}
-                />
-                <ImageUpload
                     label='Cover image'
                     disabled={isLoading}
                     onChange={(base64) =>
                         setCoverImage(base64 as unknown as File)
                     }
                     value={coverImage}
+                />
+                <ImageUpload
+                    label='Profile image'
+                    disabled={isLoading}
+                    onChange={(base64) =>
+                        setProfileImage(base64 as unknown as File)
+                    }
+                    value={profileImage}
+                    variants='profile'
                 />
             </div>
             <Input

@@ -27,25 +27,12 @@ export default function LoginModal() {
 
     const [errors, setErrors] = useState<Partial<FormValues>>({});
 
-    const validateForm = (): Partial<FormValues> => {
-        const errors: Partial<FormValues> = {};
-        if (!validationRules.required().validator(name)) {
-            errors.name = validationRules.required().message;
-        }
-        if (!validationRules.required().validator(username)) {
-            errors.username = validationRules.required().message;
-        }
-        if (!validationRules.email().validator(email)) {
-            errors.email = validationRules.email().message;
-        }
-        if (!validationRules.required().validator(password)) {
-            errors.password = validationRules.required().message;
-        }
-        return errors;
-    };
-
     const onSubmit = useCallback(async () => {
         setIsLoading(true);
+
+        const isValidEmail = validationRules.email(email);
+        console.log(isValidEmail, 'validation');
+
         try {
             await axios.post('/api/register', {
                 email,
@@ -84,6 +71,14 @@ export default function LoginModal() {
                 disabled={isLoading}
                 label='Name'
             />
+            <span
+                className='
+            text-red-400
+            -mt-3 ml-2
+            text-sm'
+            >
+                Name error
+            </span>
             <Input
                 type='text'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -102,6 +97,14 @@ export default function LoginModal() {
                 disabled={isLoading}
                 label='Email'
             />
+            <span
+                className='
+            text-red-400
+            -mt-3 ml-2
+            text-sm'
+            >
+                {errors?.email}
+            </span>
             <Input
                 type='password'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -116,10 +119,6 @@ export default function LoginModal() {
 
     const footerContent = (
         <>
-            {errors.password && <span>{errors.password}</span>}
-            {errors.name && <span>{errors.name}</span>}
-            {errors.username && <span>{errors.username}</span>}
-            {errors.email && <span>{errors.email}</span>}{' '}
             <div
                 className='
             text-neutral-500
@@ -129,10 +128,10 @@ export default function LoginModal() {
             >
                 Already have an account?{' '}
                 <span
-                    className='
+                    className={`
                 text-primary-500
                 cursor-pointer
-                '
+                `}
                     onClick={() => {
                         // todo make a separate function for this
                         registerModal.onClose();

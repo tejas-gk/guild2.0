@@ -127,10 +127,10 @@ export default function UserBio() {
                             <div
                                 className='
                             flex
-                             flex-row
-                              items-center
-                               space-x-4
-                               mt-2
+                            flex-row
+                            items-center
+                            space-x-4
+                            mt-2
                                '
                             >
                                 <p

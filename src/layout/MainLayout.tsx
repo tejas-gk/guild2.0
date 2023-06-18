@@ -18,12 +18,12 @@ export default function MainLayout({ children }: LayoutProps) {
                 <div
                     className='
                         grid grid-cols-4
+                        h-screen
                         '
                 >
                     <div
                         className='
                             col-span-3 lg:col-span-3
-                            border-x-[1px] border-gray-800
                             '
                     >
                         {children}

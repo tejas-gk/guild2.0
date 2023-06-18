@@ -3,17 +3,28 @@ import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 interface DropzoneProps {
-    onChange: (base64: string) => void;
+    onChange: (base64: string | null) => void;
     label: string;
-    value?: string;
+    value?: string | File | null | undefined;
     disabled?: boolean;
+    variants?: string;
 }
+
+interface SubClasses {
+    [key: string]: string;
+}
+
+const variants: SubClasses = {
+    profile: 'rounded-full w-[100px] h-[100px]',
+    banner: 'rounded-md w-full p h-20',
+};
 
 const ImageUpload: React.FC<DropzoneProps> = ({
     onChange,
     label,
     value,
     disabled,
+    variants: variantName = 'banner',
 }) => {
     const [base64, setBase64] = useState(value);
 
@@ -25,12 +36,13 @@ const ImageUpload: React.FC<DropzoneProps> = ({
     );
 
     const handleDrop = useCallback(
-        (files: any) => {
+        (files: File[]) => {
             const file = files[0];
             const reader = new FileReader();
-            reader.onload = (event: any) => {
-                setBase64(event.target.result);
-                handleChange(event.target.result);
+            reader.onload = () => {
+                const base64String = reader.result as string;
+                setBase64(base64String);
+                handleChange(base64String);
             };
             reader.readAsDataURL(file);
         },
@@ -47,21 +59,33 @@ const ImageUpload: React.FC<DropzoneProps> = ({
         },
     });
 
+    const variantClass = variants[variantName] || '';
+
     return (
         <div
             {...getRootProps({
-                className:
-                    'w-full p-4 text-white text-center border-2 border-dotted rounded-md border-neutral-700',
+                className: `text-white text-center border-2 border-dotted border-neutral-700 ${variantClass}`,
             })}
         >
             <input {...getInputProps()} />
             {base64 ? (
-                <div className='flex items-center justify-center'>
+                <div
+                    className='
+                flex
+                items-center
+                justify-center
+                h-inherit w-inherit
+                '
+                >
                     <Image
-                        src={base64}
+                        src={typeof base64 === 'string' ? base64 : ''}
                         height='100'
                         width='100'
                         alt='Uploaded image'
+                        className={`
+                        object-cover
+                        ${variantClass}
+                        `}
                     />
                 </div>
             ) : (

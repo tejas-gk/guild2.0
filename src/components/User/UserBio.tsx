@@ -6,12 +6,13 @@ import { CalendarIcon } from '@heroicons/react/outline';
 // import { useEditModal } from '@/hooks/useEditModal';
 import { useRouter } from 'next/router';
 import { useEditModal } from '@/hooks/useModal';
+import useFollow from '@/hooks/useFollow';
 export default function UserBio() {
     const { data: currentUser } = useCurrentUser();
     const router = useRouter();
     const { data: user } = useUsers(router.query?.userId as string);
     const editModal = useEditModal();
-    // const editModal = useModal('edit');
+    const { isFollowing, toggleFollow } = useFollow(user?.id as string);
     return (
         <div className=''>
             <div
@@ -36,11 +37,11 @@ export default function UserBio() {
                 ) : (
                     <div>
                         <Button
-                            title='Follow'
                             colors='secondary'
-                            onClick={() => {}}
+                            onClick={toggleFollow}
+                            title={isFollowing ? 'Unfollow' : 'Follow'}
                         >
-                            Follow
+                            {isFollowing ? 'Unfollow' : 'Follow'}
                         </Button>
                     </div>
                 )}

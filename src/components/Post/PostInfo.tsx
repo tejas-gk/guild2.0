@@ -6,7 +6,16 @@ export type Props = {
 };
 
 function PostInfo({ children }: Props) {
-    return <div className='product-info'>{children}</div>;
+    return (
+        <div
+            className='
+        relative
+        
+    '
+        >
+            {children}
+        </div>
+    );
 }
 
 export default PostInfo;

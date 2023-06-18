@@ -1,13 +1,5 @@
 import { createContext, useContext } from 'react';
-
-export type Post = {
-    id: number;
-    image: string;
-    post: string;
-    category: string;
-    rating: { stars: number; reviews: number };
-    price: number;
-};
+import { Post } from '@/types/post';
 
 const PostCardContext = createContext<{ post: Post } | null>(null);
 

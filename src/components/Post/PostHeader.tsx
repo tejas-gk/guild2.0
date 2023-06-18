@@ -4,25 +4,18 @@ import { usePostCardContext } from '@/context/PostCardContext';
 import { Post } from '@/types/post';
 type Props = {
     children: ReactNode;
-    onClick: (post: Post) => void;
 };
 
-function PostFooter({ children, onClick }: Props) {
-    const { post } = usePostCardContext();
-
-    const handleClick = () => {
-        // onClick(post);
-    };
-
+function ProductFooter({ children }: Props) {
     return (
         <div
-            className='
-            flex
+            className='flex
             flex-row
             gap-3
             items-center
-            w-full
-            bg-gray-50
+                                    max-h-40
+                        text-xs
+                        text-gray-500
         '
         >
             {children}
@@ -30,4 +23,4 @@ function PostFooter({ children, onClick }: Props) {
     );
 }
 
-export default PostFooter;
+export default ProductFooter;

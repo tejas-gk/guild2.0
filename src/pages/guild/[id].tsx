@@ -29,6 +29,7 @@ export default function GuildPage() {
                 <div>
                     <h1>Guild ID: {id}</h1>
                     <h2>Guild Name: {guildData.name}</h2>
+                    <h2>Guild Leader: {guildData.userId}</h2>
                 </div>
             ) : (
                 <p>Loading guild data...</p>

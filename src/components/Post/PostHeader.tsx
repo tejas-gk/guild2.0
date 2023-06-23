@@ -13,9 +13,10 @@ function ProductFooter({ children }: Props) {
             flex-row
             gap-3
             items-center
-                                    max-h-40
-                        text-xs
-                        text-gray-500
+            max-h-40
+            text-xs
+            text-gray-500
+            border-debug-red
         '
         >
             {children}

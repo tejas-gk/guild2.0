@@ -6,7 +6,7 @@ import Input from '../Input';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
-import { validationRules } from '@/utils/registerRules';
+import { schema } from '@/pages/api/register';
 
 interface FormValues {
     email: string;
@@ -29,9 +29,6 @@ export default function LoginModal() {
 
     const onSubmit = useCallback(async () => {
         setIsLoading(true);
-
-        const isValidEmail = validationRules.email(email);
-        console.log(isValidEmail, 'validation');
 
         try {
             await axios.post('/api/register', {

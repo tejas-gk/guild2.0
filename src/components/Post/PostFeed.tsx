@@ -21,7 +21,7 @@ export default function PostFeed({
                 post={{
                     id: 1,
                     image: 'https://iili.io/HCURIHu.jpg',
-                    post: 'Viston Earl Grey Tea',
+                    post: 'Viston Earl Grey Tea lorem ipsum dolor mdekmkdddddddddddddddddddddddddd',
                     category: 'Black Tea',
                     price: 8.95,
                 }}
@@ -34,7 +34,7 @@ export default function PostFeed({
                             height={24}
                             className='
                                     object-cover
-                                    rounded-full
+                                     rounded-full
 
                                 '
                         />
@@ -54,7 +54,12 @@ export default function PostFeed({
                             Posted by{' '}
                             <span className='text-zinc-900'>tejas</span>
                         </p>
-                        <span className='text-zinc-900 text-sm'>1h ago</span>
+                        <p
+                            className='text-zinc-900 
+                        text-xs'
+                        >
+                            1h ago
+                        </p>
                     </PostCard.Header>
                 }
                 image={<PostCard.Image />}

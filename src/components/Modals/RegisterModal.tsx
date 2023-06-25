@@ -3,10 +3,10 @@ import { useLoginModal } from '@/hooks/useModal';
 import { useRegisterModal } from '@/hooks/useModal';
 import Modal from '../Modal';
 import Input from '../Input';
-import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
 import { schema } from '@/pages/api/register';
+import { useToast } from '@/hooks/useToast';
 
 interface FormValues {
     email: string;
@@ -18,6 +18,7 @@ interface FormValues {
 export default function LoginModal() {
     const loginModal = useLoginModal();
     const registerModal = useRegisterModal();
+    const toast = useToast();
 
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
@@ -49,7 +50,7 @@ export default function LoginModal() {
             console.log('error', error);
         }
         setIsLoading(false);
-    }, [registerModal, email, name, username, password]);
+    }, [registerModal, email, name, username, password, toast]);
 
     const bodyContent = (
         <div

@@ -4,7 +4,6 @@ import Link from 'next/link';
 import PostCard from './PostCard';
 import Image from 'next/image';
 import { useToast } from '@/hooks/useToast';
-import Toast from '../Toast';
 
 interface PostFeedProps {
     data?: Record<string, any>;
@@ -20,16 +19,6 @@ export default function PostFeed({
 
     return (
         <div className='flex flex-col'>
-            <button
-                onClick={() => {
-                    toast.onOpen('hello');
-                }}
-            >
-                toast
-            </button>
-
-            <Toast isOpen={toast.isOpen} message='hello' />
-
             <PostCard
                 post={{
                     id: 1,

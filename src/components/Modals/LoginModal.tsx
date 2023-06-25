@@ -4,14 +4,17 @@ import { useLoginModal } from '@/hooks/useModal';
 import Modal from '../Modal';
 import axios from 'axios';
 import Input from '../Input';
-import { toast } from 'react-hot-toast';
 import { signIn } from 'next-auth/react';
+import { useToast } from '@/hooks/useToast';
+
 export default function LoginModal() {
     const loginModal = useLoginModal();
     const registerModal = useRegisterModal();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    const toast = useToast();
 
     const onSubmit = useCallback(async () => {
         setIsLoading(true);
@@ -28,7 +31,7 @@ export default function LoginModal() {
             console.log(error);
         }
         setIsLoading(false);
-    }, [loginModal, email, password]);
+    }, [loginModal, email, password, toast]);
 
     const bodyContent = (
         <div

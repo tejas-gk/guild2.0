@@ -295,17 +295,23 @@ export default function Navbar() {
                         }
                     />
                     {isProfileDropdownOpen && (
-                        <div>
+                        <div
+                            className='
+                                absolute 
+                        right-0 
+                        mt-8 
+                        w-[12rem] 
+                            '
+                        >
                             <Dropdown
                                 setIsOpen={setIsProfileDropdownOpen}
                                 className='
-                               
                                 left-auto
                                 right-12
-                                top-12
+                                top-3
                                 '
                             >
-                                <Link href={`/users/${currentUser?.username}`}>
+                                <Link href={`/users/${currentUser?.id}`}>
                                     Profile
                                 </Link>
                                 <Button

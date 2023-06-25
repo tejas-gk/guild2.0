@@ -3,12 +3,9 @@ import { XIcon } from '@heroicons/react/outline';
 import { useToast } from '@/hooks/useToast';
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 
-interface ToastProps {
-    message?: string;
-    isOpen?: boolean;
-}
+interface ToastProps {}
 
-const Toast: React.FC<ToastProps> = ({ message, isOpen = false }) => {
+const Toast: React.FC<ToastProps> = () => {
     const toast = useToast();
     const toastRef = React.useRef<HTMLDivElement>(null);
 
@@ -28,7 +25,7 @@ const Toast: React.FC<ToastProps> = ({ message, isOpen = false }) => {
     }, [toastRef, toast.onClose]);
 
     useEffect(() => {
-        if (isOpen) {
+        if (toast.isOpen) {
             const timer = setTimeout(() => {
                 toast.onClose();
             }, 5000);
@@ -36,7 +33,11 @@ const Toast: React.FC<ToastProps> = ({ message, isOpen = false }) => {
                 clearTimeout(timer);
             };
         }
-    }, [isOpen, toast.onClose]);
+    }, [toast.isOpen, toast.onClose]);
+
+    useEffect(() => {
+        console.log('toast', toast);
+    }, [toast]);
 
     const handleDrag = (_: DraggableEvent, { deltaY }: DraggableData) => {};
 
@@ -66,8 +67,9 @@ const Toast: React.FC<ToastProps> = ({ message, isOpen = false }) => {
                 transition-all duration-300
                 transform
                 group
+                z-50
                 ${
-                    isOpen
+                    toast.isOpen
                         ? 'translate-y-0  opacity-100'
                         : 'translate-y-full opacity-0'
                 }
@@ -75,9 +77,15 @@ const Toast: React.FC<ToastProps> = ({ message, isOpen = false }) => {
                 ref={toastRef}
             >
                 <p>
-                    <span className='font-bold '>Success</span>
+                    <span
+                        className='font-bold 
+                    capitalize
+                    '
+                    >
+                        {toast.type}
+                    </span>
                 </p>
-                <p>{message}</p>
+                <p>{toast.message}</p>
                 <XIcon
                     onClick={() => {
                         toast.onClose();

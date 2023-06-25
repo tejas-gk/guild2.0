@@ -29,7 +29,7 @@ export default function App({ Component, pageProps, router }: AppProps) {
                 )}
 
                 <Navbar />
-                {/* <Toast /> */}
+                <Toast />
 
                 <Layout pathname={router.pathname}>
                     <Component {...pageProps} />

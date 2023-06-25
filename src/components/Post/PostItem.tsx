@@ -11,10 +11,10 @@ import {
 import Link from 'next/link';
 import { pusherClient } from '@/lib/pusher';
 import axios from 'axios';
-import { toast } from 'react-hot-toast';
 import Image from 'next/image';
 import usePosts from '@/hooks/usePosts';
 import usePost from '@/hooks/usePost';
+import { useToast } from '@/hooks/useToast';
 
 interface PostItemProps {
     userId?: string;
@@ -26,6 +26,7 @@ export default function PostItem({ data = {} }: PostItemProps): any {
     const router = useRouter();
     const { mutate: mutatePosts } = usePosts();
     const { mutate: mutatePost } = usePost(router.query.id as string);
+    const toast = useToast();
 
     const [likeCount, setLikeCount] = useState<number>(
         data?.likedIds?.length || 0
@@ -43,8 +44,14 @@ export default function PostItem({ data = {} }: PostItemProps): any {
         };
     }, [data.id]);
 
+    const hasLiked = false;
+
     const handleLike = async () => {
         try {
+            if (hasLiked) {
+                toast.warning('I havent written this yet');
+                return;
+            }
             await axios.post('/api/like', {
                 postId: data.id,
             });

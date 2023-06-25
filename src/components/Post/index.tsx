@@ -4,13 +4,13 @@ import { PhotographIcon, XIcon } from '@heroicons/react/outline';
 import { useRegisterModal } from '@/hooks/useModal';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import usePosts from '@/hooks/usePosts';
-import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { useLoginModal } from '@/hooks/useModal';
 import usePost from '@/hooks/usePost';
 import Button from '@/components/Button';
 import ImageUpload from '../Input/ImageUpload';
 import Image from 'next/image';
+import { useToast } from '@/hooks/useToast';
 
 interface PostProps {
     postId?: string;
@@ -21,6 +21,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
 
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
+    const toast = useToast();
 
     const { data: currentUser } = useCurrentUser();
     const { mutate: mutatePosts } = usePosts();

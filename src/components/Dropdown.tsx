@@ -29,22 +29,34 @@ export default function Dropdown({ children, className, setIsOpen }: any) {
         };
     }, [setIsOpen]);
 
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setIsVisible(true);
+        }, 0);
+
+        return () => clearTimeout(timeout);
+    }, []);
+
     return (
         <div
             ref={dropdownRef}
             className={`
-                bg-white
-                shadow-md
-                absolute
-                left-0 top-10
-                w-full
-                flex
-                flex-col
-                rounded-md
-                border border-gray-200
-                py-5 px-4
-                ${className}
-            `}
+        bg-white
+        shadow-md
+        absolute
+        left-0 top-10
+        w-full
+        flex
+        flex-col
+        rounded-md
+        border border-gray-200
+        py-5 px-4
+        ${className}
+        ${isVisible ? 'opacity-100' : 'opacity-0'}
+        transition-opacity duration-300
+      `}
         >
             {children}
         </div>

@@ -2,7 +2,12 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import Avatar from './Avatar';
-import { HeartIcon, MailIcon, TrashIcon } from '@heroicons/react/outline';
+import {
+    HeartIcon,
+    MailIcon,
+    TrashIcon,
+    ShareIcon,
+} from '@heroicons/react/outline';
 import Link from 'next/link';
 import { pusherClient } from '@/lib/pusher';
 import axios from 'axios';
@@ -23,7 +28,7 @@ export default function PostItem({ data = {} }: PostItemProps): any {
     const { mutate: mutatePost } = usePost(router.query.id as string);
 
     const [likeCount, setLikeCount] = useState<number>(
-        data.likedIds?.length || 0
+        data?.likedIds?.length || 0
     );
 
     useEffect(() => {
@@ -120,21 +125,24 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                     </div>
                     <div>
                         <Link href={`/posts/${data?.id}`}>
+                            <p
+                                className='
+                            text-gray-700
+                            '
+                            >
+                                {data?.body}
+                            </p>
                             {data?.image && (
                                 <Image
                                     src={data?.image}
                                     alt='image'
                                     width={500}
                                     height={500}
+                                    className='
+                                        object-cover
+                                    '
                                 />
                             )}
-                            <p
-                                className='
-                    text-gray-700
-                    '
-                            >
-                                {data?.body}
-                            </p>
                         </Link>
                     </div>
 
@@ -194,6 +202,21 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                                 <TrashIcon className='icon' />
                             </div>
                         )}
+
+                        <div
+                            className='
+                flex 
+                flex-row 
+                items-center 
+                text-neutral-500 
+                gap-2 
+                cursor-pointer 
+                transition 
+            '
+                            onClick={() => deletePost(data?.id)}
+                        >
+                            <ShareIcon className='icon' />
+                        </div>
                     </div>
                 </div>
             </div>

@@ -25,19 +25,6 @@ export default function Guild() {
         }
     };
 
-    React.useEffect(() => {
-        const getGuild = async () => {
-            try {
-                const response = await axios.get('/api/guild');
-                setGuild(response.data);
-                console.log(guild);
-            } catch (error) {
-                console.log('error', error);
-            }
-        };
-        getGuild();
-    }, []);
-
     return (
         <div>
             <input
@@ -47,14 +34,6 @@ export default function Guild() {
                 placeholder='Guild Name'
             />
             <button onClick={handleCreateGuild}>Create Guild</button>
-
-            <div>
-                {guild.map((guild) => (
-                    <div key={guild.id}>
-                        <Link href={`/guild/${guild.id}`}>{guild.name}</Link>
-                    </div>
-                ))}
-            </div>
         </div>
     );
 }

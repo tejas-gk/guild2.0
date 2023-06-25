@@ -7,6 +7,7 @@ import PostText from './PostText';
 import PostInfo from './PostInfo';
 import PostHeader from './PostHeader';
 import { Post } from '@/types/post';
+
 type Props = {
     post: Post;
     image?: ReactNode;
@@ -17,47 +18,35 @@ type Props = {
 
 function PostCard({ image, info, action, post, header }: Props) {
     const mainCardRef = React.useRef<HTMLDivElement>(null);
+
     return (
         <PostCardContext.Provider value={{ post }}>
             <div
-                className='
-            rounded-md
-            bg-white
-            shadow
-            max-h-40
-            mt-1
-            flex-1
-             px-6 py-4
-             relative
-              '
+                className='rounded-md
+             bg-white
+             shadow
+             max-h
+              mt-1
+               flex-1
+               px-6 py-4
+               relative'
             >
                 <div>{header}</div>
                 <div
-                    className='
-                    relative
-                    max-h-40
-                    w-full
-                    overflow-clip
-                '
+                    className='relative max-
+                 w-full overflow-clip
+                 flex flex-col'
                     ref={mainCardRef}
                 >
-                    {mainCardRef.current?.clientHeight === 160 ? (
-                        <div
-                            className='
-                            absolute
-                            bottom-0
-                            left-0
-                            h-24
-                            w-full
-                            bg-gradient-to-t from-gray-100 to-transparent
-                            '
-                        >
-                            {image}
-                        </div>
-                    ) : null}
+                    <div className='mb-2'>{info}</div>
+                    <div
+                        className='w-full 
+                    bg-gradient-to-t from-gray-100 to-transparent'
+                    >
+                        {image}
+                    </div>
                     <div className='post-card-bottom'>
-                        {info}
-                        {action}
+                        <div>{action}</div>
                     </div>
                 </div>
             </div>

@@ -22,6 +22,7 @@ import Avatar from './Post/Avatar';
 import Button from '@/components/Button';
 import { signOut } from 'next-auth/react';
 import { pusherClient } from '@/lib/pusher';
+import axios from 'axios';
 
 const InterFont = Inter({
     subsets: ['latin'],
@@ -57,6 +58,22 @@ export default function Navbar() {
             pusherClient.unsubscribe(`notifications-${currentUser?.id}`);
         };
     }, [currentUser?.id]);
+
+    const [guildData, setGuildData] = useState(null);
+
+    useEffect(() => {
+        const fetchGuildData = async () => {
+            try {
+                const response = await axios.get(`/api/guild`);
+                setGuildData(response.data);
+                console.log(guildData);
+            } catch (error) {
+                console.log('Error fetching guild data:', error);
+            }
+        };
+
+        fetchGuildData();
+    }, [guildData]);
 
     return (
         <div
@@ -132,7 +149,29 @@ export default function Navbar() {
                     <div>
                         <Dropdown setIsOpen={setIsOpen}>
                             <ul>
-                                <li>Hello</li>
+                                {guildData?.map((guild: any) => (
+                                    <li key={guild.id}>
+                                        <Link href={`/guild/${guild.id}`}>
+                                            <p
+                                                className='
+                                                    flex
+                                                    items-center
+                                                    space-x-2
+                                                    px-4 py-2
+                                                    hover:bg-gray-200
+                                                    rounded-md
+                                                    transition
+                                                    duration-200
+                                                    ease-in-out
+                                                    cursor-pointer
+                                                '
+                                            >
+                                                <Avatar seed={guild.iconUrl} />
+                                                <p>{guild.name}</p>
+                                            </p>
+                                        </Link>
+                                    </li>
+                                ))}
                             </ul>
                         </Dropdown>
                     </div>
@@ -260,7 +299,7 @@ export default function Navbar() {
                             <Dropdown
                                 setIsOpen={setIsProfileDropdownOpen}
                                 className='
-                                w-[13rem]
+                               
                                 left-auto
                                 right-12
                                 top-12

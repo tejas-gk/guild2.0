@@ -13,7 +13,7 @@ export default async function handler(
 
     try {
         const { currentUser } = await serverAuth(req, res);
-        const { body } = req.body;
+        const { body, parentId } = req.body;
         const { postId } = req.query;
 
         if (!postId || typeof postId !== 'string') {
@@ -25,6 +25,7 @@ export default async function handler(
                 body,
                 userId: currentUser.id,
                 postId,
+                parentId,
             },
         });
 

@@ -36,7 +36,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
             try {
                 setIsLoading(true);
                 const url = isComment
-                    ? `/api/posts/comments?postId=${postId}`
+                    ? `/api/posts/comments?postId=${postId}&parentId=${postId}`
                     : '/api/posts';
                 await axios.post(url, {
                     body,

@@ -8,8 +8,7 @@ function PostImage() {
         <div
             className='
             relative
-            w-full
-            min-h-[15rem]
+            max-w-full
 
         '
         >
@@ -19,7 +18,8 @@ function PostImage() {
                 width={200}
                 height={200}
                 className='
-                    object-contain
+                    object-cover
+                    w-full max-h-[20rem]
                 '
             />
         </div>

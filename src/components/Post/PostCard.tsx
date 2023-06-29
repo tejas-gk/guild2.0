@@ -26,10 +26,10 @@ function PostCard({ image, info, action, post, header }: Props) {
              bg-white
              shadow
              max-h
-              mt-1
-               flex-1
-               px-6 py-4
-               relative'
+             mt-1
+             flex-1
+             px-6 py-4
+             relative'
             >
                 <div>{header}</div>
                 <div
@@ -41,11 +41,11 @@ function PostCard({ image, info, action, post, header }: Props) {
                     <div className='mb-2'>{info}</div>
                     <div
                         className='w-full 
-                    bg-gradient-to-t from-gray-100 to-transparent'
+                   '
                     >
                         {image}
                     </div>
-                    <div className='post-card-bottom'>
+                    <div className=''>
                         <div>{action}</div>
                     </div>
                 </div>

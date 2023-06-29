@@ -26,7 +26,7 @@ const Input: React.FC<InputProps> = ({
         <div>
             <label className='relative'>
                 <input
-                    value={value}
+                    value={value != null ? value : ''}
                     type={type}
                     placeholder={label}
                     onChange={onChange}

@@ -11,7 +11,10 @@ module.exports = {
                 'debug-orange': '#ff7f00',
                 'debug-purple': '#7f00ff',
                 'debug-pink': '#ff00ff',
-            }
+            },
+            aspectRatio: {
+                '13/9': '13/9',
+            },
         },
     },
     plugins: [],

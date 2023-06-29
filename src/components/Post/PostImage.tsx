@@ -18,7 +18,7 @@ function PostImage() {
                 width={200}
                 height={200}
                 className='
-                    object-cover
+                    object-contain
                     w-full max-h-[20rem]
                 '
             />

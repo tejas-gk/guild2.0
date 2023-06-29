@@ -1,4 +1,4 @@
-import usePost from '@/hooks/usePost';
+import usePosts from '@/hooks/usePosts';
 import { useRouter } from 'next/router';
 import Post from '@/components/Post';
 import PostItem from '@/components/Post/PostItem';
@@ -6,7 +6,11 @@ export default function PostView() {
     const router = useRouter();
     const { postId } = router.query;
 
-    const { data: fetchedPost, isLoading } = usePost(postId as string);
+    const { data: fetchedPost, isLoading } = usePosts(postId as string);
+
+    if (isLoading) {
+        return <div>Loading ...</div>;
+    }
 
     return (
         <div>

@@ -6,7 +6,6 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import usePosts from '@/hooks/usePosts';
 import axios from 'axios';
 import { useLoginModal } from '@/hooks/useModal';
-import usePost from '@/hooks/usePost';
 import Button from '@/components/Button';
 import ImageUpload from '../Input/ImageUpload';
 import Image from 'next/image';
@@ -23,9 +22,10 @@ export default function Index({ postId, isComment = false }: PostProps): any {
     const loginModal = useLoginModal();
     const toast = useToast();
 
-    const { data: currentUser } = useCurrentUser();
+    const { data: currentUser, isLoading: currentUserIsLoading } =
+        useCurrentUser();
     const { mutate: mutatePosts } = usePosts();
-    const { mutate: mutatePost } = usePost(postId as string);
+    const { mutate: mutatePost } = usePosts(postId as string);
 
     const [isLoading, setIsLoading] = useState(false);
     const [body, setBody] = useState('');
@@ -58,7 +58,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                 setIsTyping(false);
             }
         },
-        [body, mutatePost, mutatePosts, postId, isComment, image]
+        [body, mutatePost, mutatePosts, postId, isComment, image, toast]
     );
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +75,8 @@ export default function Index({ postId, isComment = false }: PostProps): any {
 
         setIsTyping(true);
     };
+
+    if (currentUserIsLoading) return <div>Loading ...</div>;
 
     return (
         <>
@@ -186,7 +188,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                           '
                         >
                             <div>
-                                <Avatar seed={currentUser?.id} />
+                                <Avatar seed={currentUser?.id} size='medium' />
                             </div>
                             <div
                                 className='

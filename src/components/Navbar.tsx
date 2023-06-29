@@ -59,21 +59,21 @@ export default function Navbar() {
         };
     }, [currentUser?.id]);
 
-    const [guildData, setGuildData] = useState(null);
+    const [guildData, setGuildData] = useState([]);
 
     useEffect(() => {
         const fetchGuildData = async () => {
             try {
                 const response = await axios.get(`/api/guild`);
                 setGuildData(response.data);
-                console.log(guildData);
+                console.log(guildData, 'guild data');
             } catch (error) {
                 console.log('Error fetching guild data:', error);
             }
         };
 
         fetchGuildData();
-    }, [guildData]);
+    }, []);
 
     return (
         <div
@@ -152,7 +152,7 @@ export default function Navbar() {
                                 {guildData?.map((guild: any) => (
                                     <li key={guild.id}>
                                         <Link href={`/guild/${guild.id}`}>
-                                            <p
+                                            <div
                                                 className='
                                                     flex
                                                     items-center
@@ -166,9 +166,12 @@ export default function Navbar() {
                                                     cursor-pointer
                                                 '
                                             >
-                                                <Avatar seed={guild.iconUrl} />
+                                                <Avatar
+                                                    seed={guild.iconUrl}
+                                                    size='medium'
+                                                />
                                                 <p>{guild.name}</p>
-                                            </p>
+                                            </div>
                                         </Link>
                                     </li>
                                 ))}
@@ -284,7 +287,7 @@ export default function Navbar() {
                             space-x-2
                         '
                 >
-                    <Avatar seed={currentUser?.id} />
+                    <Avatar seed={currentUser?.id} size='medium' />
                     <ChevronDownIcon
                         className='
                         h-6 w-6

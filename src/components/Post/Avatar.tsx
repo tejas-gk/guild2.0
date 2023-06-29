@@ -7,10 +7,21 @@ import Link from 'next/link';
 
 interface AvatarProps {
     seed?: string;
-    large?: boolean;
+    size?: 'tiny' | 'small' | 'medium' | 'large' | 'extra-large';
+}
+interface SubClasses {
+    [key: string]: string;
 }
 
-export default function Avatar({ seed, large = false }: AvatarProps) {
+const sizeVariants: SubClasses = {
+    'tiny': 'w-5 aspect-square',
+    'small': 'w-8 aspect-square',
+    'medium': 'w-10 aspect-square',
+    'large': 'w-12 aspect-square',
+    'extra-large': 'w-16 aspect-square',
+};
+
+export default function Avatar({ seed, size }: AvatarProps) {
     const router = useRouter();
     const { data: user } = useUsers(seed);
 
@@ -29,33 +40,32 @@ export default function Avatar({ seed, large = false }: AvatarProps) {
         <div
             className={`
             relative
-            h-12 w-12
             rounded-full
             border-gray-300
             bg-white
-            ${large && 'h-20 w-20'} 
+            cursor-pointer
+            ${size ? sizeVariants[size] : ''}
+
         `}
         >
-            <Link href={`/users/${seed}`}>
-                <Image
-                    src={
-                        user?.profileImage ||
-                        `https://ui-avatars.com/api/?name=${user?.name}&&background=random`
-                    }
-                    width={60}
-                    height={60}
-                    alt='avatar'
-                    className={`
+            <Image
+                src={
+                    user?.profileImage ||
+                    `https://ui-avatars.com/api/?name=${user?.name}&&background=random`
+                }
+                width={60}
+                height={60}
+                alt='avatar'
+                className={`
                     absolute
                     top-0 left-0
                     object-cover
                     rounded-full
-                    h-12 w-12
-                    ${large && 'h-20 w-20'}
+                    w-16 aspect-square
+                    ${size ? sizeVariants[size] : ''}
                 `}
-                    onClick={onClick}
-                />
-            </Link>
+                onClick={onClick}
+            />
         </div>
     );
 }

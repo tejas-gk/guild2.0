@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 
 export default function Dropdown({ children, className, setIsOpen }: any) {
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
     useEffect(() => {
         const handleOutsideClick = (event: MouseEvent) => {
             if (
@@ -11,33 +13,26 @@ export default function Dropdown({ children, className, setIsOpen }: any) {
                 setIsOpen(false);
             }
         };
-        document.addEventListener('mousedown', handleOutsideClick);
-        return () => {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        };
-    }, [dropdownRef, setIsOpen]);
 
-    useEffect(() => {
         const handleEscape = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
                 setIsOpen(false);
             }
         };
-        document.addEventListener('keydown', handleEscape);
-        return () => {
-            document.removeEventListener('keydown', handleEscape);
-        };
-    }, [setIsOpen]);
 
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
         const timeout = setTimeout(() => {
             setIsVisible(true);
         }, 0);
 
-        return () => clearTimeout(timeout);
-    }, []);
+        document.addEventListener('mousedown', handleOutsideClick);
+        document.addEventListener('keydown', handleEscape);
+
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+            document.removeEventListener('keydown', handleEscape);
+            clearTimeout(timeout);
+        };
+    }, [dropdownRef, setIsOpen]);
 
     return (
         <div
@@ -55,7 +50,12 @@ export default function Dropdown({ children, className, setIsOpen }: any) {
         py-5 px-4
         ${className}
         ${isVisible ? 'opacity-100' : 'opacity-0'}
-        transition-opacity duration-300
+        transition-all duration-300
+        ${
+            isVisible
+                ? 'transform translate-y-0'
+                : 'transform translate-y-[-10px]'
+        }
       `}
         >
             {children}

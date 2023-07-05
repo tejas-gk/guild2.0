@@ -13,3 +13,23 @@
 input[type='text']:focus ~ .text-up {
     @apply transform -translate-y-10 -translate-x-4 scale-75 text-gray-500;
 }
+
+/* put this in animations or something */
+
+.fade-enter {
+    opacity: 0;
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transition: opacity 300ms;
+}
+
+.fade-exit {
+    opacity: 1;
+}
+
+.fade-exit-active {
+    opacity: 0;
+    transition: opacity 300ms;
+}

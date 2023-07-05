@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import useUsers from '@/hooks/useUsers';
 import Head from 'next/head';
 import UserBio from '@/components/User/UserBio';
-import Avatar from '@/components/Post/Avatar';
+import Avatar from '@/components/Avatar';
 import Image from 'next/image';
 import PostFeed from '@/components/Post/PostFeed';
 import usePosts from '@/hooks/usePosts';
@@ -50,7 +50,7 @@ export default function UserId() {
           top-40 left-5
         '
                 >
-                    <Avatar large seed={user?.id} />
+                    <Avatar size='large' seed={user?.id} />
                 </div>
                 <UserBio />
             </div>

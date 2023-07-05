@@ -18,7 +18,7 @@ import Dropdown from './Dropdown';
 import Link from 'next/link';
 import { useLoginModal } from '@/hooks/useModal';
 import useCurrentUser from '@/hooks/useCurrentUser';
-import Avatar from './Post/Avatar';
+import Avatar from './Avatar';
 import Button from '@/components/Button';
 import { signOut } from 'next-auth/react';
 import { pusherClient } from '@/lib/pusher';
@@ -276,7 +276,7 @@ export default function Navbar() {
             </div>
 
             {currentUser ? (
-                <p
+                <div
                     className='
                             text-gray-500
                             font-semibold
@@ -328,7 +328,7 @@ export default function Navbar() {
                             </Dropdown>
                         </div>
                     )}
-                </p>
+                </div>
             ) : (
                 <div
                     className='

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import Avatar from './Avatar';
+import Avatar from '../Avatar';
 import { PhotographIcon, XIcon } from '@heroicons/react/outline';
 import { useRegisterModal } from '@/hooks/useModal';
 import useCurrentUser from '@/hooks/useCurrentUser';

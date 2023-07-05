@@ -1,7 +1,7 @@
 import useCurrentUser from '@/hooks/useCurrentUser';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState, useRef } from 'react';
-import Avatar from './Avatar';
+import Avatar from '../Avatar';
 import { RiMessage3Line, RiHeart3Line } from 'react-icons/ri';
 import { BiUpvote, BiDownvote, BiTrashAlt } from 'react-icons/bi';
 import { CiTrash } from 'react-icons/ci';

@@ -17,8 +17,8 @@ const sizeVariants: SubClasses = {
     'tiny': 'w-5 aspect-square',
     'small': 'w-8 aspect-square',
     'medium': 'w-10 aspect-square',
-    'large': 'w-12 aspect-square',
-    'extra-large': 'w-16 aspect-square',
+    'large': 'w-20 aspect-square',
+    'extra-large': 'w-24 aspect-square',
 };
 
 export default function Avatar({ seed, size }: AvatarProps) {

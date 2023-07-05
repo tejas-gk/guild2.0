@@ -3,14 +3,16 @@ import useUsers from '@/hooks/useUsers';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import Button from '@/components/Button';
 import { CalendarIcon } from '@heroicons/react/outline';
-import { useEditModal } from '@/hooks/useEditModal';
+// import { useEditModal } from '@/hooks/useEditModal';
 import { useRouter } from 'next/router';
+import { useEditModal } from '@/hooks/useModal';
+import useFollow from '@/hooks/useFollow';
 export default function UserBio() {
     const { data: currentUser } = useCurrentUser();
     const router = useRouter();
-    const { data: user } = useUsers(router.query?.id as string);
-
+    const { data: user } = useUsers(router.query?.userId as string);
     const editModal = useEditModal();
+    const { isFollowing, toggleFollow } = useFollow(user?.id as string);
     return (
         <div className=''>
             <div
@@ -22,22 +24,25 @@ export default function UserBio() {
              relative
              '
             >
-                {currentUser?.id === user?.id ? (
+                {currentUser?.id === router.query?.userId ? (
                     <div>
                         <Button
                             title='Edit Profile'
                             colors='secondary'
-                            onClick={() => editModal.onOpen()}
-                        />
-                        <p>{currentUser?.id}</p>
+                            onClick={editModal.onOpen}
+                        >
+                            Edit Profile
+                        </Button>
                     </div>
                 ) : (
                     <div>
                         <Button
-                            title='Follow'
                             colors='secondary'
-                            onClick={() => {}}
-                        />
+                            onClick={toggleFollow}
+                            title={isFollowing ? 'Unfollow' : 'Follow'}
+                        >
+                            {isFollowing ? 'Unfollow' : 'Follow'}
+                        </Button>
                     </div>
                 )}
             </div>
@@ -123,10 +128,10 @@ export default function UserBio() {
                             <div
                                 className='
                             flex
-                             flex-row
-                              items-center
-                               space-x-4
-                               mt-2
+                            flex-row
+                            items-center
+                            space-x-4
+                            mt-2
                                '
                             >
                                 <p

@@ -1,10 +1,9 @@
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
-
+import { useToast } from '@/hooks/useToast';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import useUsers from '@/hooks/useUsers';
-import { useEditModal } from '@/hooks/useEditModal';
+import { useEditModal } from '@/hooks/useModal';
 import Modal from '../Modal';
 import Input from '../Input';
 import ImageUpload from '../Input/ImageUpload';
@@ -12,7 +11,7 @@ import ImageUpload from '../Input/ImageUpload';
 const EditModal = () => {
     const { data: currentUser } = useCurrentUser();
     const { mutate: mutateFetchUser } = useUsers(currentUser?.id);
-
+    const toast = useToast();
     const [profileImage, setProfileImage] = useState<File | null>(null);
     const [coverImage, setCoverImage] = useState<File | null>(null);
     const [name, setName] = useState<string>('');
@@ -28,9 +27,11 @@ const EditModal = () => {
         setProfileImage(currentUser?.profileImage);
         setUsername(currentUser?.username);
         setLocation(currentUser?.location);
+        console.log(currentUser?.profileImage);
     }, [currentUser]);
 
     const editModal = useEditModal();
+
     const onSubmit = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -46,7 +47,7 @@ const EditModal = () => {
             editModal.onClose();
             toast.success('Profile updated successfully');
         } catch (error) {
-            toast.error('Something went wrong');
+            toast.error('Something went wron');
         } finally {
             setIsLoading(false);
         }
@@ -59,32 +60,28 @@ const EditModal = () => {
         coverImage,
         mutateFetchUser,
         editModal,
+        toast,
     ]);
 
     const bodyContent = (
         <div className='flex flex-col space-y-4'>
             <div className='flex flex-col space-y-2'>
                 <ImageUpload
-                    label='Profile image'
-                    disabled={isLoading}
-                    onChange={(base64) =>
-                        setProfileImage(base64 as unknown as File)
-                    }
-                    value={
-                        profileImage
-                            ? URL.createObjectURL(profileImage)
-                            : undefined
-                    }
-                />
-                <ImageUpload
                     label='Cover image'
                     disabled={isLoading}
                     onChange={(base64) =>
                         setCoverImage(base64 as unknown as File)
                     }
-                    value={
-                        coverImage ? URL.createObjectURL(coverImage) : undefined
+                    value={coverImage}
+                />
+                <ImageUpload
+                    label='Profile image'
+                    disabled={isLoading}
+                    onChange={(base64) =>
+                        setProfileImage(base64 as unknown as File)
                     }
+                    value={profileImage}
+                    variants='profile'
                 />
             </div>
             <Input
@@ -92,21 +89,19 @@ const EditModal = () => {
                 label='Name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder='Enter your name'
+                variants='signIn'
             />
             <Input
                 disabled={isLoading}
                 label='Bio'
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                placeholder='Enter your bio'
             />
             <Input
                 disabled={isLoading}
                 label='Location'
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder='Enter your location'
             />
 
             <Input
@@ -114,7 +109,6 @@ const EditModal = () => {
                 label='Username'
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder='Enter your username'
             />
         </div>
     );

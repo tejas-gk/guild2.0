@@ -13,7 +13,7 @@ export default async function handler(
         const { currentUser } = await serverAuth(req, res);
 
         if (!postId || typeof postId !== 'string') {
-            throw new Error('Invalid ID');
+            return res.status(400).json({ error: 'Invalid ID' });
         }
 
         const post = await prisma.post.findUnique({
@@ -23,7 +23,7 @@ export default async function handler(
         });
 
         if (!post) {
-            throw new Error('Invalid ID');
+            return res.status(404).json({ error: 'Post not found' });
         }
 
         let updatedLikedIds = [...(post.likedIds || [])];
@@ -32,7 +32,7 @@ export default async function handler(
             updatedLikedIds.push(currentUser.id);
 
             try {
-                if (post?.userId) {
+                if (post.userId) {
                     const userWhoLiked = await prisma.user.findUnique({
                         where: {
                             id: currentUser.id,
@@ -56,6 +56,7 @@ export default async function handler(
                             hasNotification: true,
                         },
                     });
+
                     pusherServer.trigger(
                         `user-${post.userId}`,
                         'notification',
@@ -67,14 +68,14 @@ export default async function handler(
                     );
                 }
             } catch (error) {
-                console.log(error);
+                console.error(error);
+                return res
+                    .status(500)
+                    .json({ error: 'Failed to process the like' });
             }
         }
 
         if (req.method === 'DELETE') {
-            updatedLikedIds = updatedLikedIds.filter(
-                (likedId) => likedId !== currentUser?.id
-            );
         }
 
         if (req.method === 'GET') {
@@ -96,7 +97,7 @@ export default async function handler(
 
         return res.status(200).json(updatedPost);
     } catch (error) {
-        console.log(error);
-        return res.status(400).end();
+        console.error(error);
+        return res.status(500).json({ error: 'An error occurred' });
     }
 }

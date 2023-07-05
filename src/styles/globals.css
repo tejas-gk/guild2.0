@@ -3,5 +3,33 @@
 @tailwind utilities;
 
 .icon {
-    @apply h-9 w-6 lg:w-9 rounded-md lg:p-1 lg:hover:bg-gray-200 lg:hover:text-gray-700 lg:hover:shadow-lg;
+    @apply h-9 w-6 lg:w-9 rounded-full lg:p-1;
+}
+
+.icon-container {
+    @apply flex flex-row justify-between items-center;
+}
+
+input[type='text']:focus ~ .text-up {
+    @apply transform -translate-y-10 -translate-x-4 scale-75 text-gray-500;
+}
+
+/* put this in animations or something */
+
+.fade-enter {
+    opacity: 0;
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transition: opacity 300ms;
+}
+
+.fade-exit {
+    opacity: 1;
+}
+
+.fade-exit-active {
+    opacity: 0;
+    transition: opacity 300ms;
 }

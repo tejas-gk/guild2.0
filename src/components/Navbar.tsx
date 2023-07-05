@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import {
-    BeakerIcon,
     HomeIcon,
     SearchIcon,
     BellIcon,
@@ -17,12 +16,13 @@ import { ChevronDownIcon, MenuIcon } from '@heroicons/react/solid';
 import { Inter, Roboto } from 'next/font/google';
 import Dropdown from './Dropdown';
 import Link from 'next/link';
-import { useLoginModal } from '@/hooks/useLoginModal';
+import { useLoginModal } from '@/hooks/useModal';
 import useCurrentUser from '@/hooks/useCurrentUser';
-import Avatar from './Post/Avatar';
+import Avatar from './Avatar';
 import Button from '@/components/Button';
 import { signOut } from 'next-auth/react';
 import { pusherClient } from '@/lib/pusher';
+import axios from 'axios';
 
 const InterFont = Inter({
     subsets: ['latin'],
@@ -33,7 +33,9 @@ export default function Navbar() {
     const { data: currentUser } = useCurrentUser();
     // TODO this needs to be separate
     const [isOpen, setIsOpen] = useState(false);
-    const [notified, setNotified] = useState(currentUser?.hasNotification);
+    const [notified, setNotified] = useState<boolean | undefined>(
+        currentUser?.hasNotification
+    );
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const loginModal = useLoginModal();
 
@@ -56,6 +58,22 @@ export default function Navbar() {
             pusherClient.unsubscribe(`notifications-${currentUser?.id}`);
         };
     }, [currentUser?.id]);
+
+    const [guildData, setGuildData] = useState([]);
+
+    useEffect(() => {
+        const fetchGuildData = async () => {
+            try {
+                const response = await axios.get(`/api/guild`);
+                setGuildData(response.data);
+                console.log(guildData, 'guild data');
+            } catch (error) {
+                console.log('Error fetching guild data:', error);
+            }
+        };
+
+        fetchGuildData();
+    }, []);
 
     return (
         <div
@@ -131,7 +149,32 @@ export default function Navbar() {
                     <div>
                         <Dropdown setIsOpen={setIsOpen}>
                             <ul>
-                                <li>Hello</li>
+                                {guildData?.map((guild: any) => (
+                                    <li key={guild.id}>
+                                        <Link href={`/guild/${guild.id}`}>
+                                            <div
+                                                className='
+                                                    flex
+                                                    items-center
+                                                    space-x-2
+                                                    px-4 py-2
+                                                    hover:bg-gray-200
+                                                    rounded-md
+                                                    transition
+                                                    duration-200
+                                                    ease-in-out
+                                                    cursor-pointer
+                                                '
+                                            >
+                                                <Avatar
+                                                    seed={guild.iconUrl}
+                                                    size='medium'
+                                                />
+                                                <p>{guild.name}</p>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                ))}
                             </ul>
                         </Dropdown>
                     </div>
@@ -233,7 +276,7 @@ export default function Navbar() {
             </div>
 
             {currentUser ? (
-                <p
+                <div
                     className='
                             text-gray-500
                             font-semibold
@@ -244,7 +287,7 @@ export default function Navbar() {
                             space-x-2
                         '
                 >
-                    <Avatar seed={currentUser?.id} />
+                    <Avatar seed={currentUser?.id} size='medium' />
                     <ChevronDownIcon
                         className='
                         h-6 w-6
@@ -255,17 +298,23 @@ export default function Navbar() {
                         }
                     />
                     {isProfileDropdownOpen && (
-                        <div>
+                        <div
+                            className='
+                                absolute 
+                        right-0 
+                        mt-8 
+                        w-[12rem] 
+                            '
+                        >
                             <Dropdown
                                 setIsOpen={setIsProfileDropdownOpen}
                                 className='
-                                w-[13rem]
                                 left-auto
                                 right-12
-                                top-12
+                                top-3
                                 '
                             >
-                                <Link href={`/users/${currentUser?.username}`}>
+                                <Link href={`/users/${currentUser?.id}`}>
                                     Profile
                                 </Link>
                                 <Button
@@ -273,11 +322,13 @@ export default function Navbar() {
                                     onClick={() => signOut()}
                                     sizing='sm'
                                     colors='none'
-                                />
+                                >
+                                    Sign Out
+                                </Button>
                             </Dropdown>
                         </div>
                     )}
-                </p>
+                </div>
             ) : (
                 <div
                     className='

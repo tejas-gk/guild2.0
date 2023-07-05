@@ -1,4 +1,4 @@
-import Avatar from '@/components/Post/Avatar';
+import Avatar from '@/components/Avatar';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import { pusherClient } from '@/lib/pusher';
 import { NextPageContext } from 'next';
@@ -68,8 +68,6 @@ export default function Index() {
             hover:shadow-md
           '
                 >
-                    <p>{i}</p>
-
                     <Avatar seed={notification?.userId} />
                     <p
                         className='

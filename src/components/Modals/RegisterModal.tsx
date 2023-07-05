@@ -1,12 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import { useLoginModal } from '@/hooks/useLoginModal';
-import { useRegisterModal } from '@/hooks/useRegisterModal';
+import { useLoginModal } from '@/hooks/useModal';
+import { useRegisterModal } from '@/hooks/useModal';
 import Modal from '../Modal';
 import Input from '../Input';
-import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
-import { validationRules } from '@/utils/registerRules';
+import { schema } from '@/pages/api/register';
+import { useToast } from '@/hooks/useToast';
 
 interface FormValues {
     email: string;
@@ -18,6 +18,7 @@ interface FormValues {
 export default function LoginModal() {
     const loginModal = useLoginModal();
     const registerModal = useRegisterModal();
+    const toast = useToast();
 
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
@@ -27,25 +28,9 @@ export default function LoginModal() {
 
     const [errors, setErrors] = useState<Partial<FormValues>>({});
 
-    const validateForm = (): Partial<FormValues> => {
-        const errors: Partial<FormValues> = {};
-        if (!validationRules.required().validator(name)) {
-            errors.name = validationRules.required().message;
-        }
-        if (!validationRules.required().validator(username)) {
-            errors.username = validationRules.required().message;
-        }
-        if (!validationRules.email().validator(email)) {
-            errors.email = validationRules.email().message;
-        }
-        if (!validationRules.required().validator(password)) {
-            errors.password = validationRules.required().message;
-        }
-        return errors;
-    };
-
     const onSubmit = useCallback(async () => {
         setIsLoading(true);
+
         try {
             await axios.post('/api/register', {
                 email,
@@ -65,7 +50,7 @@ export default function LoginModal() {
             console.log('error', error);
         }
         setIsLoading(false);
-    }, [registerModal, email, name, username, password]);
+    }, [registerModal, email, name, username, password, toast]);
 
     const bodyContent = (
         <div
@@ -84,6 +69,14 @@ export default function LoginModal() {
                 disabled={isLoading}
                 label='Name'
             />
+            <span
+                className='
+            text-red-400
+            -mt-3 ml-2
+            text-sm'
+            >
+                Name error
+            </span>
             <Input
                 type='text'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -102,6 +95,14 @@ export default function LoginModal() {
                 disabled={isLoading}
                 label='Email'
             />
+            <span
+                className='
+            text-red-400
+            -mt-3 ml-2
+            text-sm'
+            >
+                {errors?.email}
+            </span>
             <Input
                 type='password'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -116,10 +117,6 @@ export default function LoginModal() {
 
     const footerContent = (
         <>
-            {errors.password && <span>{errors.password}</span>}
-            {errors.name && <span>{errors.name}</span>}
-            {errors.username && <span>{errors.username}</span>}
-            {errors.email && <span>{errors.email}</span>}{' '}
             <div
                 className='
             text-neutral-500
@@ -129,10 +126,10 @@ export default function LoginModal() {
             >
                 Already have an account?{' '}
                 <span
-                    className='
+                    className={`
                 text-primary-500
                 cursor-pointer
-                '
+                `}
                     onClick={() => {
                         // todo make a separate function for this
                         registerModal.onClose();

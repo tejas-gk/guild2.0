@@ -15,7 +15,7 @@ module.exports = {
                 'revert', // A commit used to revert a previous commit
                 'style', // Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
                 'test', // Adding missing tests or correcting existing tests,
-                'add', // Add a new feature
+                'chore', // Changes to the build process or auxiliary tools and libraries such as documentation generation
             ],
         ],
         'type-case': [2, 'always', 'lower-case'],

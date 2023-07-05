@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
-import Avatar from '../Post/Avatar';
+import Avatar from '../Avatar';
 
 export default function UserBox({ data }: any) {
     const router = useRouter();

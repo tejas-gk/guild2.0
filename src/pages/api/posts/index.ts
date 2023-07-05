@@ -7,10 +7,6 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    if (req.method !== 'POST' && req.method !== 'GET') {
-        return res.status(405).send('Method not allowed');
-    }
-
     try {
         if (req.method === 'POST') {
             const { currentUser } = await serverAuth(req, res);
@@ -21,16 +17,42 @@ export default async function handler(
                     body,
                     image,
                     userId: currentUser.id,
+                    guildId: null, //TODO: if normal post nothing if guild post guild id
                 },
             });
 
             return res.status(200).json(post);
         }
 
+        if (req.method === 'DELETE') {
+            const { currentUser } = await serverAuth(req, res);
+            const { postId } = req.body;
+
+            const post = await prisma.post.findUnique({
+                where: {
+                    id: postId,
+                },
+            });
+
+            if (!post) {
+                return res.status(404).send('Post not found');
+            }
+
+            if (post.userId !== currentUser.id) {
+                return res.status(401).send('Unauthorized');
+            }
+
+            await prisma.post.delete({
+                where: {
+                    id: postId,
+                },
+            });
+
+            return res.status(200).send('Post deleted');
+        }
+
         if (req.method === 'GET') {
             const { userId } = req.query;
-
-            console.log({ userId });
 
             let posts;
 

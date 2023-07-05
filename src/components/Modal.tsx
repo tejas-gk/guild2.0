@@ -1,8 +1,7 @@
 import React, { useCallback, useRef, useEffect } from 'react';
-import Input from './Input';
-// import {
-//     XMarkIcon
-// } from '@heroicons/react/outline'
+import Button from './Button';
+import { XIcon } from '@heroicons/react/outline';
+
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -13,6 +12,7 @@ interface ModalProps {
     actionLabel: string;
     disabled: boolean;
 }
+
 export default function Modal({
     isOpen,
     onClose,
@@ -50,122 +50,98 @@ export default function Modal({
         };
     }, [modalRef, handleClose]);
 
-    if (!isOpen) return null;
     return (
         <div
-            className='
-          justify-center 
-          items-center 
-          flex 
-          overflow-x-hidden overflow-y-auto 
-          fixed 
-          inset-0 
-          z-50 
-          outline-none 
-          focus:outline-none
-          bg-neutral-800 bg-opacity-70
-        '
+            className={`fixed 
+            inset-0
+            flex
+            items-center
+            justify-center
+            z-50
+          bg-neutral-800/60
+            ${
+                isOpen
+                    ? 'transition-opacity duration-300 opacity-100'
+                    : 'transition-opacity duration-300 opacity-0 pointer-events-none'
+            }`}
         >
             <div
-                className='
-            relative 
-             w-full lg:w-3/6 lg:max-w-3xl h-full lg:h-auto
-             my-6 mx-auto
-              '
+                className={`relative
+                 w-full md:w-4/6 lg:w-3/6 xl:w-2/5
+                 my-6 mx-auto
+                 ${
+                     isOpen
+                         ? 'transition-transform duration-300 translate-y-0'
+                         : 'transition-transform duration-300 -translate-y-full'
+                 }`}
                 ref={modalRef}
             >
-                {/*content*/}
                 <div
                     className='
-            w-full h-full lg:h-auto  
-            border-0 
-            rounded-lg 
-            shadow-lg 
-            relative 
-            flex 
-            flex-col 
-            bg-white
-            outline-none  focus:outline-none
-            '
+                border-0
+                rounded-lg
+                shadow-lg
+                relative
+                flex flex-col
+                bg-white
+                outline-none
+                focus:outline-none
+                     '
                 >
-                    {/*header*/}
                     <div
-                        className='
-              flex 
-              items-center 
-              justify-between 
-              p-10 
-              rounded-t
-              '
+                        className='flex
+                     items-center
+                     justify-between
+                     px-10 pt-10
+                     rounded-t'
                     >
                         <h3
-                            className='
-                        text-3xl
-                         font-semibold
-                          text-black
-                          '
+                            className='text-3xl 
+                        font-semibold
+                        text-black'
                         >
                             {title}
                         </h3>
                         <button
                             className='
-                  p-1 
-                  ml-auto
-                  border-0 
-                  text-black
-                  hover:opacity-70
-                  transition
-                '
+                            p-1
+                            ml-auto
+                            border-0
+                          text-black
+                            hover:opacity-70 
+                            hover:bg-gray-200
+                            rounded-full
+                            hover:p-1
+                            transition'
                             onClick={handleClose}
                         >
-                            X
+                            <XIcon className='h-6 w-6' />
                         </button>
                     </div>
-                    {/*body*/}
                     <div
-                        className='
-                    relative
-                     p-10
-                     flex-auto
-                     '
+                        className='relative 
+                    px-10 pt-7
+                    flex-auto
+                    '
                     >
                         {body}
                     </div>
-                    {/*footer*/}
                     <div
                         className='
                     flex
-                    flex-col
-                    gap-2
-                    p-10'
+                     flex-col
+                      gap-2
+                      px-10 pt-7 pb-7
+                      '
                     >
-                        {/* 
-                        todo make this buttom a separate component
-                        */}
-                        <button
-                            className='
-                    bg-primary-500
-                    text-white
-                    active:bg-primary-600
-                    font-bold
-                    uppercase
-                    text-sm
-                    px-6 py-3
-                    rounded
-                    shadow
-                    hover:shadow-lg
-                    bg-black
-                    outline-none focus:outline-none
-                    ease-linear
-                    transition-all
-                    duration-150
-                    '
-                            type='button'
+                        <Button
+                            title='Send'
+                            colors='primary'
                             onClick={handleSend}
+                            disabled={disabled}
                         >
                             {actionLabel}
-                        </button>
-
+                        </Button>
                         {footer}
                     </div>
                 </div>

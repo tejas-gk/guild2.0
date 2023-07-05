@@ -1,5 +1,5 @@
 import useCurrentUser from '@/hooks/useCurrentUser';
-import Avatar from '../Post/Avatar';
+import Avatar from '../Avatar';
 import React from 'react';
 interface Props {
     children?: React.ReactNode;

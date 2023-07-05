@@ -33,14 +33,14 @@ model User {
   seenMessageIds String[]  @db.ObjectId
   seenMessages   Message[] @relation("Seen", fields: [seenMessageIds], references: [id])
 
+  guildIds String[] @db.ObjectId
+
   posts         Post[]
   comments      Comment[]
   notifications Notification[]
   Message       Message[]
+  guilds        Guild[]
 }
-
-
-
 
 model Post {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -53,20 +53,38 @@ model Post {
 
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   comments Comment[]
+  guild    Guild?    @relation(fields: [guildId], references: [id], onDelete: Cascade)
+
+  guildId  String?   @db.ObjectId
 }
 
 
-model Comment {
+model Guild {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  body      String
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    String   @db.ObjectId
-  postId    String   @db.ObjectId
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  post   Post[]
+  userId String   @db.ObjectId
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+model Comment {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  body          String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  userId        String    @db.ObjectId
+  postId        String    @db.ObjectId
+  parentId      String?   @db.ObjectId
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post          Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parent        Comment?  @relation("ChildComments", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  childComments Comment[] @relation("ChildComments")
+}
+
 
 model Notification {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -106,4 +124,3 @@ model Message {
   senderId String @db.ObjectId
   sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
-

@@ -10,6 +10,7 @@ import { SessionProvider } from 'next-auth/react';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import Layout from '@/layout/Layout';
 import EditModal from '@/components/Modals/EditModal';
+import Toast from '@/components/Toast';
 
 export default function App({ Component, pageProps, router }: AppProps) {
     const { data: currentUser } = useCurrentUser();
@@ -28,6 +29,8 @@ export default function App({ Component, pageProps, router }: AppProps) {
                 )}
 
                 <Navbar />
+                <Toast />
+
                 <Layout pathname={router.pathname}>
                     <Component {...pageProps} />
                 </Layout>

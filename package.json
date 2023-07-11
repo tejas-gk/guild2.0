@@ -12,7 +12,8 @@
     "test:ui": "vitest --ui",
     "coverage": "vitest --coverage",
     "test:e2e": "playwright test",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",

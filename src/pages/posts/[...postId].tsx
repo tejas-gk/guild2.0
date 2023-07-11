@@ -2,8 +2,22 @@ import usePosts from '@/hooks/usePosts';
 import { useRouter } from 'next/router';
 import Post from '@/components/Post';
 import PostItem from '@/components/Post/PostItem';
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import axios from 'axios';
+import CommentItem from '@/components/Post/Comment';
+
+interface Comment {
+    id: string;
+    user: {
+        username: string;
+    };
+    body: string;
+    childComments?: Comment[];
+}
+
+interface FetchedPost {
+    comments?: Comment[];
+}
 
 export default function PostView() {
     const router = useRouter();
@@ -11,7 +25,7 @@ export default function PostView() {
 
     const { data: fetchedPost, isLoading } = usePosts(postId as string);
 
-    const [reply, setReply] = useState({});
+    const [reply, setReply] = useState<{ [commentId: string]: string }>({});
 
     if (isLoading) {
         return <div>Loading ...</div>;
@@ -21,14 +35,12 @@ export default function PostView() {
         try {
             const postIdString = Array.isArray(postId) ? postId[0] : postId;
 
-            console.log('postId', postIdString, reply[commentId]);
             if (!postIdString || Array.isArray(postIdString)) {
                 throw new Error('Invalid ID');
             }
 
-            await axios.post('/api/posts/comments', {
-                body: reply[commentId], // Access the specific reply value using the commentId
-                postId: postIdString,
+            await axios.post(`/api/posts/comments?postId=${postIdString}`, {
+                body: reply[commentId],
                 parentId: commentId,
             });
 
@@ -49,36 +61,55 @@ export default function PostView() {
         }));
     };
 
+    const dummyComments = [
+        {
+            id: 'comment1',
+            user: {
+                username: 'user1',
+            },
+            body: 'Comment 1',
+            childComments: [
+                {
+                    id: 'reply1',
+                    user: {
+                        username: 'user2',
+                    },
+                    body: 'Reply 1',
+                },
+                {
+                    id: 'reply2',
+                    user: {
+                        username: 'user3',
+                    },
+                    body: 'Reply 2',
+                },
+            ],
+        },
+        {
+            id: 'comment2',
+            user: {
+                username: 'user4',
+            },
+            body: 'Comment 2',
+        },
+        // Add more comments and replies as needed
+    ];
+
     return (
         <div>
             <PostItem data={fetchedPost} />
-            <Post isComment={true} postId={postId as string} />
+            <Post isComment postId={postId as string} />
 
-            {fetchedPost?.comments?.map((comment: any) => (
-                <div key={comment.id}>
-                    user: {comment.user.username} <br />
-                    body: {comment.body} <br />
-                    {comment.replies?.map((reply: any) => (
-                        <div key={reply.id}>
-                            user: {reply.user.username} <br />
-                            body: {reply.body} <br />
-                        </div>
-                    ))}
-                    {reply[comment.id]}
-                    {comment?.parentId}
-                    <input
-                        type='text'
-                        placeholder='comment'
-                        value={reply[comment.id] || ''}
-                        onChange={(e) =>
-                            handleChangeReply(comment.id, e.target.value)
-                        }
-                    />
-                    <button onClick={() => handleReply(comment.id)}>
-                        Submit
-                    </button>
-                    <hr />
-                </div>
+            {dummyComments?.map((comment: Comment) => (
+                <CommentItem
+                    key={comment.id}
+                    comment={comment}
+                    postId={postId as string}
+                    onDeleteComment={(commentId: string) => {
+                        console.log(commentId);
+                        alert('Comment deleted successfully');
+                    }}
+                />
             ))}
         </div>
     );

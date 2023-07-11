@@ -10,6 +10,8 @@ import Button from '@/components/Button';
 import ImageUpload from '../Input/ImageUpload';
 import Image from 'next/image';
 import { useToast } from '@/hooks/useToast';
+import { AiOutlineCamera } from 'react-icons/ai';
+import { BsCamera } from 'react-icons/bs';
 
 interface PostProps {
     postId?: string;
@@ -172,19 +174,20 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                     <form
                         className='
                         rounded-md
-                         bg-white
-                          shadow-md
-                           border-gray-300
-                            p-2
+                        bg-white
+                        shadow-md
+                        border-gray-300
+                        px-4 py-2
+                        mx-4
                             '
                         onSubmit={onSubmit}
                     >
                         <div
                             className='
                         flex
-                         items-center
-                          space-x-4
-                          justify-between
+                        items-center
+                        space-x-4
+                        justify-between
                           '
                         >
                             <div>
@@ -193,8 +196,8 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                             <div
                                 className='
                             flex
-                             flex-col
-                              w-full
+                            flex-col
+                            w-full
                               '
                             >
                                 <input
@@ -227,13 +230,14 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                                        rounded-full
                                        cursor-pointer
                                        border
+                                       relative
                                       border-gray-300"
                                 >
-                                    <PhotographIcon
-                                        className='h-10 w-10
+                                    <BsCamera
+                                        className='h-7 w-7
                                      text-gray-400
                                       cursor-pointer
-                                      m-1
+                                        m-2
                                       '
                                     />
                                 </label>

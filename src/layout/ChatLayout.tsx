@@ -9,12 +9,12 @@ export default function Index({ children }: Props) {
     console.log(users);
     return (
         <>
-            <Sidebar>
-                <div className='h-full'>
-                    <UserList users={users} />
-                    {children}
-                </div>
-            </Sidebar>
+            {/* <Sidebar> */}
+            <div className='h-full'>
+                <UserList users={users} />
+                {children}
+            </div>
+            {/* </Sidebar> */}
         </>
     );
 }

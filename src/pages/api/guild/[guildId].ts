@@ -22,7 +22,12 @@ export default async function handler(
                         createdAt: 'desc',
                     },
                     include: {
-                        user: true,
+                        user: {
+                            select: {
+                                username: true,
+                                name: true,
+                            },
+                        },
                     },
                 },
             },

@@ -62,7 +62,13 @@ export default async function handler(
                         userId,
                     },
                     include: {
-                        user: true,
+                        user: {
+                            select: {
+                                username: true,
+                                name: true,
+                                profileImage: true,
+                            },
+                        },
                         comments: true,
                     },
                     orderBy: {

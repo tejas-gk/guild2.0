@@ -25,7 +25,13 @@ export default async function handler(
                 user: true,
                 comments: {
                     include: {
-                        user: true,
+                        user: {
+                            select: {
+                                username: true,
+                                profileImage: true,
+                                name: true,
+                            },
+                        },
                     },
                     orderBy: {
                         createdAt: 'desc',

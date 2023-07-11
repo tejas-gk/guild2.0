@@ -11,6 +11,8 @@ import {
     SparklesIcon,
     GlobeIcon,
     ArrowCircleDownIcon,
+    UserCircleIcon,
+    LogoutIcon,
 } from '@heroicons/react/outline';
 import { ChevronDownIcon, MenuIcon } from '@heroicons/react/solid';
 import { Inter, Roboto } from 'next/font/google';
@@ -23,6 +25,10 @@ import Button from '@/components/Button';
 import { signOut } from 'next-auth/react';
 import { pusherClient } from '@/lib/pusher';
 import axios from 'axios';
+import { AiFillBell, AiOutlineBell } from 'react-icons/ai';
+import { BsFillChatFill } from 'react-icons/bs';
+import { IoChatbubblesOutline, IoChatbubblesSharp } from 'react-icons/io5';
+import { useRouter } from 'next/router';
 
 const InterFont = Inter({
     subsets: ['latin'],
@@ -38,6 +44,7 @@ export default function Navbar() {
     );
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const loginModal = useLoginModal();
+    const router = useRouter();
 
     useEffect(() => {
         if (currentUser?.hasNotification) {
@@ -74,6 +81,10 @@ export default function Navbar() {
 
         fetchGuildData();
     }, []);
+
+    const logout = async () => {
+        await signOut();
+    };
 
     return (
         <div
@@ -221,9 +232,9 @@ export default function Navbar() {
                 space-x-2
             '
             >
-                <SparklesIcon className='icon' />
-                <GlobeIcon className='icon' />
-                <PlusIcon className='icon' />
+                <SparklesIcon className='icon cursor-not-allowed' />
+                <GlobeIcon className='icon cursor-not-allowed' />
+                <PlusIcon className='icon cursor-not-allowed' />
                 <div
                     className='
                     flex
@@ -232,14 +243,19 @@ export default function Navbar() {
                     bg-gray-100
                     rounded-lg
                     px-2 py-1
+                    cursor-not-allowed
                 '
                 >
                     <SpeakerphoneIcon className='icon' />
                     Promote
                 </div>
-                <VideoCameraIcon className='icon' />
+                <VideoCameraIcon className='icon cursor-not-allowed' />
                 <Link href='/chats'>
-                    <ChatIcon className='icon' />
+                    {router.pathname === '/chats' ? (
+                        <IoChatbubblesSharp className='icon' />
+                    ) : (
+                        <IoChatbubblesOutline className='icon' />
+                    )}
                 </Link>
 
                 <div
@@ -248,7 +264,11 @@ export default function Navbar() {
                 '
                 >
                     <Link href='/notifications'>
-                        <BellIcon className='icon' />
+                        {router.pathname === '/notifications' ? (
+                            <AiFillBell className='icon' />
+                        ) : (
+                            <AiOutlineBell className='icon' />
+                        )}
                     </Link>
                     {notified && (
                         <div
@@ -264,15 +284,6 @@ export default function Navbar() {
                         />
                     )}
                 </div>
-            </div>
-
-            <div
-                className='
-                flex lg:hidden
-                items-center
-                '
-            >
-                <MenuIcon className='icon' />
             </div>
 
             {currentUser ? (
@@ -314,17 +325,43 @@ export default function Navbar() {
                                 top-3
                                 '
                             >
-                                <Link href={`/users/${currentUser?.id}`}>
-                                    Profile
+                                <Link href='/profile'>
+                                    <div
+                                        className='
+                                            flex
+                                            items-center
+                                            space-x-2
+                                            px-2
+                                            hover:bg-gray-200
+                                            rounded-md
+                                            transition
+                                            duration-200
+                                            ease-in-out
+                                            cursor-pointer
+                                        '
+                                    >
+                                        <UserCircleIcon className='icon' />
+                                        <p>Profile</p>
+                                    </div>
                                 </Link>
-                                <Button
-                                    title='Sign Out'
-                                    onClick={() => signOut()}
-                                    sizing='sm'
-                                    colors='none'
+                                <div
+                                    className='
+                                            flex
+                                            items-center
+                                            space-x-2
+                                            px-2
+                                            hover:bg-gray-200
+                                            rounded-md
+                                            transition
+                                            duration-200
+                                            ease-in-out
+                                            cursor-pointer
+                                        '
+                                    onClick={() => logout()}
                                 >
-                                    Sign Out
-                                </Button>
+                                    <LogoutIcon className='icon' />
+                                    <p>Logout</p>
+                                </div>
                             </Dropdown>
                         </div>
                     )}

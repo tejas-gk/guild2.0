@@ -41,9 +41,7 @@ export default async function handler(
 
                     await prisma.notification.create({
                         data: {
-                            body: `${
-                                userWhoLiked?.name || userWhoLiked?.username
-                            } liked your tweet!`,
+                            body: `liked your post!`,
                             userId: post.userId,
                         },
                     });
@@ -61,9 +59,8 @@ export default async function handler(
                         `user-${post.userId}`,
                         'notification',
                         {
-                            body: `${
-                                userWhoLiked?.name || userWhoLiked?.username
-                            } liked your tweet!`,
+                            user: userWhoLiked,
+                            body: `liked your post!`,
                         }
                     );
                 }

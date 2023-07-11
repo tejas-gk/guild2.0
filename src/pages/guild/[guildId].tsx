@@ -12,7 +12,7 @@ export default function GuildPage() {
             try {
                 const response = await axios.get(`/api/guild/${id}`);
                 setGuildData(response.data);
-                console.log(guildData);
+                console.log(guildData, response.data);
             } catch (error) {
                 console.log('Error fetching guild data:', error);
             }
@@ -25,15 +25,11 @@ export default function GuildPage() {
 
     return (
         <div>
-            {guildData ? (
-                <div>
-                    <h1>Guild ID: {id}</h1>
-                    <h2>Guild Name: {guildData.name}</h2>
-                    <h2>Guild Leader: {guildData.userId}</h2>
-                </div>
-            ) : (
-                <p>Loading guild data...</p>
-            )}
+            <div>
+                <h1>Guild ID: {id}</h1>
+                {/* <h2>Guild Name: {guildData.name}</h2>
+                    <h2>Guild Leader: {guildData.userId}</h2> */}
+            </div>
         </div>
     );
 }

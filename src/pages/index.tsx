@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 import { signOut } from 'next-auth/react';
 import Post from '@/components/Post';
-import PostFeed from '@/components/Post/PostFeed';
+import PostFeed from '@/components/shared/PostFeed';
 import Button from '@/components/Button';
 import usePosts from '@/hooks/usePosts';
 import { getSession } from 'next-auth/react';

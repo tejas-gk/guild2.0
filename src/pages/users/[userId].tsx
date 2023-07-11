@@ -5,7 +5,7 @@ import Head from 'next/head';
 import UserBio from '@/components/User/UserBio';
 import Avatar from '@/components/Avatar';
 import Image from 'next/image';
-import PostFeed from '@/components/Post/PostFeed';
+import PostFeed from '@/components/shared/PostFeed';
 import usePosts from '@/hooks/usePosts';
 
 export default function UserId() {

@@ -31,7 +31,11 @@ export default function Index() {
             );
             const data = await res.json();
             setNotifications(data);
-            console.log(data);
+            console.log(
+                notifications,
+                notifications[0]?.userId?.user,
+                'notify'
+            );
         };
         fetchNotifications();
     }, [currentUser?.id]);
@@ -48,16 +52,28 @@ export default function Index() {
     }
 
     return (
-        <div>
-            <h1>Notifications</h1>
+        <div
+            className='
+            h-screen 
+            bg-white
+        '
+        >
+            <h1
+                className='
+        text-3xl
+        font-bold
+        text-gray-900/70
+        px-4 py-2
+            '
+            >
+                Notifications
+            </h1>
             {notifications.map((notification, i) => (
                 <div
                     key={i}
                     className='
             bg-white
             mx-0
-            border-b-[1px]
-            border-neutral-800
             p-4
             flex
             items-center
@@ -66,9 +82,10 @@ export default function Index() {
             transition
             hover:bg-neutral-100
             hover:shadow-md
+            w-1/2
           '
                 >
-                    <Avatar seed={notification?.userId} />
+                    <Avatar seed={notification?.userId} size='medium' />
                     <p
                         className='
               text-lg
@@ -77,7 +94,21 @@ export default function Index() {
               mr-2
             '
                     >
-                        {notification?.body}
+                        <span className=''>{notification?.userId} </span>
+                        <p>
+                            {notification?.body
+                                .split(' ')
+                                .map((word: any, index: number) => (
+                                    <span
+                                        className='
+                                    word
+                                '
+                                        key={index}
+                                    >
+                                        {word}
+                                    </span>
+                                ))}
+                        </p>
                     </p>
                 </div>
             ))}

@@ -1,4 +1,4 @@
-import ToFollow from '@/components/ToFollow';
+import ToFollow from '@/components/MainLeft';
 interface LayoutProps {
     children: React.ReactNode;
 }
@@ -10,7 +10,7 @@ export default function MainLayout({ children }: LayoutProps) {
                     container 
                     max-w-7xl
                      mx-auto
-                      h-full
+                      h-screen w-screen
                        pt-12
                        min-h-screen
                 '

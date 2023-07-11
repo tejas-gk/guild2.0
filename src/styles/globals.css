@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    background-color: #f9fafe;
+}
+
 .icon {
     @apply h-9 w-6 lg:w-9 rounded-full lg:p-1;
 }
@@ -32,4 +36,8 @@ input[type='text']:focus ~ .text-up {
 .fade-exit-active {
     opacity: 0;
     transition: opacity 300ms;
+}
+
+.word:not(:last-child)::after {
+    content: ' ';
 }

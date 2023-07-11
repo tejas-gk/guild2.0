@@ -17,19 +17,88 @@ export default async function handler(
                 throw new Error('Invalid ID');
             }
 
-            const comment = await prisma.comment.create({
-                data: {
-                    body,
-                    userId: currentUser.id,
-                    postId,
-                    parentId,
-                },
-            });
+            let comment;
+
+            if (parentId) {
+                comment = await prisma.comment.create({
+                    data: {
+                        body,
+                        userId: currentUser.id,
+                        postId,
+                        parentId,
+                    },
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                username: true,
+                            },
+                        },
+                        replies: {
+                            include: {
+                                user: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                        username: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                });
+
+                // Trigger a Pusher event to notify clients about the new comment
+                pusherServer.trigger(
+                    `post-${postId}`,
+                    'comment-created',
+                    comment
+                );
+            } else {
+                comment = await prisma.comment.create({
+                    data: {
+                        body,
+                        userId: currentUser.id,
+                        postId,
+                    },
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                username: true,
+                            },
+                        },
+                        replies: {
+                            include: {
+                                user: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                        username: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                });
+
+                // Trigger a Pusher event to notify clients about the new comment
+                pusherServer.trigger(
+                    `post-${postId}`,
+                    'comment-created',
+                    comment
+                );
+            }
 
             try {
                 const post = await prisma.post.findUnique({
                     where: {
                         id: postId,
+                    },
+                    select: {
+                        userId: true,
                     },
                 });
 
@@ -70,9 +139,6 @@ export default async function handler(
                 console.log(error);
             }
 
-            // Trigger a Pusher event to notify clients about the new comment
-            pusherServer.trigger(`post-${postId}`, 'comment-created', comment);
-
             return res.status(200).json(comment);
         } else if (req.method === 'GET') {
             const { postId } = req.query;
@@ -80,6 +146,29 @@ export default async function handler(
             const comments = await prisma.comment.findMany({
                 where: {
                     postId: postId as string,
+                },
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            username: true,
+                        },
+                    },
+                    replies: {
+                        include: {
+                            user: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                    username: true,
+                                },
+                            },
+                        },
+                    },
+                },
+                orderBy: {
+                    createdAt: 'desc',
                 },
             });
 

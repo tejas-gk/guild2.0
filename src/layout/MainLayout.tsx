@@ -9,21 +9,21 @@ export default function MainLayout({ children }: LayoutProps) {
                 className='
                     container 
                     max-w-7xl
-                     mx-auto
-                      h-screen w-screen
-                       pt-12
-                       min-h-screen
+                    mx-auto
+                    h-screen w-screen
+                    pt-12
+                    min-h-screen
                 '
             >
                 <div
                     className='
-                        grid grid-cols-4
+                        grid lg:grid-cols-4 grid-cols-1
                         h-screen
                         '
                 >
                     <div
                         className='
-                            col-span-3 lg:col-span-3
+                            col-span-1 lg:col-span-3
                             '
                     >
                         {children}

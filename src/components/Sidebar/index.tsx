@@ -17,17 +17,17 @@ const item = [
         href: '/',
     },
 ];
-export default function Index({ children }: Props) {
+export default function Index() {
     const { data: currentUser } = useCurrentUser();
     return (
-        <div className='h-full '>
-            <main
-                className='
-                 h-full
-                '
-            >
-                {children}
-            </main>
+        <div
+            className='h-full
+        bg-gray-100
+        w-64 h-screen
+        hidden md:block
+        '
+        >
+            Sidebar
         </div>
     );
 }

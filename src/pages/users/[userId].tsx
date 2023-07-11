@@ -24,7 +24,7 @@ export default function UserId() {
     return (
         <>
             <Head>
-                <title>{user?.username}</title>
+                <title>{user?.userId}</title>
             </Head>
             <div className='relative'>
                 <div className=' w-full h-40'>

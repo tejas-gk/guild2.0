@@ -25,9 +25,13 @@ import Button from '@/components/Button';
 import { signOut } from 'next-auth/react';
 import { pusherClient } from '@/lib/pusher';
 import axios from 'axios';
-import { AiFillBell, AiOutlineBell } from 'react-icons/ai';
+import { AiFillBell, AiOutlineBell, AiOutlineSetting } from 'react-icons/ai';
 import { BsFillChatFill } from 'react-icons/bs';
-import { IoChatbubblesOutline, IoChatbubblesSharp } from 'react-icons/io5';
+import {
+    IoChatbubblesOutline,
+    IoChatbubblesSharp,
+    IoSettings,
+} from 'react-icons/io5';
 import { useRouter } from 'next/router';
 
 const InterFont = Inter({
@@ -87,19 +91,46 @@ export default function Navbar() {
     };
 
     return (
-        <div
-            className='
-            flex
+        <>
+            <div
+                className='
             items-center
             bg-white
             px-4 py-2
             shadow-md
             sticky top-0
             z-10
-        '
-        >
+            bg-white
+            md:hidden
+            '
+            >
+                <p
+                    className={`
+                    text-3xl
+                    font-bold
+                    text-red-500
+                    text-center
+                    cursor-pointer
+                    ${InterFont.className}
+                `}
+                >
+                    Guild
+                </p>
+            </div>
+
             <div
                 className='
+            items-center
+            bg-white
+            px-4 py-2
+            shadow-md
+            sticky top-0
+            z-10
+            hidden md:flex
+            '
+            >
+                <div
+                    className='
                 relative
                 h-10
                 w-20
@@ -108,24 +139,24 @@ export default function Navbar() {
                 flex
                 items-center
             '
-            >
-                <Link href='/'>
-                    <h1
-                        className={`
+                >
+                    <Link href='/'>
+                        <h1
+                            className={`
                         text-3xl
                         font-bold
                         text-red-500
                         cursor-pointer
                         ${InterFont.className}  
                     `}
-                    >
-                        Guild
-                    </h1>
-                </Link>
-            </div>
+                        >
+                            Guild
+                        </h1>
+                    </Link>
+                </div>
 
-            <div
-                className='
+                <div
+                    className='
                 flex
                 flex-1
                 items-center
@@ -133,38 +164,38 @@ export default function Navbar() {
                 mx-7
                 relative
             '
-            >
-                <HomeIcon
-                    className='
+                >
+                    <HomeIcon
+                        className='
                         h-6 w-6
                         cursor-pointer
                     '
-                />
-                <p
-                    className='
+                    />
+                    <p
+                        className='
                     hidden md:inline-flex
                     ml-2
                     flex-1
                 '
-                >
-                    Home
-                </p>
-                <ChevronDownIcon
-                    className='
+                    >
+                        Home
+                    </p>
+                    <ChevronDownIcon
+                        className='
                         h-6 w-6
                         cursor-pointer
                     '
-                    onClick={() => setIsOpen(!isOpen)}
-                />
-                {isOpen && (
-                    <div>
-                        <Dropdown setIsOpen={setIsOpen}>
-                            <ul>
-                                {guildData?.map((guild: any) => (
-                                    <li key={guild.id}>
-                                        <Link href={`/guild/${guild.id}`}>
-                                            <div
-                                                className='
+                        onClick={() => setIsOpen(!isOpen)}
+                    />
+                    {isOpen && (
+                        <div>
+                            <Dropdown setIsOpen={setIsOpen}>
+                                <ul>
+                                    {guildData?.map((guild: any) => (
+                                        <li key={guild.id}>
+                                            <Link href={`/guild/${guild.id}`}>
+                                                <div
+                                                    className='
                                                     flex
                                                     items-center
                                                     space-x-2
@@ -175,25 +206,25 @@ export default function Navbar() {
                                                     duration-200
                                                     ease-in-out
                                                     cursor-pointer
-                                                '
-                                            >
-                                                <Avatar
-                                                    seed={guild.iconUrl}
-                                                    size='medium'
-                                                />
-                                                <p>{guild.name}</p>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </Dropdown>
-                    </div>
-                )}
-            </div>
+                                                    '
+                                                >
+                                                    <Avatar
+                                                        seed={guild.iconUrl}
+                                                        size='medium'
+                                                    />
+                                                    <p>{guild.name}</p>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </Dropdown>
+                        </div>
+                    )}
+                </div>
 
-            <form
-                className='
+                <form
+                    className='
             flex 
             flex-1
             items-center
@@ -203,40 +234,40 @@ export default function Navbar() {
             lg:border lg:border-gray-200
             lg:bg-gray-100
             '
-            >
-                <SearchIcon
-                    className='
+                >
+                    <SearchIcon
+                        className='
                         h-6 w-6
                         cursor-pointer
                         text-gray-500
                         hidden lg:inline-flex
                     '
-                />
-                <input
-                    type='text'
-                    placeholder='Search'
-                    className='
+                    />
+                    <input
+                        type='text'
+                        placeholder='Search'
+                        className='
                         outline-none
                         flex-1
                         bg-transparent
                         hidden md:inline-flex
-                    '
-                />
-            </form>
+                        '
+                    />
+                </form>
 
-            <div
-                className='
+                <div
+                    className='
                 mx-5
                 items-center
                 hidden lg:inline-flex
                 space-x-2
-            '
-            >
-                <SparklesIcon className='icon cursor-not-allowed' />
-                <GlobeIcon className='icon cursor-not-allowed' />
-                <PlusIcon className='icon cursor-not-allowed' />
-                <div
-                    className='
+                '
+                >
+                    <SparklesIcon className='icon cursor-not-allowed' />
+                    <GlobeIcon className='icon cursor-not-allowed' />
+                    <PlusIcon className='icon cursor-not-allowed' />
+                    <div
+                        className='
                     flex
                     items-center
                     space-x-1
@@ -244,131 +275,123 @@ export default function Navbar() {
                     rounded-lg
                     px-2 py-1
                     cursor-not-allowed
-                '
-                >
-                    <SpeakerphoneIcon className='icon' />
-                    Promote
-                </div>
-                <VideoCameraIcon className='icon cursor-not-allowed' />
-                <Link href='/chats'>
-                    {router.pathname === '/chats' ? (
-                        <IoChatbubblesSharp className='icon' />
-                    ) : (
-                        <IoChatbubblesOutline className='icon' />
-                    )}
-                </Link>
-
-                <div
-                    className='
-                relative
-                '
-                >
-                    <Link href='/notifications'>
-                        {router.pathname === '/notifications' ? (
-                            <AiFillBell className='icon' />
+                    '
+                    >
+                        <SpeakerphoneIcon className='icon' />
+                        Promote
+                    </div>
+                    <VideoCameraIcon className='icon cursor-not-allowed' />
+                    <Link href='/chats'>
+                        {router.pathname === '/chats' ? (
+                            <IoChatbubblesSharp className='icon' />
                         ) : (
-                            <AiOutlineBell className='icon' />
+                            <IoChatbubblesOutline className='icon' />
                         )}
                     </Link>
-                    {notified && (
-                        <div
-                            className='
-                            bg-blue-600
-                            h-3 w-3
-                            rounded-full
-                            absolute
-                            top-1
-                            right-1
-                            
-                            '
-                        />
-                    )}
-                </div>
-            </div>
 
-            {currentUser ? (
-                <div
-                    className='
-                            text-gray-500
-                            font-semibold
-                            truncate 
-                            max-w-5 w-28
-                            flex
-                            items-center
-                            space-x-2
-                        '
-                >
-                    <Avatar seed={currentUser?.id} size='medium' />
-                    <ChevronDownIcon
+                    <div
                         className='
+                    relative
+                    '
+                    >
+                        <Link href='/notifications'>
+                            {router.pathname === '/notifications' ? (
+                                <AiFillBell className='icon' />
+                            ) : (
+                                <AiOutlineBell className='icon' />
+                            )}
+                        </Link>
+                        {notified && (
+                            <div
+                                className='
+                        bg-blue-600
+                        h-3 w-3
+                        rounded-full
+                        absolute
+                        top-1
+                        right-1
+                        
+                        '
+                            />
+                        )}
+                    </div>
+                </div>
+
+                {currentUser ? (
+                    <div
+                        className='
+                text-gray-500
+                font-semibold
+                truncate 
+                max-w-5 w-28
+                flex
+                items-center
+                space-x-2
+                '
+                    >
+                        <Avatar seed={currentUser?.id} size='medium' />
+                        <ChevronDownIcon
+                            className='
                         h-6 w-6
                         cursor-pointer
-                    '
-                        onClick={() =>
-                            setIsProfileDropdownOpen(!isProfileDropdownOpen)
-                        }
-                    />
-                    {isProfileDropdownOpen && (
-                        <div
-                            className='
-                                absolute 
+                        '
+                            onClick={() =>
+                                setIsProfileDropdownOpen(!isProfileDropdownOpen)
+                            }
+                        />
+                        {isProfileDropdownOpen && (
+                            <div
+                                className='
+                        absolute 
                         right-0 
                         mt-8 
                         w-[12rem] 
-                            '
-                        >
-                            <Dropdown
-                                setIsOpen={setIsProfileDropdownOpen}
-                                className='
+                        '
+                            >
+                                <Dropdown
+                                    setIsOpen={setIsProfileDropdownOpen}
+                                    className='
                                 left-auto
                                 right-12
                                 top-3
                                 '
-                            >
-                                <Link href='/profile'>
+                                >
+                                    <Link href={`users/${currentUser?.id}`}>
+                                        <div
+                                            className='
+                                        navbar-dropdown
+                                        '
+                                        >
+                                            <UserCircleIcon className='icon' />
+                                            <p>Profile</p>
+                                        </div>
+                                    </Link>
+                                    <Link href={`users/${currentUser?.id}`}>
+                                        <div
+                                            className='
+                                        navbar-dropdown
+                                        '
+                                        >
+                                            <AiOutlineSetting className='icon' />
+                                            <p>Settings</p>
+                                        </div>
+                                    </Link>
                                     <div
                                         className='
-                                            flex
-                                            items-center
-                                            space-x-2
-                                            px-2
-                                            hover:bg-gray-200
-                                            rounded-md
-                                            transition
-                                            duration-200
-                                            ease-in-out
-                                            cursor-pointer
+                                            navbar-dropdown
                                         '
+                                        onClick={() => logout()}
                                     >
-                                        <UserCircleIcon className='icon' />
-                                        <p>Profile</p>
+                                        <LogoutIcon className='icon' />
+                                        <p>Logout</p>
                                     </div>
-                                </Link>
-                                <div
-                                    className='
-                                            flex
-                                            items-center
-                                            space-x-2
-                                            px-2
-                                            hover:bg-gray-200
-                                            rounded-md
-                                            transition
-                                            duration-200
-                                            ease-in-out
-                                            cursor-pointer
-                                        '
-                                    onClick={() => logout()}
-                                >
-                                    <LogoutIcon className='icon' />
-                                    <p>Logout</p>
-                                </div>
-                            </Dropdown>
-                        </div>
-                    )}
-                </div>
-            ) : (
-                <div
-                    className='
+                                </Dropdown>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <div
+                        className='
                 hidden lg:flex
                 items-center
                 space-x-2
@@ -376,11 +399,11 @@ export default function Navbar() {
                 border border-gray-200
                 p-2
                 cursor-pointer
-            '
-                    onClick={() => loginModal.onOpen()}
-                >
-                    <ArrowCircleDownIcon
-                        className='
+                '
+                        onClick={() => loginModal.onOpen()}
+                    >
+                        <ArrowCircleDownIcon
+                            className='
                         rounded-full
                         cursor-pointer
                         transition
@@ -388,18 +411,19 @@ export default function Navbar() {
                         transform
                         hover:scale-110
                         h-6 w-6
-                    '
-                    />
-                    <p
-                        className='
+                        '
+                        />
+                        <p
+                            className='
                     text-gray-500
                     font-semibold
                 '
-                    >
-                        Sign in
-                    </p>
-                </div>
-            )}
-        </div>
+                        >
+                            Sign in
+                        </p>
+                    </div>
+                )}
+            </div>
+        </>
     );
 }

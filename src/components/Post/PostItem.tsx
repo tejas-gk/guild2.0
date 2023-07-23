@@ -16,7 +16,6 @@ import { useToast } from '@/hooks/useToast';
 import { formatDistance, subDays } from 'date-fns';
 
 interface PostItemProps {
-    userId?: string;
     data?: Record<string, any>;
 }
 
@@ -29,13 +28,14 @@ export default function PostItem({ data = {} }: PostItemProps): any {
     );
     const toast = useToast();
 
+    console.log(data);
+
     const [likeCount, setLikeCount] = useState<number>(
         data?.likedIds?.length || 0
     );
 
     const postBodyRef = useRef<HTMLDivElement>(null);
     const shouldAddOverflowClip = router.pathname !== '/posts/[...postId]';
-    console.log(shouldAddOverflowClip, router.pathname);
 
     useEffect(() => {
         const channel = pusherClient.subscribe(`post-${data.id}`);
@@ -62,7 +62,6 @@ export default function PostItem({ data = {} }: PostItemProps): any {
             });
             toast.success('Liked');
         } catch (error) {
-            console.log(error);
             toast.error('fuck');
         }
     };

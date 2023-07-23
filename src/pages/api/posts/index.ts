@@ -10,14 +10,14 @@ export default async function handler(
     try {
         if (req.method === 'POST') {
             const { currentUser } = await serverAuth(req, res);
-            const { body, image } = req.body;
+            const { body, image, guildId } = req.body;
 
             const post = await prisma.post.create({
                 data: {
                     body,
                     image,
+                    guildId,
                     userId: currentUser.id,
-                    guildId: null, //TODO: if normal post nothing if guild post guild id
                 },
             });
 

@@ -12,6 +12,8 @@ interface Guild {
 export default function Guild() {
     const [guildName, setGuildName] = useState('');
     const [guild, setGuild] = useState<Guild[]>([]);
+    const [guildBio, setGuildBio] = useState('');
+    const [profileImage, setProfileImage] = useState('');
 
     const toast = useToast();
 
@@ -19,12 +21,12 @@ export default function Guild() {
         try {
             const response = await axios.post('/api/guild', {
                 name: guildName,
+                bio: guildBio,
+                profileImage,
             });
             toast.success('Successfully created guild');
-            console.log(response.data, 'response.data');
         } catch (error) {
             toast.error('Something went wrong');
-            console.log('error', error);
         }
     };
 
@@ -60,12 +62,9 @@ export default function Guild() {
                     <ImageUpload
                         label='Cover image'
                         disabled={false}
-                        onChange={(base64) =>
-                            // setCoverImage(base64 as unknown as File)
-                            console.log(base64)
-                        }
+                        onChange={(base64) => setProfileImage(base64)}
                         variants='profile'
-                        // value={coverImage}
+                        value={profileImage}
                     />
                 </div>
                 <input
@@ -78,6 +77,8 @@ export default function Guild() {
                 <textarea
                     placeholder='Guild Description'
                     className='border-2 border-gray-300 p-2 rounded-lg w-full mt-2'
+                    value={guildBio}
+                    onChange={(e) => setGuildBio(e.target.value)}
                 />
                 <Button onClick={handleCreateGuild}>Create Guild</Button>
             </div>

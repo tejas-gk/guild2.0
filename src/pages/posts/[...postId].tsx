@@ -49,9 +49,7 @@ export default function PostView() {
                 ...prevReply,
                 [commentId]: '',
             }));
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
     const handleChangeReply = (commentId: string, value: string) => {
@@ -106,7 +104,6 @@ export default function PostView() {
                     comment={comment}
                     postId={postId as string}
                     onDeleteComment={(commentId: string) => {
-                        console.log(commentId);
                         alert('Comment deleted successfully');
                     }}
                 />

@@ -26,13 +26,14 @@ import { signOut } from 'next-auth/react';
 import { pusherClient } from '@/lib/pusher';
 import axios from 'axios';
 import { AiFillBell, AiOutlineBell, AiOutlineSetting } from 'react-icons/ai';
-import { BsFillChatFill } from 'react-icons/bs';
+import { BsBookmark, BsFillChatFill } from 'react-icons/bs';
 import {
     IoChatbubblesOutline,
     IoChatbubblesSharp,
     IoSettings,
 } from 'react-icons/io5';
 import { useRouter } from 'next/router';
+import useGuild from '@/hooks/useGuild';
 
 const InterFont = Inter({
     subsets: ['latin'],
@@ -70,21 +71,7 @@ export default function Navbar() {
         };
     }, [currentUser?.id]);
 
-    const [guildData, setGuildData] = useState([]);
-
-    useEffect(() => {
-        const fetchGuildData = async () => {
-            try {
-                const response = await axios.get(`/api/guild`);
-                setGuildData(response.data);
-                console.log(guildData, 'guild data');
-            } catch (error) {
-                console.log('Error fetching guild data:', error);
-            }
-        };
-
-        fetchGuildData();
-    }, []);
+    const { data: guildData } = useGuild();
 
     const logout = async () => {
         await signOut();
@@ -100,10 +87,12 @@ export default function Navbar() {
             shadow-md
             sticky top-0
             z-10
-            bg-white
+            flex
+            justify-between
             md:hidden
             '
             >
+                <div></div>
                 <p
                     className={`
                     text-3xl
@@ -116,7 +105,37 @@ export default function Navbar() {
                 >
                     Guild
                 </p>
+                <div>
+                    <MenuIcon
+                        className='icon'
+                        onClick={() => setIsOpen(!isOpen)}
+                    />
+                    {/* this will be a separate component in the future called drawer */}
+                </div>
             </div>
+
+            {isOpen && (
+                <div
+                    className={`
+        md:hidden
+        fixed
+        top-0
+        right-0
+        bg-white
+        shadow-md
+        h-screen
+        w-32
+        transform
+        transition-transform
+        ease-in-out
+        duration-300
+        slide-in-right
+      `}
+                >
+                    <p>Guild 1</p>
+                    <p>Guild 2</p>
+                </div>
+            )}
 
             <div
                 className='
@@ -209,7 +228,7 @@ export default function Navbar() {
                                                     '
                                                 >
                                                     <Avatar
-                                                        seed={guild.iconUrl}
+                                                        seed={guild.id}
                                                         size='medium'
                                                     />
                                                     <p>{guild.name}</p>
@@ -280,7 +299,7 @@ export default function Navbar() {
                         <SpeakerphoneIcon className='icon' />
                         Promote
                     </div>
-                    <VideoCameraIcon className='icon cursor-not-allowed' />
+                    <BsBookmark className='icon h-5 cursor-not-allowed' />
                     <Link href='/chats'>
                         {router.pathname === '/chats' ? (
                             <IoChatbubblesSharp className='icon' />

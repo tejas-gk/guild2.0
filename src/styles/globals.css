@@ -7,7 +7,7 @@ body {
 }
 
 .icon {
-    @apply h-9 w-6 lg:w-9 rounded-full lg:p-1;
+    @apply h-9 w-6 lg:w-9  lg:p-1;
 }
 
 .icon-container {

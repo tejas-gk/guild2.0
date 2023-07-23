@@ -18,6 +18,10 @@ export default async function handler(
             },
             include: {
                 post: {
+                    where: {
+                        // postType: 'guild',
+                        guildId: guildId as string,
+                    },
                     orderBy: {
                         createdAt: 'desc',
                     },

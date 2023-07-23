@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Avatar from '../Avatar';
-import { PhotographIcon, XIcon } from '@heroicons/react/outline';
+import {
+    ChevronDownIcon,
+    HomeIcon,
+    PhotographIcon,
+    XIcon,
+} from '@heroicons/react/outline';
 import { useRegisterModal } from '@/hooks/useModal';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import usePosts from '@/hooks/usePosts';
@@ -12,6 +17,9 @@ import Image from 'next/image';
 import { useToast } from '@/hooks/useToast';
 import { AiOutlineCamera } from 'react-icons/ai';
 import { BsCamera } from 'react-icons/bs';
+import Dropdown from '../Dropdown';
+import useGuild from '@/hooks/useGuild';
+import Link from 'next/link';
 
 interface PostProps {
     postId?: string;
@@ -19,6 +27,7 @@ interface PostProps {
 }
 export default function Index({ postId, isComment = false }: PostProps): any {
     const [isTyping, setIsTyping] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
@@ -28,10 +37,13 @@ export default function Index({ postId, isComment = false }: PostProps): any {
         useCurrentUser();
     const { mutate: mutatePosts } = usePosts();
     const { mutate: mutatePost } = usePosts(postId as string);
+    const { data: guildData } = useGuild();
 
     const [isLoading, setIsLoading] = useState(false);
     const [body, setBody] = useState('');
     const [image, setImage] = useState('');
+    const [activeGuild, setActiveGuild] = useState('' as string);
+    const [activeGuildName, setActiveGuildName] = useState('' as string);
 
     const onSubmit = useCallback(
         async (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,6 +56,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                 await axios.post(url, {
                     body,
                     image,
+                    guildId: activeGuild,
                 });
                 toast.success(
                     `${isComment ? 'Comment' : 'Post'} created successfully`
@@ -60,7 +73,16 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                 setIsTyping(false);
             }
         },
-        [body, mutatePost, mutatePosts, postId, isComment, image, toast]
+        [
+            body,
+            mutatePost,
+            mutatePosts,
+            postId,
+            isComment,
+            image,
+            toast,
+            activeGuild,
+        ]
     );
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -256,24 +278,92 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                                 <div
                                     className='flex 
                                 items-center
+                                w-inherit
                                  px-2'
                                 >
                                     <p className='font-semibold'>Guild</p>
-                                    <input
-                                        type='text'
-                                        placeholder='Select your Guild'
-                                        className='outline-none
-                                         bg-blue-50 
-                                         flex-1
-                                          p-2
-                                           m-2'
-                                    />
+                                    <p>{activeGuildName}</p>
+                                    <div
+                                        className='
+                                                flex
+                                                flex-1
+                                                items-center
+                                                flex-row
+                                                mx-7
+                                                relative
+                                            '
+                                    >
+                                        <ChevronDownIcon
+                                            className='
+                                                    h-6 w-6
+                                                    cursor-pointer
+                                                '
+                                            onClick={() => setIsOpen(!isOpen)}
+                                        />
+                                        {isOpen && (
+                                            <div>
+                                                <Dropdown
+                                                    setIsOpen={setIsOpen}
+                                                    className='
+                                                        z-50
+                                                    '
+                                                >
+                                                    <ul>
+                                                        {guildData?.map(
+                                                            (guild: any) => (
+                                                                <li
+                                                                    key={
+                                                                        guild.id
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setActiveGuild(
+                                                                            guild.id
+                                                                        ) as any;
+                                                                        setActiveGuildName(
+                                                                            guild.name
+                                                                        ) as any;
+                                                                    }}
+                                                                >
+                                                                    <div
+                                                                        className='
+                                                                                    flex
+                                                                                    items-center
+                                                                                    space-x-2
+                                                                                    px-4 py-2
+                                                                                    hover:bg-gray-200
+                                                                                    rounded-md
+                                                                                    transition
+                                                                                    duration-200
+                                                                                    ease-in-out
+                                                                                    cursor-pointer
+                                                                                    '
+                                                                    >
+                                                                        <Avatar
+                                                                            seed={
+                                                                                guild.iconUrl
+                                                                            }
+                                                                            size='medium'
+                                                                        />
+                                                                        <p>
+                                                                            {
+                                                                                guild.name
+                                                                            }
+                                                                        </p>
+                                                                    </div>
+                                                                </li>
+                                                            )
+                                                        )}
+                                                    </ul>
+                                                </Dropdown>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                                 <div
                                     className='flex 
                                 justify-end
                                  pr-5
-                                  items-center'
+                                 items-center'
                                 >
                                     <Button title='Post' onClick={onSubmit}>
                                         Post

@@ -19,8 +19,6 @@ export default function UserId() {
         (post: Record<string, any>) => post.userId === userId
     );
 
-    console.log('from [userId]', post, posts, userId);
-
     return (
         <>
             <Head>

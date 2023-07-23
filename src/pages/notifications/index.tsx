@@ -1,8 +1,10 @@
 import Avatar from '@/components/Avatar';
 import useCurrentUser from '@/hooks/useCurrentUser';
+import useUsers from '@/hooks/useUsers';
 import { pusherClient } from '@/lib/pusher';
 import { NextPageContext } from 'next';
 import { getSession, useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -31,14 +33,12 @@ export default function Index() {
             );
             const data = await res.json();
             setNotifications(data);
-            console.log(
-                notifications,
-                notifications[0]?.userId?.user,
-                'notify'
-            );
         };
         fetchNotifications();
     }, [currentUser?.id]);
+
+    const { data: user } = useUsers(notifications[0]?.userId);
+    console.log(user, 'user');
 
     if (!notifications) {
         return (
@@ -92,10 +92,13 @@ export default function Index() {
               font-semibold
               text-neutral-900
               mr-2
+              flex
             '
                     >
-                        <span className=''>{notification?.userId} </span>
-                        <p>
+                        <Link href={`/users/${user.id}`} className='mr-3'>
+                            {user.name}{' '}
+                        </Link>
+                        <span>
                             {notification?.body
                                 .split(' ')
                                 .map((word: any, index: number) => (
@@ -108,7 +111,7 @@ export default function Index() {
                                         {word}
                                     </span>
                                 ))}
-                        </p>
+                        </span>
                     </p>
                 </div>
             ))}

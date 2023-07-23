@@ -2,8 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import prisma from '@/lib/prismadb';
 import { pusherClient, pusherServer } from '@/lib/pusher';
+import useUsers from '@/hooks/useUsers';
 
-export default async function handler(
+export default async function Handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
@@ -26,6 +27,7 @@ export default async function handler(
                 createdAt: 'desc',
             },
         });
+        // const {data:user}=useUsers(userId as string)
 
         await prisma.user.update({
             where: {

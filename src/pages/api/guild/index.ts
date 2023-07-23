@@ -9,10 +9,12 @@ export default async function handler(
     const { currentUser } = await serverAuth(req, res);
     if (req.method === 'POST') {
         try {
-            const { name } = req.body;
+            const { name, bio, profileImage } = req.body;
             const guild = await prisma.guild.create({
                 data: {
                     name,
+                    bio,
+                    profileImage,
                     userId: currentUser.id,
                 },
             });

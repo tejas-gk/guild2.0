@@ -62,6 +62,7 @@ export default function Guild() {
                     <ImageUpload
                         label='Cover image'
                         disabled={false}
+                        // @ts-ignore
                         onChange={(base64) => setProfileImage(base64)}
                         variants='profile'
                         value={profileImage}

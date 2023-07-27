@@ -6,14 +6,15 @@ import { CalendarIcon } from '@heroicons/react/outline';
 // import { useEditModal } from '@/hooks/useEditModal';
 import { useRouter } from 'next/router';
 import { useEditModal } from '@/hooks/useModal';
-import useFollow from '@/hooks/useFollow';
+import useJoin from '@/hooks/useJoin';
 import useGuild from '@/hooks/useGuild';
 export default function UserBio() {
     const { data: currentUser } = useCurrentUser();
     const router = useRouter();
     const { data: guild } = useGuild(router.query?.guildId as string);
     const editModal = useEditModal();
-    const { isFollowing, toggleFollow } = useFollow(guild?.id as string);
+    const { isJoined, toggleJoin } = useJoin(currentUser?.id as string);
+
     return (
         <div className=''>
             <div
@@ -39,10 +40,10 @@ export default function UserBio() {
                     <div>
                         <Button
                             colors='secondary'
-                            onClick={toggleFollow}
-                            title={isFollowing ? 'Leave' : 'Join'}
+                            onClick={toggleJoin}
+                            title={isJoined ? 'Leave' : 'Join'}
                         >
-                            {isFollowing ? 'Leave' : 'Join'}
+                            {isJoined ? 'Leave' : 'Join'}
                         </Button>
                     </div>
                 )}

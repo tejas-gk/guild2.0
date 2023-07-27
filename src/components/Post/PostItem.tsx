@@ -14,6 +14,7 @@ import Image from 'next/image';
 import usePosts from '@/hooks/usePosts';
 import { useToast } from '@/hooks/useToast';
 import { formatDistance, subDays } from 'date-fns';
+import { BsBookmark, BsBookmarkFill, BsFillChatFill } from 'react-icons/bs';
 
 interface PostItemProps {
     data?: Record<string, any>;
@@ -26,9 +27,8 @@ export default function PostItem({ data = {} }: PostItemProps): any {
     const { mutate: mutatePost, isLoading: postLoading } = usePosts(
         router.query.id as string
     );
+    const { mutate: bookmarkMutate, isLoading } = usePosts('bookmark');
     const toast = useToast();
-
-    console.log(data);
 
     const [likeCount, setLikeCount] = useState<number>(
         data?.likedIds?.length || 0
@@ -63,6 +63,29 @@ export default function PostItem({ data = {} }: PostItemProps): any {
             toast.success('Liked');
         } catch (error) {
             toast.error('fuck');
+        }
+    };
+
+    const isBookmarked = data?.bookmarkedIds?.includes(currentUser?.data?.id);
+    const handleBookmark = async (postId: string) => {
+        try {
+            if (isBookmarked) {
+                await axios.delete('api/bookmark', {
+                    data: {
+                        id: postId,
+                    },
+                });
+                bookmarkMutate();
+                toast.success('Unbookmarked');
+            } else {
+                axios.post('/api/bookmark', {
+                    postId,
+                });
+                toast.success('Bookmarked');
+            }
+            bookmarkMutate();
+        } catch (error) {
+            toast.error('Error occurred');
         }
     };
 
@@ -232,15 +255,17 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                 icon-container
                 hover:text-green-500'
                 >
-                    <BiUpvote className='icon' />
-                </div>
-                <div
-                    className='
-                
-                icon-container
-                hover:text-green-500'
-                >
-                    <BiDownvote className='icon' />
+                    {isBookmarked ? (
+                        <BsBookmarkFill
+                            className='icon'
+                            onClick={() => handleBookmark(data?.id)}
+                        />
+                    ) : (
+                        <BsBookmark
+                            className='icon'
+                            onClick={() => handleBookmark(data?.id)}
+                        />
+                    )}
                 </div>
 
                 <div

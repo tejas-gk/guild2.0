@@ -25,7 +25,7 @@ export default function GuildPage() {
                 <title>{guild?.guildId}</title>
             </Head>
             <div className='relative'>
-                <div className=' w-full h-40'>
+                <div className='w-full h-40'>
                     <Image
                         alt='Banner'
                         src={

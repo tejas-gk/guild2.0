@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prismadb';
 import serverAuth from '@/lib/serverAuth';
 import { pusherServer } from '@/lib/pusher';
+import axios from 'axios';
 
 export default async function handler(
     req: NextApiRequest,
@@ -28,57 +29,83 @@ export default async function handler(
 
         let updatedLikedIds = [...(post.likedIds || [])];
 
+        const userHasLiked = updatedLikedIds.includes(currentUser.id);
+
         if (req.method === 'POST') {
-            updatedLikedIds.push(currentUser.id);
+            if (userHasLiked) {
+                // User has already liked the post, remove the like
+                updatedLikedIds = updatedLikedIds.filter(
+                    (id) => id !== currentUser.id
+                );
+            } else {
+                // User hasn't liked the post, add the like
+                updatedLikedIds.push(currentUser.id);
 
-            try {
-                if (post.userId) {
-                    const userWhoLiked = await prisma.user.findUnique({
-                        where: {
-                            id: currentUser.id,
-                        },
-                    });
+                try {
+                    if (post.userId) {
+                        const userWhoLiked = await prisma.user.findUnique({
+                            where: {
+                                id: currentUser.id,
+                            },
+                        });
 
-                    await prisma.notification.create({
-                        data: {
-                            body: `liked your post!`,
-                            userId: post.userId,
-                        },
-                    });
+                        await prisma.notification.create({
+                            data: {
+                                body: `liked your post!`,
+                                userId: post.userId,
+                            },
+                        });
 
-                    await prisma.user.update({
-                        where: {
-                            id: post.userId,
-                        },
-                        data: {
-                            hasNotification: true,
-                        },
-                    });
+                        await prisma.user.update({
+                            where: {
+                                id: post.userId,
+                            },
+                            data: {
+                                hasNotification: true,
+                            },
+                        });
 
-                    pusherServer.trigger(
-                        `user-${post.userId}`,
-                        'notification',
-                        {
-                            user: userWhoLiked,
-                            body: `liked your post!`,
-                        }
-                    );
+                        pusherServer.trigger(
+                            `user-${post.userId}`,
+                            'notification',
+                            {
+                                user: userWhoLiked,
+                                body: `liked your post!`,
+                            }
+                        );
+                    }
+                } catch (error) {
+                    console.error(error);
+                    return res
+                        .status(500)
+                        .json({ error: 'Failed to process the like' });
                 }
-            } catch (error) {
-                console.error(error);
-                return res
-                    .status(500)
-                    .json({ error: 'Failed to process the like' });
             }
         }
+        // else if (req.method === 'DELETE') {
+        //     // Find the bookmark associated with the post and the current user
+        //     const bookmark = await prisma.bookmark.findFirst({
+        //         where: {
+        //             postId,
+        //             userId: currentUser.id,
+        //         },
+        //     });
 
-        if (req.method === 'DELETE') {
-        }
+        //     if (bookmark) {
+        //         // Delete the bookmark from Prisma
+        //         await prisma.bookmark.delete({
+        //             where: {
+        //                 id: bookmark.id,
+        //             },
+        //         });
 
-        if (req.method === 'GET') {
-            const likeCount = updatedLikedIds.length;
-            return res.status(200).json({ likes: likeCount });
-        }
+        //         // ... (Additional logic for notifications or other actions)
+
+        //         return res.status(200).json({ message: 'Bookmark deleted successfully' });
+        //     } else {
+        //         return res.status(404).json({ error: 'Bookmark not found' });
+        //     }
+        // }
 
         const updatedPost = await prisma.post.update({
             where: {
@@ -89,7 +116,6 @@ export default async function handler(
             },
         });
 
-        // Trigger a Pusher event to notify clients about the updated post
         pusherServer.trigger(`post-${postId}`, 'post-updated', updatedPost);
 
         return res.status(200).json(updatedPost);

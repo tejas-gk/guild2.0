@@ -26,7 +26,12 @@ import { signOut } from 'next-auth/react';
 import { pusherClient } from '@/lib/pusher';
 import axios from 'axios';
 import { AiFillBell, AiOutlineBell, AiOutlineSetting } from 'react-icons/ai';
-import { BsBookmark, BsFillChatFill } from 'react-icons/bs';
+import {
+    BsBookFill,
+    BsBookmark,
+    BsBookmarkFill,
+    BsFillChatFill,
+} from 'react-icons/bs';
 import {
     IoChatbubblesOutline,
     IoChatbubblesSharp,
@@ -299,7 +304,13 @@ export default function Navbar() {
                         <SpeakerphoneIcon className='icon' />
                         Promote
                     </div>
-                    <BsBookmark className='icon h-5 cursor-not-allowed' />
+                    <Link href='/bookmarks'>
+                        {router.pathname === '/bookmarks' ? (
+                            <BsBookmarkFill className='icon' />
+                        ) : (
+                            <BsBookmark className='icon' />
+                        )}
+                    </Link>
                     <Link href='/chats'>
                         {router.pathname === '/chats' ? (
                             <IoChatbubblesSharp className='icon' />

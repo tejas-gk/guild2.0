@@ -49,6 +49,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
         async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             try {
+                const guildId = activeGuild || null;
                 setIsLoading(true);
                 const url = isComment
                     ? `/api/posts/comments?postId=${postId}&parentId=${postId}`
@@ -56,7 +57,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                 await axios.post(url, {
                     body,
                     image,
-                    guildId: activeGuild,
+                    guildId: guildId,
                 });
                 toast.success(
                     `${isComment ? 'Comment' : 'Post'} created successfully`

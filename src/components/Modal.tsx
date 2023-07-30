@@ -103,6 +103,7 @@ export default function Modal({
                             {title}
                         </h3>
                         <button
+                            title='modal'
                             className='
                             p-1
                             ml-auto

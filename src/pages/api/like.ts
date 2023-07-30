@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prismadb';
 import serverAuth from '@/lib/serverAuth';
 import { pusherServer } from '@/lib/pusher';
-import axios from 'axios';
 
 export default async function handler(
     req: NextApiRequest,
@@ -82,30 +81,6 @@ export default async function handler(
                 }
             }
         }
-        // else if (req.method === 'DELETE') {
-        //     // Find the bookmark associated with the post and the current user
-        //     const bookmark = await prisma.bookmark.findFirst({
-        //         where: {
-        //             postId,
-        //             userId: currentUser.id,
-        //         },
-        //     });
-
-        //     if (bookmark) {
-        //         // Delete the bookmark from Prisma
-        //         await prisma.bookmark.delete({
-        //             where: {
-        //                 id: bookmark.id,
-        //             },
-        //         });
-
-        //         // ... (Additional logic for notifications or other actions)
-
-        //         return res.status(200).json({ message: 'Bookmark deleted successfully' });
-        //     } else {
-        //         return res.status(404).json({ error: 'Bookmark not found' });
-        //     }
-        // }
 
         const updatedPost = await prisma.post.update({
             where: {

@@ -62,11 +62,12 @@ export default function PostItem({ data = {} }: PostItemProps): any {
             });
             toast.success('Liked');
         } catch (error) {
-            toast.error('fuck');
+            toast.error('something went wrong');
         }
     };
 
     const isBookmarked = data?.bookmarkedIds?.includes(currentUser?.data?.id);
+    console.log(data.body);
     const handleBookmark = async (postId: string) => {
         try {
             if (isBookmarked) {
@@ -78,12 +79,18 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                 bookmarkMutate();
                 toast.success('Unbookmarked');
             } else {
-                axios.post('/api/bookmark', {
-                    postId,
-                });
-                toast.success('Bookmarked');
+                axios
+                    .post('/api/bookmark', {
+                        postId,
+                    })
+                    .then((res) => {
+                        toast.success('Bookmarked');
+                    })
+                    .catch((err) => {
+                        toast.error('Error occurred');
+                    });
+                bookmarkMutate();
             }
-            bookmarkMutate();
         } catch (error) {
             toast.error('Error occurred');
         }
@@ -273,9 +280,7 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                 icon-container
                 hover:text-yellow-500
             '
-                    onClick={() =>
-                        handleShare(`http://localhost:3000/posts/${data?.id}`)
-                    }
+                    onClick={() => handleShare(`/posts/${data?.id}`)}
                 >
                     <MdOutlineContentCopy className='icon' />
                 </div>

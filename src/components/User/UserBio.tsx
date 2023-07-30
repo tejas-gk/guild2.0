@@ -141,7 +141,7 @@ export default function UserBio() {
                                 >
                                     Following{' '}
                                     <span className='font-bold'>
-                                        {user?.following?.length || 0}
+                                        {user?.followingIds?.length || 0}
                                     </span>
                                 </p>
                                 <p

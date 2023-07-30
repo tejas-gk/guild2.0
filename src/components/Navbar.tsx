@@ -39,6 +39,7 @@ import {
 } from 'react-icons/io5';
 import { useRouter } from 'next/router';
 import useGuild from '@/hooks/useGuild';
+import Logo from './Logo';
 
 const InterFont = Inter({
     subsets: ['latin'],
@@ -153,31 +154,9 @@ export default function Navbar() {
             hidden md:flex
             '
             >
-                <div
-                    className='
-                relative
-                h-10
-                w-20
-                flex-shrink-0
-                cursor-pointer
-                flex
-                items-center
-            '
-                >
-                    <Link href='/'>
-                        <h1
-                            className={`
-                        text-3xl
-                        font-bold
-                        text-red-500
-                        cursor-pointer
-                        ${InterFont.className}  
-                    `}
-                        >
-                            Guild
-                        </h1>
-                    </Link>
-                </div>
+                <Link href='/'>
+                    <Logo />
+                </Link>
 
                 <div
                     className='
@@ -386,7 +365,7 @@ export default function Navbar() {
                                 top-3
                                 '
                                 >
-                                    <Link href={`users/${currentUser?.id}`}>
+                                    <Link href={`/users/${currentUser?.id}`}>
                                         <div
                                             className='
                                         navbar-dropdown

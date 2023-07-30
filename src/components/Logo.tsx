@@ -23,7 +23,6 @@ export default function Logo() {
                         font-bold
                         transition-all
                         hover:translate-y-[-2px]
-                        hover:shadow-lg
                         md:block
                     `}
                 >

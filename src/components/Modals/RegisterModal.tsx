@@ -5,8 +5,9 @@ import Modal from '../Modal';
 import Input from '../Input';
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
-import { schema } from '@/pages/api/register';
+// import { schema } from '@/pages/api/register';
 import { useToast } from '@/hooks/useToast';
+import { z, ZodError, ZodIssue } from 'zod';
 
 interface FormValues {
     email: string;
@@ -32,6 +33,41 @@ export default function LoginModal() {
         setIsLoading(true);
 
         try {
+            const schema = z.object({
+                email: z.string().email(),
+                username: z
+                    .string()
+                    .min(3, { message: 'Username must have minumum 3 letters' })
+                    .regex(/^[a-zA-Z0-9_.]+$/, {
+                        message:
+                            'Username can only contain alphanumeric characters, underscore and dot',
+                    }), // alphanumeric, underscore, dot
+                name: z.string(),
+                password: z
+                    .string()
+                    .min(6)
+                    .refine((value) => {
+                        // Password strength criteria
+                        const hasUppercase = /[A-Z]/.test(value);
+                        const hasLowercase = /[a-z]/.test(value);
+                        const hasNumber = /[0-9]/.test(value);
+                        const hasSpecialCharacter = /[!@#$%^&*]/.test(value);
+                        return (
+                            hasUppercase &&
+                            hasLowercase &&
+                            hasNumber &&
+                            hasSpecialCharacter
+                        );
+                    }, 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'),
+            });
+
+            schema.parse({
+                email,
+                name,
+                username,
+                password,
+            });
+
             await axios.post('/api/register', {
                 email,
                 name,
@@ -46,8 +82,17 @@ export default function LoginModal() {
             });
             registerModal.onClose();
         } catch (error) {
-            toast.error('Something went wrong');
-            console.log('error', error);
+            if (error instanceof ZodError) {
+                const formattedErrors: Partial<FormValues> = {};
+                error.issues.forEach((issue: ZodIssue) => {
+                    // @ts-ignore
+                    formattedErrors[issue.path[0]] = issue.message;
+                });
+                setErrors(formattedErrors);
+            } else {
+                toast.error('Something went wrong');
+                console.log('error', error);
+            }
         }
         setIsLoading(false);
     }, [registerModal, email, name, username, password, toast]);
@@ -69,14 +114,16 @@ export default function LoginModal() {
                 disabled={isLoading}
                 label='Name'
             />
-            <span
-                className='
-            text-red-400
-            -mt-3 ml-2
-            text-sm'
-            >
-                Name error
-            </span>
+            {errors?.name && (
+                <span
+                    className='
+                    text-red-400
+                    -mt-3 ml-2
+                    text-sm'
+                >
+                    {errors?.name}
+                </span>
+            )}
             <Input
                 type='text'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -86,6 +133,16 @@ export default function LoginModal() {
                 disabled={isLoading}
                 label='Username'
             />
+            {errors?.username && (
+                <span
+                    className='
+                    text-red-400
+                    -mt-3 ml-2
+                    text-sm'
+                >
+                    {errors?.username}
+                </span>
+            )}
             <Input
                 type='email'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -95,14 +152,16 @@ export default function LoginModal() {
                 disabled={isLoading}
                 label='Email'
             />
-            <span
-                className='
+            {errors?.email && (
+                <span
+                    className='
             text-red-400
             -mt-3 ml-2
             text-sm'
-            >
-                {errors?.email}
-            </span>
+                >
+                    {errors?.email}
+                </span>
+            )}
             <Input
                 type='password'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -112,6 +171,16 @@ export default function LoginModal() {
                 disabled={isLoading}
                 label='Password'
             />
+            {errors?.password && (
+                <span
+                    className='
+                    text-red-400
+                    -mt-3 ml-2
+                    text-sm'
+                >
+                    {errors?.password}
+                </span>
+            )}
         </div>
     );
 

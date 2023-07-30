@@ -67,7 +67,6 @@ export default function PostItem({ data = {} }: PostItemProps): any {
     };
 
     const isBookmarked = data?.bookmarkedIds?.includes(currentUser?.data?.id);
-    console.log(data.body);
     const handleBookmark = async (postId: string) => {
         try {
             if (isBookmarked) {

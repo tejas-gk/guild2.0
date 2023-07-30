@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import {
     HomeIcon,
@@ -25,7 +25,12 @@ import Button from '@/components/Button';
 import { signOut } from 'next-auth/react';
 import { pusherClient } from '@/lib/pusher';
 import axios from 'axios';
-import { AiFillBell, AiOutlineBell, AiOutlineSetting } from 'react-icons/ai';
+import {
+    AiFillBell,
+    AiFillGithub,
+    AiOutlineBell,
+    AiOutlineSetting,
+} from 'react-icons/ai';
 import {
     BsBookFill,
     BsBookmark,
@@ -79,70 +84,83 @@ export default function Navbar() {
 
     const { data: guildData } = useGuild();
 
+    const joinedGuilds = useCallback(() => {
+        if (guildData && currentUser) {
+            console.table(currentUser.joinedIds[0]);
+            const joinedGuildIds = currentUser.joinedIds || [];
+            const joinedGuilds = guildData.filter((guild: any) =>
+                joinedGuildIds.includes(guild.id)
+            );
+            return joinedGuilds;
+        }
+        return [];
+    }, [guildData, currentUser]);
+
+    const [filteredGuilds, setFilteredGuilds] = useState(joinedGuilds());
+
+    useEffect(() => {
+        setFilteredGuilds(joinedGuilds());
+        console.log('joined guilds', joinedGuilds());
+    }, [guildData, currentUser]);
+
     const logout = async () => {
         await signOut();
+    };
+    const handleToggleDrawer = () => {
+        setIsOpen(!isOpen);
     };
 
     return (
         <>
-            <div
-                className='
-            items-center
-            bg-white
-            px-4 py-2
-            shadow-md
-            sticky top-0
-            z-10
-            flex
-            justify-between
-            md:hidden
-            '
-            >
-                <div></div>
-                <p
-                    className={`
-                    text-3xl
-                    font-bold
-                    text-red-500
-                    text-center
-                    cursor-pointer
-                    ${InterFont.className}
-                `}
-                >
-                    Guild
-                </p>
+            <div className='items-center bg-white px-4 py-2 shadow-md sticky top-0 z-10 flex justify-between md:hidden'>
+                <Logo />
                 <div>
-                    <MenuIcon
-                        className='icon'
-                        onClick={() => setIsOpen(!isOpen)}
-                    />
-                    {/* this will be a separate component in the future called drawer */}
+                    <MenuIcon className='icon' onClick={handleToggleDrawer} />
+                </div>
+
+                <div
+                    className={`${
+                        isOpen ? 'translate-x-0' : 'translate-x-full'
+                    } md:hidden 
+                        fixed top-0 right-0
+                         bg-white shadow-md
+                          h-screen w-[calc(100vw-20%)]
+                          transform transition-transform
+                          ease-in-out duration-300
+                          `}
+                >
+                    <h1
+                        className='text-2xl font-bold text-center py-3
+                    mb-5
+                    border-b-2 border-gray-200
+                    '
+                    >
+                        Guild
+                    </h1>
+                    {guildData?.map((guild: any) => (
+                        <div key={guild.id} className=' py-3 ml-5'>
+                            <Link href={`/guild/${guild.id}`}>
+                                <div
+                                    className='flex 
+                            flex-row
+                            items-center'
+                                >
+                                    <div
+                                        className='flex
+                                 items-center justify-center w-10 h-10 rounded-full
+                                  bg-gray-200'
+                                    >
+                                        <Avatar seed={guild.id} size='medium' />
+                                    </div>
+                                    <p className='ml-2'>{guild.name}</p>
+                                </div>
+                            </Link>
+                        </div>
+                    ))}
                 </div>
             </div>
 
-            {isOpen && (
-                <div
-                    className={`
-        md:hidden
-        fixed
-        top-0
-        right-0
-        bg-white
-        shadow-md
-        h-screen
-        w-32
-        transform
-        transition-transform
-        ease-in-out
-        duration-300
-        slide-in-right
-      `}
-                >
-                    <p>Guild 1</p>
-                    <p>Guild 2</p>
-                </div>
-            )}
-
+            {/* desktop view */}
             <div
                 className='
             items-center
@@ -227,6 +245,10 @@ export default function Navbar() {
                 </div>
 
                 <form
+                    onSubmit={(e: any) => {
+                        e.preventDefault();
+                        router.push(`/search?q=${e.target[0].value}`);
+                    }}
                     className='
             flex 
             flex-1
@@ -266,7 +288,9 @@ export default function Navbar() {
                 space-x-2
                 '
                 >
-                    <SparklesIcon className='icon cursor-not-allowed' />
+                    <Link href='https://github.com/tejas-gk/guild2.0'>
+                        <AiFillGithub className='icon' />
+                    </Link>
                     <GlobeIcon className='icon cursor-not-allowed' />
                     <PlusIcon className='icon cursor-not-allowed' />
                     <div

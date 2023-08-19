@@ -68,6 +68,40 @@ export default function Index() {
             >
                 Notifications
             </h1>
+            <div
+                className='
+                flex flex-col
+            '
+            >
+                <div
+                    className='
+                flex
+                items-center
+                gap-2
+                p-4
+            '
+                >
+                    <Avatar seed='1' size='medium' />
+                    <p
+                        className='text-lg font-semibold text-neutral-900
+                    p-3
+                '
+                    >
+                        <Link href={`/users/${user?.id}`}>{user?.name}</Link>{' '}
+                        <span
+                            className='
+                        text-neutral-500
+                        text-sm
+                        font-light
+
+                    '
+                        >
+                            started following you
+                        </span>
+                    </p>
+                </div>
+                <p>5 mins ago</p>
+            </div>
             {notifications.map((notification, i) => (
                 <div
                     key={i}
@@ -82,7 +116,7 @@ export default function Index() {
             transition
             hover:bg-neutral-100
             hover:shadow-md
-            w-1/2
+            w-full
           '
                 >
                     <Avatar seed={notification?.userId} size='medium' />

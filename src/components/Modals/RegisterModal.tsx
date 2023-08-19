@@ -5,7 +5,6 @@ import Modal from '../Modal';
 import Input from '../Input';
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
-// import { schema } from '@/pages/api/register';
 import { useToast } from '@/hooks/useToast';
 import { z, ZodError, ZodIssue } from 'zod';
 

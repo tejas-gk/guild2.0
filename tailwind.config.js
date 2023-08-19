@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     mode: 'jit',
+    darkMode: 'class',
     content: ['./src/**/*.{js,ts,jsx,tsx,stories.tsx}'],
     theme: {
         extend: {
@@ -11,6 +12,12 @@ module.exports = {
                 'debug-orange': '#ff7f00',
                 'debug-purple': '#7f00ff',
                 'debug-pink': '#ff00ff',
+
+                'primary': 'hsl(238, 40%, 52%)',
+                'primary-light': 'hsl(238, 40%, 62%)',
+                'primary-dark': 'hsl(238, 40%, 42%)',
+                'primary-contrast': 'hsl(238, 40%, 92%)',
+                'background': 'hsl(228, 33%, 97%)',
             },
             aspectRatio: {
                 '13/9': '13/9',

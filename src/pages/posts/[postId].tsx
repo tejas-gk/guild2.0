@@ -2,9 +2,10 @@ import usePosts from '@/hooks/usePosts';
 import { useRouter } from 'next/router';
 import Post from '@/components/Post';
 import PostItem from '@/components/Post/PostItem';
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 import axios from 'axios';
-import CommentItem from '@/components/Post/Comment';
+import CommentsSection from '@/components/Post/Comments/CommentsSection';
+import CreateComment from '@/components/Post/Comments';
 
 interface Comment {
     id: string;
@@ -26,10 +27,7 @@ export default function PostView() {
     const { data: fetchedPost, isLoading } = usePosts(postId as string);
 
     const [reply, setReply] = useState<{ [commentId: string]: string }>({});
-
-    if (isLoading) {
-        return <div>Loading ...</div>;
-    }
+    const [comments, setComments] = useState<Comment[]>([]);
 
     const handleReply = async (commentId: string) => {
         try {
@@ -59,55 +57,20 @@ export default function PostView() {
         }));
     };
 
-    const dummyComments = [
-        {
-            id: 'comment1',
-            user: {
-                username: 'user1',
-            },
-            body: 'Comment 1',
-            childComments: [
-                {
-                    id: 'reply1',
-                    user: {
-                        username: 'user2',
-                    },
-                    body: 'Reply 1',
-                },
-                {
-                    id: 'reply2',
-                    user: {
-                        username: 'user3',
-                    },
-                    body: 'Reply 2',
-                },
-            ],
-        },
-        {
-            id: 'comment2',
-            user: {
-                username: 'user4',
-            },
-            body: 'Comment 2',
-        },
-        // Add more comments and replies as needed
-    ];
+    if (isLoading) {
+        return <div>Loading ...</div>;
+    }
 
     return (
         <div>
             <PostItem data={fetchedPost} />
-            <Post isComment postId={postId as string} />
+            {/* <Post isComment postId={postId as string} /> */}
+            <div className='ml-4'>
+                <CreateComment postId={postId as string} />
+            </div>
 
-            {dummyComments?.map((comment: Comment) => (
-                <CommentItem
-                    key={comment.id}
-                    comment={comment}
-                    postId={postId as string}
-                    onDeleteComment={(commentId: string) => {
-                        alert('Comment deleted successfully');
-                    }}
-                />
-            ))}
+            {/* comments */}
+            <CommentsSection postId={postId as string} />
         </div>
     );
 }

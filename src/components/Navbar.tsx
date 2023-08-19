@@ -52,7 +52,7 @@ const InterFont = Inter({
 });
 
 export default function Navbar() {
-    const { data: currentUser } = useCurrentUser();
+    const { data: currentUser, isLoading } = useCurrentUser();
     // TODO this needs to be separate
     const [isOpen, setIsOpen] = useState(false);
     const [notified, setNotified] = useState<boolean | undefined>(
@@ -113,7 +113,9 @@ export default function Navbar() {
     return (
         <>
             <div className='items-center bg-white px-4 py-2 shadow-md sticky top-0 z-10 flex justify-between md:hidden'>
-                <Logo />
+                <Link href='/'>
+                    <Logo />
+                </Link>
                 <div>
                     <MenuIcon className='icon' onClick={handleToggleDrawer} />
                 </div>
@@ -399,7 +401,7 @@ export default function Navbar() {
                                             <p>Profile</p>
                                         </div>
                                     </Link>
-                                    <Link href={`users/${currentUser?.id}`}>
+                                    <Link href={`settings`}>
                                         <div
                                             className='
                                         navbar-dropdown
@@ -422,6 +424,8 @@ export default function Navbar() {
                             </div>
                         )}
                     </div>
+                ) : isLoading ? (
+                    <div>Loading</div>
                 ) : (
                     <div
                         className='

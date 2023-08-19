@@ -1,46 +1,26 @@
-interface ValidationRule {
-    validator: (value: string) => boolean;
-    message: string;
-}
+import { z } from 'zod';
 
-export const validationRules = {
-    required: (
-        message: string = 'This field is required.'
-    ): ValidationRule => ({
-        validator: (value: string) => Boolean(value.trim()),
-        message,
-    }),
-    email: (
-        message: string = 'Please enter a valid email address.'
-    ): ValidationRule => ({
-        validator: (value: string) =>
-            Boolean(
-                value.trim().match(
-                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/ // https://stackoverflow.com/a/46181/12381546
-                )
-            ),
-        message,
-    }),
-    username: (
-        message: string = 'Please enter a valid username.'
-    ): ValidationRule => ({
-        validator: (value: string) =>
-            Boolean(
-                value.trim().match(
-                    /^[a-zA-Z0-9_]{3,15}$/ // 3-15 characters, letters, numbers, and underscores only
-                )
-            ),
-        message,
-    }),
-    password: (
-        message: string = 'Please enter a valid password.'
-    ): ValidationRule => ({
-        validator: (value: string) =>
-            Boolean(
-                value.trim().match(
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/ // https://stackoverflow.com/a/21456918/12381546
-                )
-            ),
-        message,
-    }),
-};
+export const schema = z.object({
+    email: z.string().email(),
+    username: z
+        .string()
+        .min(3, { message: 'Username must have minumum 3 letters' })
+        .regex(/^[a-zA-Z0-9_.]+$/, {
+            message:
+                'Username can only contain alphanumeric characters, underscore and dot',
+        }), // alphanumeric, underscore, dot
+    name: z.string(),
+    password: z
+        .string()
+        .min(6)
+        .refine((value) => {
+            // Password strength criteria
+            const hasUppercase = /[A-Z]/.test(value);
+            const hasLowercase = /[a-z]/.test(value);
+            const hasNumber = /[0-9]/.test(value);
+            const hasSpecialCharacter = /[!@#$%^&*]/.test(value);
+            return (
+                hasUppercase && hasLowercase && hasNumber && hasSpecialCharacter
+            );
+        }, 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'),
+});

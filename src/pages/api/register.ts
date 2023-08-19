@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prismadb';
 import { z } from 'zod';
+// @ts-ignore
+import { createTransport } from 'nodemailer';
 
 export const schema = z.object({
     email: z.string().email(),
@@ -48,6 +50,24 @@ export default async function handler(
                 name,
                 hashedPassword,
             },
+        });
+
+        // welcome email
+        const transporter = createTransport({
+            host: process.env.EMAIL_SERVER_HOST,
+            port: Number(process.env.EMAIL_SERVER_PORT),
+            auth: {
+                user: process.env.EMAIL_SERVER_USER,
+                pass: process.env.EMAIL_SERVER_PASSWORD,
+            },
+        });
+
+        const info = await transporter.sendMail({
+            from: process.env.EMAIL_FROM,
+            to: email,
+            subject: 'Welcome to NextAuth.js',
+            text: 'Welcome to NextAuth.js',
+            html: `<h1>Welcome to NextAuth.js</h1><p>You have successfully signed up to NextAuth.js!</p>`,
         });
 
         return res.status(200).json(user);

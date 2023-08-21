@@ -35,10 +35,6 @@ const Toast: React.FC<ToastProps> = () => {
         }
     }, [toast.isOpen, toast.onClose]);
 
-    useEffect(() => {
-        console.log('toast', toast);
-    }, [toast]);
-
     const handleDrag = (_: DraggableEvent, { deltaY }: DraggableData) => {};
 
     return (

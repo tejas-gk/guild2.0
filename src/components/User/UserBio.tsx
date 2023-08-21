@@ -150,7 +150,7 @@ export default function UserBio() {
                                 >
                                     Followers{' '}
                                     <span className='font-bold'>
-                                        {user?.followers?.length || 0}
+                                        {user?.followerCount || 0}
                                     </span>
                                 </p>
                             </div>

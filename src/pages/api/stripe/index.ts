@@ -12,6 +12,9 @@ export default async function handler(
 
         const { id } = req.body;
 
+        if (!currentUser.email)
+            return res.status(400).json({ message: 'Invalid id' });
+
         const customer = await prisma.userSubscription.findUnique({
             where: {
                 id: currentUser.id,
@@ -45,12 +48,15 @@ export default async function handler(
             },
         });
 
+        if (!stripeCustomer.customer)
+            return res.status(400).json({ message: 'Something went wrong' });
+
         await prisma.userSubscription.update({
             where: {
                 id: currentUser.id,
             },
             data: {
-                stripeCustomerId: stripeCustomer.customer.toString(),
+                stripeCustomerId: stripeCustomer?.customer.toString(),
             },
         });
 

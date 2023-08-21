@@ -17,39 +17,6 @@ export default function PostFeed({
     const posts = data;
     const lastPostRef = useRef<HTMLDivElement>(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const postsPerPage = 5;
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) {
-                    const nextPage = currentPage + 1;
-                    const startIndex = (nextPage - 1) * postsPerPage;
-                    const endIndex = startIndex + postsPerPage;
-
-                    setCurrentPage(nextPage);
-                }
-            },
-            {
-                root: null,
-                rootMargin: '0px',
-                threshold: 1.0,
-            }
-        );
-
-        const { current: lastPostElement } = lastPostRef;
-        if (lastPostElement) {
-            observer.observe(lastPostElement);
-        }
-
-        console.log('currentPage', currentPage);
-
-        return () => {
-            if (lastPostElement) {
-                observer.unobserve(lastPostElement);
-            }
-        };
-    }, [currentPage]);
 
     return (
         <div className='flex flex-col'>

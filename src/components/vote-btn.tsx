@@ -11,12 +11,20 @@ export default function VoteBtn({ postId }: any) {
     useEffect(() => {
         const channel = pusherClient.subscribe(`post-${postId}`);
         channel.bind('vote', (data: any) => {
-            console.log(data);
             setVoteCount(data.countVotes);
         });
         return () => {
             pusherClient.unsubscribe(`post-${postId}`);
         };
+    }, []);
+
+    useEffect(() => {
+        const getTotalVotes = async () => {
+            const { data } = await axios.get(`/api/vote?postId=${postId}`);
+            console.log(data);
+            setVoteCount(data.countVotes);
+        };
+        getTotalVotes();
     }, []);
 
     return (
@@ -49,7 +57,6 @@ export default function VoteBtn({ postId }: any) {
                         e.preventDefault();
                         setUpvote(!upvote);
                         setDownvote(false);
-                        setVoteCount(upvote ? voteCount - 1 : voteCount + 1);
                         axios.post('/api/vote', {
                             postId,
                             vote: 'UP',

@@ -100,7 +100,6 @@ export default function Navbar() {
 
     useEffect(() => {
         setFilteredGuilds(joinedGuilds());
-        console.log('joined guilds', joinedGuilds());
     }, [guildData, currentUser]);
 
     const logout = async () => {

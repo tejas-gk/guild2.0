@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Avatar from '@/components/Avatar';
 import GuildInfo from '@/components/Guild/GuildInfo';
 import PostItem from '@/components/Post/PostItem';
+import TabSwitcher from '@/components/tabs';
 export default function GuildPage() {
     const router = useRouter();
     const { guildId } = router.query;
@@ -19,6 +20,23 @@ export default function GuildPage() {
     const post = posts.filter(
         (post: Record<string, any>) => post.guildId === guildId
     );
+
+    const tabs = [
+        {
+            label: 'Posts',
+            content: (
+                <>
+                    {post.map((post: Record<string, any>) => (
+                        <div key={post.id}>
+                            <PostItem data={post} />
+                        </div>
+                    ))}
+                </>
+            ),
+        },
+        { label: 'Members', content: <div>Content for Tab 2</div> },
+        { label: 'Rules', content: <div>Content for Tab 3</div> },
+    ];
     return (
         <>
             <Head>
@@ -52,11 +70,7 @@ export default function GuildPage() {
                 </div>
                 <GuildInfo />
             </div>
-            {post.map((post: Record<string, any>) => (
-                <div key={post.id}>
-                    <PostItem data={post} />
-                </div>
-            ))}
+            <TabSwitcher tabs={tabs} />
         </>
     );
 }

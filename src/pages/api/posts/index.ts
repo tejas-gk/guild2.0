@@ -52,42 +52,68 @@ export default async function handler(
         }
 
         if (req.method === 'GET') {
-            const { userId } = req.query;
+            const { userId, page = 1, pageSize = 10 } = req.query;
 
             let posts;
+            let totalCount;
+
+            // @ts-ignore
+            const pageNumber = parseInt(page, 10);
+            // @ts-ignore @tejas-gk
+            const itemsPerPage = parseInt(pageSize, 10);
 
             if (userId && typeof userId === 'string') {
-                posts = await prisma.post.findMany({
-                    where: {
-                        userId,
-                    },
-                    include: {
-                        user: {
-                            select: {
-                                username: true,
-                                name: true,
-                                profileImage: true,
-                            },
+                // Fetch posts for a specific user with pagination
+                const skip = (pageNumber - 1) * itemsPerPage;
+
+                [posts, totalCount] = await Promise.all([
+                    prisma.post.findMany({
+                        where: {
+                            userId,
                         },
-                        comments: true,
-                    },
-                    orderBy: {
-                        createdAt: 'desc',
-                    },
-                });
+                        include: {
+                            user: {
+                                select: {
+                                    username: true,
+                                    name: true,
+                                    profileImage: true,
+                                },
+                            },
+                            comments: true,
+                        },
+                        orderBy: {
+                            createdAt: 'desc',
+                        },
+                        skip, // Skip the appropriate number of items based on the page
+                        take: itemsPerPage, // Limit the number of items per page
+                    }),
+                    prisma.post.count({
+                        where: {
+                            userId,
+                        },
+                    }),
+                ]);
             } else {
-                posts = await prisma.post.findMany({
-                    include: {
-                        user: true,
-                        comments: true,
-                    },
-                    orderBy: {
-                        createdAt: 'desc',
-                    },
-                });
+                // Fetch all posts with pagination
+                const skip = (pageNumber - 1) * itemsPerPage;
+
+                [posts, totalCount] = await Promise.all([
+                    prisma.post.findMany({
+                        include: {
+                            user: true,
+                            comments: true,
+                        },
+                        orderBy: {
+                            createdAt: 'desc',
+                        },
+                        skip, // Skip the appropriate number of items based on the page
+                        take: itemsPerPage, // Limit the number of items per page
+                    }),
+                    prisma.post.count(),
+                ]);
             }
 
-            return res.status(200).json(posts);
+            return res.status(200).json({ posts, totalCount });
         }
     } catch (error) {
         console.log(error);

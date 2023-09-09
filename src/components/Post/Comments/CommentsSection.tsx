@@ -29,17 +29,19 @@ export default function CommentsSection({ postId }: CommentSectionProps) {
                     `/api/posts/comments?postId=${postId}`
                 );
                 setComments(response.data);
+                console.log(response.data, 'res');
             } catch (error) {
                 console.error('Error fetching comments:', error);
             }
         };
 
         fetchComments();
+        console.log(fetchComments, 'comm');
     }, [postId]);
 
     const handleReply = async () => {
         try {
-            await axios.post('/api/posts/comments', {
+            await axios.post('/api/posts/comments/reply', {
                 postId,
                 body: reply,
             });

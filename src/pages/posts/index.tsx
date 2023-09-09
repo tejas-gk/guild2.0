@@ -1,35 +1,12 @@
 import React, { useState } from 'react';
 // import TextareaAutoSize from 'react-textarea-autosize'
 
-export default function index() {
+export default function Index() {
     const [text, setText] = useState('');
-    const handleChange = (event) => {
+    const handleChange = (event: any) => {
         setText(event.target.value);
     };
 
-    // Function to format the selected text with given style
-    const formatText = (style) => {
-        const selectionStart = event.target.selectionStart;
-        const selectionEnd = event.target.selectionEnd;
-        const selectedText = text.substring(selectionStart, selectionEnd);
-
-        let newText;
-
-        if (style === 'bold') {
-            newText = `**${selectedText}**`;
-        } else if (style === 'italic') {
-            newText = `_${selectedText}_`;
-        } else {
-            return;
-        }
-
-        const updatedText =
-            text.substring(0, selectionStart) +
-            newText +
-            text.substring(selectionEnd);
-
-        setText(updatedText);
-    };
     return (
         <div>
             <div

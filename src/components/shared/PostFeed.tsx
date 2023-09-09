@@ -5,24 +5,42 @@ import PostCard from './PostCard';
 import Image from 'next/image';
 import { useToast } from '@/hooks/useToast';
 import { useRef, useState, useEffect } from 'react';
-
+import InfiniteScroll from 'react-infinite-scroll-component';
 interface PostFeedProps {
     data?: Record<string, any>;
     userId?: string;
 }
 
 export default function PostFeed({
-    data,
+    data = [],
 }: PostFeedProps): React.ReactElement<React.ReactNode> {
-    const posts = data;
+    let posts = data.posts;
+    console.log(posts, 'ppp');
     const lastPostRef = useRef<HTMLDivElement>(null);
-    const [currentPage, setCurrentPage] = useState(1);
+
+    const [hasMorePosts, setHasMorePosts] = useState(true);
+
+    const handleNoMorePosts = () => setHasMorePosts(false);
+
+    const loadMorePosts = async () => {
+        alert('load more posts');
+    };
 
     return (
         <div className='flex flex-col'>
+            {/* <InfiniteScroll
+                dataLength={posts.length}
+                hasMore={hasMorePosts}
+                next={loadMorePosts}
+                loader={<div>loading...</div>}
+                endMessage={
+                    <p style={{ textAlign: 'center' }}>
+                        <b>Yay! You have seen it all</b>
+                    </p>
+                }
+            > */}
             {posts?.map((post: Record<string, any>, index: number) => (
                 <div
-                    ref={index === posts.length - 1 ? lastPostRef : null}
                     key={post.id}
                     className='
                 gap-4
@@ -31,6 +49,7 @@ export default function PostFeed({
                     <PostItem data={post} />
                 </div>
             ))}
+            {/* </InfiniteScroll> */}
         </div>
     );
 }

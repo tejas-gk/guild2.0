@@ -1,40 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 
-export default function Index() {
-    const [mode, setMode] = useState<'light' | 'dark'>('dark');
-
-    useEffect(() => {
-        if (mode === 'light') {
-            document.documentElement.classList.remove('dark');
-            localStorage.removeItem('mode');
-        } else {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('mode', 'dark');
-        }
-    }, [mode]);
+const ThemeChanger = () => {
+    const { theme, setTheme } = useTheme();
 
     return (
-        <div
-            className='dark:bg-slate-950
-        dark:text-white
-        bg-white
-        text-black
-        h-screen
-        w-screen
-
-        flex
-        justify-center
-        items-center
-
-      '
-        >
-            <button
-                onClick={() => {
-                    setMode(mode === 'light' ? 'dark' : 'light');
-                }}
-            >
-                {mode}
-            </button>
+        <div>
+            The current theme is: {theme}
+            <button onClick={() => setTheme('light')}>Light Mode</button>
+            <button onClick={() => setTheme('dark')}>Dark Mode</button>
         </div>
     );
-}
+};
+
+export default ThemeChanger;

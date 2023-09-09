@@ -98,7 +98,7 @@ model Guild {
 
 model Comment {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  body      String
+  body      String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   userId    String    @db.ObjectId

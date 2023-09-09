@@ -144,13 +144,13 @@ export default function PostItem({ data = {} }: PostItemProps): any {
                         <span className=''>@{data?.user?.username}</span>
                     </p>
                     <p>
-                        {formatDistance(
+                        {/* {formatDistance(
                             subDays(new Date(data?.createdAt), 3),
                             new Date(),
                             {
                                 addSuffix: true,
                             }
-                        )}
+                        )} */}
                     </p>
                 </div>
 

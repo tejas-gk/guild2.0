@@ -1,4 +1,3 @@
-import React from 'react';
 import serverAuth from '@/lib/serverAuth';
 import prisma from '@/lib/prismadb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -43,6 +42,7 @@ export default async function handler(
             const comments = await prisma.comment.findMany({
                 where: {
                     postId,
+                    // parentId:null
                 },
                 include: {
                     user: {

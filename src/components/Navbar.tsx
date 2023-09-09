@@ -111,7 +111,7 @@ export default function Navbar() {
 
     return (
         <>
-            <div className='items-center bg-white px-4 py-2 shadow-md sticky top-0 z-10 flex justify-between md:hidden'>
+            <div className='items-center bg-white dark:bg-black px-4 py-2 shadow-md sticky top-0 z-10 flex justify-between md:hidden'>
                 <Link href='/'>
                     <Logo />
                 </Link>
@@ -165,7 +165,7 @@ export default function Navbar() {
             <div
                 className='
             items-center
-            bg-white
+            bg-white dark:bg-black
             px-4 py-2
             shadow-md
             sticky top-0
@@ -222,7 +222,7 @@ export default function Navbar() {
                                                     items-center
                                                     space-x-2
                                                     px-4 py-2
-                                                    hover:bg-gray-200
+                                                    hover:bg-gray-200 dark:hover:bg-gray-800
                                                     rounded-md
                                                     transition
                                                     duration-200

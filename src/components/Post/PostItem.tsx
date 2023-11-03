@@ -15,6 +15,7 @@ import usePosts from '@/hooks/usePosts';
 import { useToast } from '@/hooks/useToast';
 import { formatDistance, subDays } from 'date-fns';
 import { BsBookmark, BsBookmarkFill, BsFillChatFill } from 'react-icons/bs';
+import VoteBtn from '../vote-btn';
 
 interface PostItemProps {
     data?: Record<string, any>;
@@ -27,7 +28,7 @@ export default function PostItem({ data = {} }: PostItemProps): any {
     const { mutate: mutatePost, isLoading: postLoading } = usePosts(
         router.query.id as string
     );
-    const { mutate: bookmarkMutate, isLoading } = usePosts('bookmark');
+    // const { mutate: bookmarkMutate, isLoading } = usePosts('bookmark');
     const toast = useToast();
 
     const [likeCount, setLikeCount] = useState<number>(
@@ -67,33 +68,6 @@ export default function PostItem({ data = {} }: PostItemProps): any {
     };
 
     const isBookmarked = data?.bookmarkedIds?.includes(currentUser?.data?.id);
-    const handleBookmark = async (postId: string) => {
-        try {
-            if (isBookmarked) {
-                await axios.delete('api/bookmark', {
-                    data: {
-                        id: postId,
-                    },
-                });
-                bookmarkMutate();
-                toast.success('Unbookmarked');
-            } else {
-                axios
-                    .post('/api/bookmark', {
-                        postId,
-                    })
-                    .then((res) => {
-                        toast.success('Bookmarked');
-                    })
-                    .catch((err) => {
-                        toast.error('Error occurred');
-                    });
-                bookmarkMutate();
-            }
-        } catch (error) {
-            toast.error('Error occurred');
-        }
-    };
 
     const deletePost = async (postId: string) => {
         try {
@@ -128,8 +102,10 @@ export default function PostItem({ data = {} }: PostItemProps): any {
     }
 
     return (
-        <div
-            className='  
+        <div className='flex'>
+            <VoteBtn postId={data?.id} />
+            <div
+                className='  
         border-b-[1px] 
         border-neutral-800/20
         p-5 
@@ -137,151 +113,154 @@ export default function PostItem({ data = {} }: PostItemProps): any {
         transition
          bg-white
          mx-0
+         flex-1
           '
-        >
-            <div
-                className='flex
+            >
+                <div
+                    className='flex
             gap-4
             items-center
             h-10
             sm:text-sm text-xs
             text-gray-500'
-            >
-                <Avatar seed={data?.user?.id} size='small' />
-                <Link href='/'>
-                    <span
-                        className='
+                >
+                    <Avatar seed={data?.user?.id} size='small' />
+                    <Link href='/'>
+                        <span
+                            className='
                                 underline underline-offset-2
                                 hover:underline-offset-4
                                 transition 
                                 text-zinc-900
                                 sm:text-sm text-xs
                                 '
-                    >
-                        {data?.user?.name}
-                    </span>
-                </Link>
-                <span className='font-bold'>.</span>
-                <p>
-                    Posted by <span className=''>@{data?.user?.username}</span>
-                </p>
-                <p>
-                    {formatDistance(
-                        subDays(new Date(data.createdAt), 3),
-                        new Date(),
-                        {
-                            addSuffix: true,
-                        }
-                    )}
-                </p>
-            </div>
+                        >
+                            {data?.user?.name}
+                        </span>
+                    </Link>
+                    <span className='font-bold'>.</span>
+                    <p>
+                        Posted by{' '}
+                        <span className=''>@{data?.user?.username}</span>
+                    </p>
+                    <p>
+                        {/* {formatDistance(
+                            subDays(new Date(data?.createdAt), 3),
+                            new Date(),
+                            {
+                                addSuffix: true,
+                            }
+                        )} */}
+                    </p>
+                </div>
 
-            <div
-                className={`
+                <div
+                    className={`
                     relative
                     ${shouldAddOverflowClip ? ' max-h-40 overflow-clip' : ''}
                     `}
-                ref={postBodyRef}
-            >
-                <Link href={`/posts/${data?.id}`}>
-                    <p
-                        className='
+                    ref={postBodyRef}
+                >
+                    <Link href={`/posts/${data?.id}`}>
+                        <p
+                            className='
                             text-gray-700
                             '
-                    >
-                        {data?.body}
-                    </p>
-                    {data?.image && (
-                        <Image
-                            src={data?.image}
-                            alt='image'
-                            width={500}
-                            height={500}
-                            className='
+                        >
+                            {data?.body}
+                        </p>
+                        {data?.image && (
+                            <Image
+                                src={data?.image}
+                                alt='image'
+                                width={500}
+                                height={500}
+                                className='
                                         sm:aspect-13/9 w-full
                                     '
-                        />
-                    )}
-                    {postBodyRef.current?.clientHeight === 160 &&
-                        shouldAddOverflowClip && (
-                            <div
-                                className='absolute 
+                            />
+                        )}
+                        {postBodyRef.current?.clientHeight === 160 &&
+                            shouldAddOverflowClip && (
+                                <div
+                                    className='absolute 
                         bottom-0 left-0
                         h-24 w-full
                         bg-gradient-to-t from-white to-transparent
                         '
-                            ></div>
-                        )}
-                </Link>
-            </div>
+                                ></div>
+                            )}
+                    </Link>
+                </div>
 
-            <div
-                className='
+                <div
+                    className='
                 flex
                 flex-row
                 justify-between
                 items-center
                 mt-2
                 '
-            >
-                <div
-                    className='
-                icon-container
-                hover:text-sky-500
-            '
                 >
-                    <RiMessage3Line className='icon' />
-                    <p>{data?.comments?.length}</p>
-                </div>
-                <div
-                    className='
-                icon-container
-                hover:text-red-500
-            '
-                    onClick={handleLike}
-                >
-                    <RiHeart3Line className='icon' />
-                    <p>{likeCount}</p>
-                </div>
-                {currentUser?.data?.id === data?.user?.id && (
                     <div
                         className='
                 icon-container
+                hover:text-sky-500
+            '
+                    >
+                        <RiMessage3Line className='icon' />
+                        <p>{data?.comments?.length}</p>
+                    </div>
+                    <div
+                        className='
+                icon-container
+                hover:text-red-500
+            '
+                        onClick={handleLike}
+                    >
+                        <RiHeart3Line className='icon' />
+                        <p>{likeCount}</p>
+                    </div>
+                    {currentUser?.data?.id === data?.user?.id && (
+                        <div
+                            className='
+                icon-container
                 hover:text-red-800
             '
-                        onClick={() => deletePost(data?.id)}
-                    >
-                        <CiTrash className='icon' />
-                    </div>
-                )}
+                            onClick={() => deletePost(data?.id)}
+                        >
+                            <CiTrash className='icon' />
+                        </div>
+                    )}
 
-                <div
-                    className='
+                    <div
+                        className='
                 
                 icon-container
                 hover:text-green-500'
-                >
-                    {isBookmarked ? (
-                        <BsBookmarkFill
-                            className='icon'
-                            onClick={() => handleBookmark(data?.id)}
-                        />
-                    ) : (
-                        <BsBookmark
-                            className='icon'
-                            onClick={() => handleBookmark(data?.id)}
-                        />
-                    )}
-                </div>
+                    >
+                        {isBookmarked ? (
+                            <BsBookmarkFill
+                                className='icon'
+                                // onClick={() => handleBookmark(data?.id)}
+                            />
+                        ) : (
+                            <BsBookmark
+                                className='icon'
+                                // onClick={() => handleBookmark(data?.id)}
+                            />
+                        )}
+                    </div>
 
-                <div
-                    className='
+                    <div
+                        className='
                 icon-container
                 hover:text-yellow-500
             '
-                    onClick={() => handleShare(`/posts/${data?.id}`)}
-                >
-                    <MdOutlineContentCopy className='icon' />
+                        onClick={() => handleShare(`/posts/${data?.id}`)}
+                    >
+                        <MdOutlineContentCopy className='icon' />
+                    </div>
                 </div>
             </div>
         </div>

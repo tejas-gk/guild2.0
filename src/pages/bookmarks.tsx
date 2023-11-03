@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PostItem from '@/components/Post/PostItem';
+import usePosts from '@/hooks/usePosts';
 
 export default function Bookmarks() {
     const [bookmarks, setBookmarks] = useState([]);
-    //   const {data}
-
-    useEffect(() => {
-        fetchBookmarks();
-    }, []);
 
     const fetchBookmarks = async () => {
         try {
             const response = await axios.get('/api/bookmark');
-            setBookmarks(response.data);
-            console.log(bookmarks);
+            setBookmarks(response.data.bookmarkedPosts);
         } catch (error) {
-            console.error('Error fetching bookmarks:', error);
+            console.log(error);
         }
     };
+    const { data: postData, isLoading: postLoading } = usePosts(bookmarks);
+
+    useEffect(() => {
+        fetchBookmarks();
+        console.table(postData);
+    }, []);
 
     return (
         <div className='container mx-auto p-4'>
@@ -26,7 +27,7 @@ export default function Bookmarks() {
             {bookmarks.length > 0 ? (
                 <ul className='space-y-4'>
                     {bookmarks.map((bookmark, i) => (
-                        <PostItem key={i} data={bookmark} />
+                        <PostItem key={i} data={postData} />
                     ))}
                 </ul>
             ) : (

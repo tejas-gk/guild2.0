@@ -52,7 +52,7 @@ const InterFont = Inter({
 });
 
 export default function Navbar() {
-    const { data: currentUser } = useCurrentUser();
+    const { data: currentUser, isLoading } = useCurrentUser();
     // TODO this needs to be separate
     const [isOpen, setIsOpen] = useState(false);
     const [notified, setNotified] = useState<boolean | undefined>(
@@ -100,7 +100,6 @@ export default function Navbar() {
 
     useEffect(() => {
         setFilteredGuilds(joinedGuilds());
-        console.log('joined guilds', joinedGuilds());
     }, [guildData, currentUser]);
 
     const logout = async () => {
@@ -112,8 +111,10 @@ export default function Navbar() {
 
     return (
         <>
-            <div className='items-center bg-white px-4 py-2 shadow-md sticky top-0 z-10 flex justify-between md:hidden'>
-                <Logo />
+            <div className='items-center bg-white dark:bg-black px-4 py-2 shadow-md sticky top-0 z-10 flex justify-between md:hidden'>
+                <Link href='/'>
+                    <Logo />
+                </Link>
                 <div>
                     <MenuIcon className='icon' onClick={handleToggleDrawer} />
                 </div>
@@ -164,7 +165,7 @@ export default function Navbar() {
             <div
                 className='
             items-center
-            bg-white
+            bg-white dark:bg-black
             px-4 py-2
             shadow-md
             sticky top-0
@@ -221,7 +222,7 @@ export default function Navbar() {
                                                     items-center
                                                     space-x-2
                                                     px-4 py-2
-                                                    hover:bg-gray-200
+                                                    hover:bg-gray-200 dark:hover:bg-gray-800
                                                     rounded-md
                                                     transition
                                                     duration-200
@@ -399,7 +400,7 @@ export default function Navbar() {
                                             <p>Profile</p>
                                         </div>
                                     </Link>
-                                    <Link href={`users/${currentUser?.id}`}>
+                                    <Link href={`settings`}>
                                         <div
                                             className='
                                         navbar-dropdown
@@ -422,6 +423,8 @@ export default function Navbar() {
                             </div>
                         )}
                     </div>
+                ) : isLoading ? (
+                    <div>Loading</div>
                 ) : (
                     <div
                         className='

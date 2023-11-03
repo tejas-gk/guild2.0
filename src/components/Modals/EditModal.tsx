@@ -27,7 +27,6 @@ const EditModal = () => {
         setProfileImage(currentUser?.profileImage);
         setUsername(currentUser?.username);
         setLocation(currentUser?.location);
-        console.log(currentUser?.profileImage);
     }, [currentUser]);
 
     const editModal = useEditModal();

@@ -4,15 +4,17 @@
 
 
 ## Table of Contents
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [Technologies](#technologies)
-- [Dependencies](#dependencies)
-- [License](#license)
-- [Contributors](#contributors)
+- [Guild](#guild)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Contributing](#contributing)
+  - [Technologies](#technologies)
+  - [Dependencies](#dependencies)
+  - [License](#license)
+  - [Contributors 🤝](#contributors-)
 
 ## Introduction
 
@@ -24,6 +26,7 @@ List of main features that are planned or already implemented in the app:
 
 - User authentication and profile creation
 - Friends and followers system
+- Create and join Guilds
 - Posts, photos, and video sharing
 - Like and comment on posts
 - Real-time updates using WebSockets (Pusher)
@@ -33,11 +36,13 @@ List of main features that are planned or already implemented in the app:
 Instructions on how to install and set up the project locally:
 
 1. Clone the repository: `git clone https://github.com/tejas-gk/guild2.0.git`
-2. Install dependencies: `npm install` or `yarn install`
+2. Install dependencies: `npm install` or  `yarn install`
 3. Configure environment variables
 4. Configure MongoDB in Prisma by `npx prisma generate` or `yarn prisma generate`
 5. Run the development server: `npm run dev` or `yarn dev`
 6. Open the app in your browser at `http://localhost:3000`
+
+I would recommend using yarn
 
 ## Usage
 
@@ -70,8 +75,9 @@ Some notable dependencies used in the project:
 
 - swr - A React hook library for data fetching and caching
 - zustand - A small, fast state management library for React
-- jest - A popular testing framework for JavaScript
+- RTL - A popular testing framework for JavaScript
 - eslint - A tool for linting JavaScript code
+- Playwright - A Node.js library to automate Chromium, Firefox and WebKit with a single API
 - prettier - A tool for formatting code
 
 ## License

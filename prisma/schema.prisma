@@ -41,7 +41,25 @@ model User {
   notifications Notification[]
   Message       Message[]
   guilds        Guild[]
-  Bookmark      Bookmark[]
+
+  UserSubscription UserSubscription[]
+  Vote             Vote[]
+}
+
+enum Votes {
+  UP
+  DOWN
+}
+
+model Vote {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  postId    String   @db.ObjectId
+  vote      Votes
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Post {
@@ -58,8 +76,8 @@ model Post {
   comments Comment[]
   guild    Guild?    @relation(fields: [guildId], references: [id], onDelete: Cascade)
 
-  guildId  String?    @db.ObjectId
-  Bookmark Bookmark[]
+  guildId String? @db.ObjectId
+  Vote    Vote[]
 }
 
 model Guild {
@@ -80,7 +98,7 @@ model Guild {
 
 model Comment {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  body      String
+  body      String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   userId    String    @db.ObjectId
@@ -89,9 +107,8 @@ model Comment {
   replyTo   Comment?  @relation("Replies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   replies   Comment[] @relation("Replies")
 
-  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post     Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
-  Bookmark Bookmark[]
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Notification {
@@ -133,16 +150,16 @@ model Message {
   sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
 
-model Bookmark {
+model UserSubscription {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  stripeCustomerId         String?   @unique @map("stripe_customer_id")
+  stripeSubscriptionId     String?   @unique @map("stripe_subscription_id")
+  stripePriceId            String?   @unique @map("stripe_price_id")
+  stripeCurrentPeriodStart DateTime? @map("stripe_current_period_start")
 
   userId String @db.ObjectId
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  postId String? @db.ObjectId
-  post   Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  commentId String?  @db.ObjectId
-  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  User   User   @relation(fields: [userId], references: [id])
 }

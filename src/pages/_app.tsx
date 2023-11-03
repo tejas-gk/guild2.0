@@ -5,12 +5,12 @@ import Navbar from '@/components/Navbar';
 import RegisterModal from '@/components/Modals/RegisterModal';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
-import { Toaster } from 'react-hot-toast';
 import { SessionProvider } from 'next-auth/react';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import Layout from '@/layout/Layout';
 import EditModal from '@/components/Modals/EditModal';
 import Toast from '@/components/Toast';
+import { ThemeProvider } from 'next-themes';
 
 export default function App({ Component, pageProps, router }: AppProps) {
     const { data: currentUser } = useCurrentUser();
@@ -30,10 +30,11 @@ export default function App({ Component, pageProps, router }: AppProps) {
 
                 <Navbar />
                 <Toast />
-
-                <Layout pathname={router.pathname}>
-                    <Component {...pageProps} />
-                </Layout>
+                <ThemeProvider>
+                    <Layout pathname={router.pathname}>
+                        <Component {...pageProps} />
+                    </Layout>
+                </ThemeProvider>
                 <div
                     className='
                     sm:hidden
@@ -42,7 +43,6 @@ export default function App({ Component, pageProps, router }: AppProps) {
                 >
                     <BottomMobNavb />
                 </div>
-                <Toaster />
             </SessionProvider>
         </>
     );

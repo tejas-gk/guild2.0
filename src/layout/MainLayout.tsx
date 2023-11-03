@@ -7,12 +7,13 @@ export default function MainLayout({ children }: LayoutProps) {
         <>
             <div
                 className='
-                    container 
+                    containe
                     max-w-7xl
                     mx-auto
                     h-screen w-screen
                     pt-12
                     min-h-screen
+                    dark:bg-slate-950
                 '
             >
                 <div

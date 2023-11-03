@@ -4,9 +4,7 @@ import fetcher from '@/lib/fetcher';
 const usePosts = (userId?: string) => {
     const url = userId
         ? `/api/posts/${userId}`
-        : userId === 'bookmark'
-        ? 'api/bookmark'
-        : '/api/posts';
+        : '/api/posts?page=2&pageSize=20';
     const { data, error, isLoading, mutate } = useSWR(url, fetcher);
     return {
         data,

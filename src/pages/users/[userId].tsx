@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import useUsers from '@/hooks/useUsers';
 import Head from 'next/head';
@@ -7,6 +7,7 @@ import Avatar from '@/components/Avatar';
 import Image from 'next/image';
 import PostFeed from '@/components/shared/PostFeed';
 import usePosts from '@/hooks/usePosts';
+import TabSwitcher from '@/components/tabs';
 
 export default function UserId() {
     const router = useRouter();
@@ -18,6 +19,12 @@ export default function UserId() {
     const post = posts.filter(
         (post: Record<string, any>) => post.userId === userId
     );
+
+    const tabs = [
+        { label: 'Posts', content: <PostFeed data={post} /> },
+        { label: 'About', content: <div>Content for Tab 2</div> },
+        { label: 'Replies', content: <div>Content for Tab 3</div> },
+    ];
 
     return (
         <>
@@ -53,7 +60,7 @@ export default function UserId() {
                 <UserBio />
             </div>
 
-            <PostFeed data={post} />
+            <TabSwitcher tabs={tabs} />
         </>
     );
 }

@@ -45,6 +45,8 @@ export default function Index({ postId, isComment = false }: PostProps): any {
     const [activeGuild, setActiveGuild] = useState('' as string);
     const [activeGuildName, setActiveGuildName] = useState('' as string);
 
+    const MAX_HEIGHT = 200;
+
     const onSubmit = useCallback(
         async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
@@ -52,7 +54,7 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                 const guildId = activeGuild || null;
                 setIsLoading(true);
                 const url = isComment
-                    ? `/api/posts/comments?postId=${postId}&parentId=${postId}`
+                    ? `/api/posts/comments?postId=${postId}&parentId=${null}`
                     : '/api/posts';
                 await axios.post(url, {
                     body,
@@ -62,8 +64,6 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                 toast.success(
                     `${isComment ? 'Comment' : 'Post'} created successfully`
                 );
-                setImage('');
-                setBody('');
                 mutatePost();
                 mutatePosts();
             } catch (error) {
@@ -72,6 +72,8 @@ export default function Index({ postId, isComment = false }: PostProps): any {
             } finally {
                 setIsLoading(false);
                 setIsTyping(false);
+                setImage('');
+                setBody('');
             }
         },
         [
@@ -99,6 +101,16 @@ export default function Index({ postId, isComment = false }: PostProps): any {
         }
 
         setIsTyping(true);
+    };
+
+    const handlePostInputChange = (
+        e: React.ChangeEvent<HTMLTextAreaElement>
+    ) => {
+        setBody(e.target.value);
+        setIsTyping(Boolean(e.target.value));
+
+        const scrollHeight = e.target.scrollHeight;
+        e.target.style.height = `${Math.min(scrollHeight, MAX_HEIGHT)}px`;
     };
 
     if (currentUserIsLoading) return <div>Loading ...</div>;
@@ -208,33 +220,36 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                         <div
                             className='
                         flex
-                        items-center
+                        
                         space-x-4
                         justify-between
                           '
                         >
-                            <div>
+                            <div
+                                className='
+                                flex-shrink-0
+                            '
+                            >
                                 <Avatar seed={currentUser?.id} size='medium' />
                             </div>
                             <div
                                 className='
-                            flex
-                            flex-col
-                            w-full
+                            flex-grow
                               '
                             >
-                                <input
-                                    type='text'
+                                <textarea
                                     placeholder='Post something...'
                                     name='body'
                                     className='w-full h-12
                                      px-4 pl-5
                                       outline-none
+                                        resize-none
+                                        rounded-md
+                                        border-gray-300
+                                        scrollbar-hide
                                       '
-                                    onChange={(e) => {
-                                        setBody(e.target.value);
-                                        setIsTyping(Boolean(e.target.value));
-                                    }}
+                                    onChange={handlePostInputChange}
+                                    onInput={handlePostInputChange}
                                 />
                             </div>
 
@@ -279,21 +294,15 @@ export default function Index({ postId, isComment = false }: PostProps): any {
                                 <div
                                     className='flex 
                                 items-center
-                                w-inherit
+                                w-[calc(100%-4rem)]
+                                bg-gray-100
                                  px-2'
                                 >
-                                    <p className='font-semibold'>Guild</p>
+                                    <p className='font-semibold flex-1'>
+                                        Guild
+                                    </p>
                                     <p>{activeGuildName}</p>
-                                    <div
-                                        className='
-                                                flex
-                                                flex-1
-                                                items-center
-                                                flex-row
-                                                mx-7
-                                                relative
-                                            '
-                                    >
+                                    <div>
                                         <ChevronDownIcon
                                             className='
                                                     h-6 w-6

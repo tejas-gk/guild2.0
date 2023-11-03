@@ -1,0 +1,32 @@
+.voteBtnContainer {
+    color: hsl(238, 40%, 52%);
+    font-weight: 500;
+    /* grid-area: score; */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /* gap: 1rem; */
+    padding: 0.75rem;
+    padding-top: 0.5rem;
+    width: 1rem;
+    /* height: 5rem; */
+    box-sizing: content-box;
+    background-color: hsl(228, 33%, 97%);
+    border-radius: 8px;
+    align-self: flex-start;
+    margin: 1rem;
+}
+.voteBtn {
+    cursor: pointer;
+    object-fit: scale-down;
+    border: none;
+    padding-right: 0.5rem;
+    position: relative;
+}
+
+.voteCount {
+    padding: 0.75rem;
+    padding-top: 0.5rem;
+    font-size: 1.5rem;
+    position: relative;
+}

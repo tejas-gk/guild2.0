@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    /* Your default theme */
+    --background: white;
+    --foreground: black;
+}
+
+[data-theme='dark'] {
+    --background: black;
+    --foreground: white;
+}
+
 body {
     background-color: #f9fafe;
 }
